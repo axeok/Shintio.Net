@@ -2,7 +2,8 @@
 
 namespace Shintio.Json.Attributes
 {
-    public class JsonIgnoreAttribute : Attribute
-    {
-    }
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
+	public class JsonIgnoreAttribute : Attribute
+	{
+	}
 }
