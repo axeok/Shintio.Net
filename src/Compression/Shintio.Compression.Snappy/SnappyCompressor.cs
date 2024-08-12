@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Shintio.Compression.Enums;
+﻿using Shintio.Compression.Enums;
 using Shintio.Compression.Interfaces;
 
 namespace Shintio.Compression.Snappy;
@@ -8,13 +7,13 @@ public class SnappyCompressor : ICompressor
 {
 	public CompressionMethod Method => CompressionMethod.Snappy;
 
-	public string Compress(string data)
+	public byte[] Compress(byte[] data)
 	{
-		return Convert.ToBase64String(Snappier.Snappy.CompressToArray(Encoding.UTF8.GetBytes(data)));
+		return Snappier.Snappy.CompressToArray(data);
 	}
 
-	public string Decompress(string compressedData)
+	public byte[] Decompress(byte[] compressedData)
 	{
-		return Encoding.UTF8.GetString(Snappier.Snappy.DecompressToArray(Convert.FromBase64String(compressedData)));
+		return Snappier.Snappy.DecompressToArray(compressedData);
 	}
 }

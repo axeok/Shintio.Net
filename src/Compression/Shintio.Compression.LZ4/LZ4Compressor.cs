@@ -1,5 +1,4 @@
-﻿using System.Text;
-using K4os.Compression.LZ4.Streams;
+﻿using K4os.Compression.LZ4.Streams;
 using Shintio.Compression.Enums;
 using Shintio.Compression.Interfaces;
 
@@ -9,25 +8,21 @@ public class LZ4Compressor : ICompressor
 {
 	public CompressionMethod Method => CompressionMethod.LZ4;
 
-	public string Compress(string data)
+	public byte[] Compress(byte[] data)
 	{
-		var bytes = Encoding.UTF8.GetBytes(data);
-
 		using var ms = new MemoryStream();
 
 		using (var cs = LZ4Stream.Encode(ms))
 		{
-			cs.Write(bytes, 0, bytes.Length);
+			cs.Write(data, 0, data.Length);
 		}
 
-		return Convert.ToBase64String(ms.ToArray());
+		return ms.ToArray();
 	}
 
-	public string Decompress(string compressedData)
+	public byte[] Decompress(byte[] compressedData)
 	{
-		var bytes = Convert.FromBase64String(compressedData);
-
-		using var compressedMs = new MemoryStream(bytes);
+		using var compressedMs = new MemoryStream(compressedData);
 		using var decompressedMs = new MemoryStream();
 
 		using (var ds = LZ4Stream.Decode(compressedMs))
@@ -35,6 +30,6 @@ public class LZ4Compressor : ICompressor
 			ds!.CopyTo(decompressedMs);
 		}
 
-		return Encoding.UTF8.GetString(decompressedMs.ToArray());
+		return decompressedMs.ToArray();
 	}
 }

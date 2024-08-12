@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
-using System.Text;
 using Shintio.Compression.Enums;
 using Shintio.Compression.Interfaces;
 
@@ -11,17 +10,7 @@ namespace Shintio.Compression.System
 	{
 		public abstract CompressionMethod Method { get; }
 
-		public string Compress(string data)
-		{
-			return Convert.ToBase64String(CompressBytes(Encoding.UTF8.GetBytes(data)));
-		}
-
-		public string Decompress(string compressedData)
-		{
-			return Encoding.UTF8.GetString(DecompressBytes(Convert.FromBase64String(compressedData)));
-		}
-
-		private byte[] CompressBytes(byte[] data)
+		public byte[] Compress(byte[] data)
 		{
 			using var ms = new MemoryStream();
 
@@ -33,7 +22,7 @@ namespace Shintio.Compression.System
 			return ms.ToArray();
 		}
 
-		private byte[] DecompressBytes(byte[] compressedData)
+		public byte[] Decompress(byte[] compressedData)
 		{
 			using var compressedMs = new MemoryStream(compressedData);
 			using var decompressedMs = new MemoryStream();

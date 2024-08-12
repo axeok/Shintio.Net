@@ -2,6 +2,7 @@
 using System.Linq;
 using Shintio.Compression.Enums;
 using Shintio.Compression.Exceptions;
+using Shintio.Compression.Extensions;
 using Shintio.Compression.Interfaces;
 
 namespace Shintio.Compression.Common
@@ -34,6 +35,38 @@ namespace Shintio.Compression.Common
 		}
 
 		public string Decompress(string compressedData, CompressionMethod method)
+		{
+			if (method == CompressionMethod.None)
+			{
+				return compressedData;
+			}
+
+			var compressor = _compressors.FirstOrDefault(c => c.Method == method);
+			if (compressor == null)
+			{
+				throw new UnsupportedCompressionMethod(method);
+			}
+
+			return compressor.Decompress(compressedData);
+		}
+
+		public byte[] Compress(byte[] data, CompressionMethod method)
+		{
+			if (method == CompressionMethod.None)
+			{
+				return data;
+			}
+
+			var compressor = _compressors.FirstOrDefault(c => c.Method == method);
+			if (compressor == null)
+			{
+				throw new UnsupportedCompressionMethod(method);
+			}
+
+			return compressor.Compress(data);
+		}
+
+		public byte[] Decompress(byte[] compressedData, CompressionMethod method)
 		{
 			if (method == CompressionMethod.None)
 			{

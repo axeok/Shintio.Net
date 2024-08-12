@@ -4,8 +4,8 @@ namespace Shintio.Compression.Interfaces
 {
 	public interface ICompressor
 	{
-		public string Compress(string data);
-		public string Decompress(string compressedData);
+		public byte[] Compress(byte[] data);
+		public byte[] Decompress(byte[] compressedData);
 
 		public CompressionMethod Method { get; }
 	}

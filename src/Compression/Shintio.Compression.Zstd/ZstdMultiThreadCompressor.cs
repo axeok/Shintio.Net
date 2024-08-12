@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Shintio.Compression.Enums;
+﻿using Shintio.Compression.Enums;
 using Shintio.Compression.Interfaces;
 using ZstdSharp;
 using ZstdSharp.Unsafe;
@@ -8,29 +7,25 @@ namespace Shintio.Compression.Zstd;
 
 public class ZstdMultiThreadCompressor : ICompressor
 {
-	public const int CompressionLevel = ZstdCompressor.CompressionLevel;
-
 	public CompressionMethod Method => CompressionMethod.ZstdMultiThread;
 
-	public string Compress(string data)
+	public byte[] Compress(byte[] data)
 	{
-		var bytes = Encoding.UTF8.GetBytes(data);
-
 		using var ms = new MemoryStream();
 
-		using (var cs = new CompressionStream(ms, CompressionLevel))
+		using (var cs = new CompressionStream(ms, ZstdCompressor.CompressionLevel))
 		{
 			cs.SetParameter(ZSTD_cParameter.ZSTD_c_nbWorkers, Environment.ProcessorCount);
-			cs.Write(bytes, 0, bytes.Length);
+			cs.Write(data, 0, data.Length);
 		}
 
-		return Convert.ToBase64String(ms.ToArray());
+		return ms.ToArray();
 	}
 
-	public string Decompress(string compressedData)
+	public byte[] Decompress(byte[] compressedData)
 	{
 		var decompressor = new Decompressor();
 
-		return Encoding.UTF8.GetString(decompressor.Unwrap(Convert.FromBase64String(compressedData)));
+		return decompressor.Unwrap(compressedData).ToArray();
 	}
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using Shintio.Compression.Enums;
+﻿using Shintio.Compression.Enums;
 using Shintio.Compression.Interfaces;
 
 namespace Shintio.Compression.ZLib
@@ -9,28 +7,14 @@ namespace Shintio.Compression.ZLib
 	{
 		public CompressionMethod Method => CompressionMethod.ZLib;
 
-		public string Compress(string data)
+		public byte[] Compress(byte[] data)
 		{
-			return Convert.ToBase64String(CompressBytes(data));
+			return ZLibCompressorInternal.Compress(-1, data, 0, data.Length).ToArray();
 		}
 
-		public string Decompress(string compressedData)
+		public byte[] Decompress(byte[] compressedData)
 		{
-			return DecompressBytes(Convert.FromBase64String(compressedData));
-		}
-
-		private byte[] CompressBytes(string data)
-		{
-			var bytes = Encoding.UTF8.GetBytes(data);
-
-			return ZLibCompressorInternal.Compress(-1, bytes, 0, bytes.Length).ToArray();
-		}
-
-		private string DecompressBytes(byte[] compressedData)
-		{
-			var bytes = compressedData;
-
-			return Encoding.UTF8.GetString(ZLibCompressorInternal.Decompress(bytes, 0, bytes.Length).ToArray());
+			return ZLibCompressorInternal.Decompress(compressedData, 0, compressedData.Length).ToArray();
 		}
 	}
 }

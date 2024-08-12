@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Shintio.Compression.Enums;
+﻿using Shintio.Compression.Enums;
 using Shintio.Compression.Interfaces;
 using ZstdSharp;
 
@@ -7,21 +6,21 @@ namespace Shintio.Compression.Zstd;
 
 public class ZstdCompressor : ICompressor
 {
-	public const int CompressionLevel = 0;
+	public static int CompressionLevel = 0;
 
 	public CompressionMethod Method => CompressionMethod.Zstd;
 
-	public string Compress(string data)
+	public byte[] Compress(byte[] data)
 	{
 		var compressor = new Compressor(CompressionLevel);
 
-		return Convert.ToBase64String(compressor.Wrap(Encoding.UTF8.GetBytes(data)));
+		return compressor.Wrap(data).ToArray();
 	}
 
-	public string Decompress(string compressedData)
+	public byte[] Decompress(byte[] compressedData)
 	{
 		var decompressor = new Decompressor();
 
-		return Encoding.UTF8.GetString(decompressor.Unwrap(Convert.FromBase64String(compressedData)));
+		return decompressor.Unwrap(compressedData).ToArray();
 	}
 }
