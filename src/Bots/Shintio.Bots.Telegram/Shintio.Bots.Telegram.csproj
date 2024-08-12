@@ -7,8 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Shintio.CodeProcessor\Shintio.CodeProcessor.csproj" />
-      <ProjectReference Include="..\Shintio.Essentials\Shintio.Essentials.csproj" />
+      <ProjectReference Include="..\Shintio.Bots.Core\Shintio.Bots.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Telegram.Bot" Version="19.0.0"/>
     </ItemGroup>
 
 </Project>
