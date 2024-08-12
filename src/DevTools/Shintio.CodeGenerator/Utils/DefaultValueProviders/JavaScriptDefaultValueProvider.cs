@@ -23,15 +23,17 @@ public class JavaScriptDefaultValueProvider : BaseDefaultValueProvider
             return "0";
         }
 
-        if (type.GetInterface(nameof(IEnumerable)) != null)
+        if (
+            type != typeof(string) && type.Name != "JObject" && type.GetInterface(nameof(IDictionary)) == null &&
+            type.GetInterface(nameof(IEnumerable)) != null)
         {
             return "[]";
         }
-        
+
         // if (type.IsSubclassOf(typeof(DataCollection)))
         if (type.BaseType?.Name == "DataCollection")
         {
-            return "";
+            return "\"\"";
         }
 
         const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;

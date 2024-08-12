@@ -11,7 +11,7 @@ public class DefaultValueHelper
         [CodeLanguage.CSharp] = new CSharpDefaultValueProvider(),
         [CodeLanguage.JavaScript] = new JavaScriptDefaultValueProvider(),
     };
-    
+
     public static string Get(PropertyInfo propertyInfo, CodeLanguage language)
     {
         if (!LangToProvider.TryGetValue(language, out var provider))

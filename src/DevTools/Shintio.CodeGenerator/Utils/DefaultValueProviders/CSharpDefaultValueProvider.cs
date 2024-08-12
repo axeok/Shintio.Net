@@ -26,14 +26,8 @@ public class CSharpDefaultValueProvider : BaseDefaultValueProvider
         var defaultValue = Essentials.Utils.ReflectionHelper.GetPropertyValue(property);
         if (defaultValue != null)
         {
-            var serializeOptions = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            };
-            
             return GeneratorHelper.FormatPropertyValue(property,
-                JsonSerializer.Serialize(defaultValue, serializeOptions));
+                JsonSerializer.Serialize(defaultValue).Replace("\"", "\\\""));
         }
 
         return base.Get(property);
