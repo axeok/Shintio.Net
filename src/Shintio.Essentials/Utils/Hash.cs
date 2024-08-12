@@ -1,10 +1,10 @@
 ﻿using System.Text;
 
-namespace Shintio.Essentials.Utils;
-
-public static class Hash
+namespace Shintio.Essentials.Utils
 {
-    public static uint Joaat(string data)
+    public static class Hash
+    {
+        public static uint Joaat(string data)
     {
         if (string.IsNullOrWhiteSpace(data))
             return 0;
@@ -21,5 +21,6 @@ public static class Hash
         uint num4 = num1 + (num1 << 3);
         uint num5 = num4 ^ num4 >> 11;
         return num5 + (num5 << 15);
+    }
     }
 }

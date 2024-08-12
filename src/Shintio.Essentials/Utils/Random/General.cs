@@ -1,5 +1,6 @@
-﻿namespace Shintio.Essentials.Utils.Random;
-
-public partial class Random
+﻿namespace Shintio.Essentials.Utils.Random
 {
+    public partial class Random
+    {
+    }
 }

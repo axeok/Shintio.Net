@@ -1,26 +1,28 @@
-﻿using Shintio.Essentials.Interfaces;
+﻿using System;
+using System.Threading.Tasks;
+using Shintio.Essentials.Interfaces;
 
-namespace Shintio.Essentials.Utils;
-
-public class ConsoleOutput : IOutput
+namespace Shintio.Essentials.Utils
 {
-    private OutputProgress? _currentProgress;
+    public class ConsoleOutput : IOutput
+    {
+        private OutputProgress? _currentProgress;
 
-    public Task Write(string message)
+        public Task Write(string message)
     {
         Console.Write(message);
 
         return Task.CompletedTask;
     }
 
-    public Task WriteLine(string message)
+        public Task WriteLine(string message)
     {
         Console.WriteLine(message);
 
         return Task.CompletedTask;
     }
 
-    public Task<OutputProgress> CreateProgress(string title, double max)
+        public Task<OutputProgress> CreateProgress(string title, double max)
     {
         _currentProgress?.Stop();
 
@@ -32,12 +34,12 @@ public class ConsoleOutput : IOutput
         return Task.FromResult(_currentProgress);
     }
 
-    private void CurrentProgressOnValueUpdated(OutputProgress progress)
+        private void CurrentProgressOnValueUpdated(OutputProgress progress)
     {
         Console.WriteLine("{0}: {1}/{2}", progress.Title, progress.Value, progress.Max);
     }
 
-    private void CurrentProgressOnStopped(OutputProgress progress)
+        private void CurrentProgressOnStopped(OutputProgress progress)
     {
         progress.ValueUpdated -= CurrentProgressOnValueUpdated;
         progress.Stopped -= CurrentProgressOnStopped;
@@ -46,5 +48,6 @@ public class ConsoleOutput : IOutput
         {
             _currentProgress = null;
         }
+    }
     }
 }

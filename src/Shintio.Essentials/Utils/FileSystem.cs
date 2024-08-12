@@ -1,8 +1,10 @@
-﻿namespace Shintio.Essentials.Utils;
+﻿using System.IO;
 
-public static class FileSystem
+namespace Shintio.Essentials.Utils
 {
-    public static bool ValidateOrCreateDirectory(string path)
+    public static class FileSystem
+    {
+        public static bool ValidateOrCreateDirectory(string path)
     {
         if (Directory.Exists(path))
         {
@@ -12,5 +14,6 @@ public static class FileSystem
         Directory.CreateDirectory(path);
 
         return false;
+    }
     }
 }

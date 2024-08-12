@@ -1,25 +1,28 @@
-﻿namespace Shintio.Essentials.Extensions;
+﻿using System;
 
-public static class DateTimeExtensions
+namespace Shintio.Essentials.Extensions
 {
-    // https://stackoverflow.com/a/18796422
-
-    public static DateTime Floor(this DateTime dateTime, TimeSpan interval)
+    public static class DateTimeExtensions
     {
-        return dateTime.AddTicks(-(dateTime.Ticks % interval.Ticks));
-    }
+        // https://stackoverflow.com/a/18796422
 
-    public static DateTime Ceiling(this DateTime dateTime, TimeSpan interval)
-    {
-        var overflow = dateTime.Ticks % interval.Ticks;
+        public static DateTime Floor(this DateTime dateTime, TimeSpan interval)
+        {
+            return dateTime.AddTicks(-(dateTime.Ticks % interval.Ticks));
+        }
 
-        return overflow == 0 ? dateTime : dateTime.AddTicks(interval.Ticks - overflow);
-    }
+        public static DateTime Ceiling(this DateTime dateTime, TimeSpan interval)
+        {
+            var overflow = dateTime.Ticks % interval.Ticks;
 
-    public static DateTime Round(this DateTime dateTime, TimeSpan interval)
-    {
-        var halfIntervalTicks = (interval.Ticks + 1) >> 1;
+            return overflow == 0 ? dateTime : dateTime.AddTicks(interval.Ticks - overflow);
+        }
 
-        return dateTime.AddTicks(halfIntervalTicks - ((dateTime.Ticks + halfIntervalTicks) % interval.Ticks));
+        public static DateTime Round(this DateTime dateTime, TimeSpan interval)
+        {
+            var halfIntervalTicks = (interval.Ticks + 1) >> 1;
+
+            return dateTime.AddTicks(halfIntervalTicks - ((dateTime.Ticks + halfIntervalTicks) % interval.Ticks));
+        }
     }
 }

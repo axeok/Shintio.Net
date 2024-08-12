@@ -1,55 +1,60 @@
-﻿namespace Shintio.Essentials.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
-public abstract class ValueObject : ICloneable
+namespace Shintio.Essentials.Common
 {
-    protected abstract IEnumerable<object?> GetEqualityComponents();
-
-    protected virtual bool CompareEquality(ValueObject other)
+    public abstract class ValueObject : ICloneable
     {
-        return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
-    }
+        protected abstract IEnumerable<object?> GetEqualityComponents();
 
-    public override bool Equals(object? obj)
-    {
-        if (obj == null || obj.GetType() != GetType())
+        protected virtual bool CompareEquality(ValueObject other)
         {
-            return false;
+            return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }
 
-        var other = (ValueObject)obj;
-
-        return CompareEquality(other);
-    }
-
-    public override int GetHashCode()
-    {
-        return GetEqualityComponents()
-            .Select(x => x != null ? x.GetHashCode() : 0)
-            .Aggregate((x, y) => x ^ y);
-    }
-
-    public static bool operator ==(ValueObject? left, ValueObject? right)
-    {
-        if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
+        public override bool Equals(object? obj)
         {
-            return false;
+            if (obj == null || obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            var other = (ValueObject)obj;
+
+            return CompareEquality(other);
         }
 
-        return ReferenceEquals(left, null) || left.Equals(right);
-    }
+        public override int GetHashCode()
+        {
+            return GetEqualityComponents()
+                .Select(x => x != null ? x.GetHashCode() : 0)
+                .Aggregate((x, y) => x ^ y);
+        }
 
-    public static bool operator !=(ValueObject? left, ValueObject? right)
-    {
-        return !(left == right);
-    }
+        public static bool operator ==(ValueObject? left, ValueObject? right)
+        {
+            if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
+            {
+                return false;
+            }
 
-    public object Clone()
-    {
-        return MemberwiseClone();
-    }
+            return ReferenceEquals(left, null) || left.Equals(right);
+        }
 
-    public override string ToString()
-    {
-        return GetType().Name;
+        public static bool operator !=(ValueObject? left, ValueObject? right)
+        {
+            return !(left == right);
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
+
+        public override string ToString()
+        {
+            return GetType().Name;
+        }
     }
 }

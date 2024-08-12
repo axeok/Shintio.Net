@@ -1,15 +1,18 @@
-namespace Shintio.Essentials.Utils.Random;
+using System;
 
-public partial class Random
+namespace Shintio.Essentials.Utils.Random
 {
-    private static Random? _instance;
-
-    private readonly System.Random _random;
-
-    public Random(int? seed = null)
+    public partial class Random
     {
-        _random = new System.Random(seed ?? (int)((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds());
-    }
+        private static Random? _instance;
 
-    private static Random Instance => _instance ??= new Random();
+        private readonly System.Random _random;
+
+        public Random(int? seed = null)
+        {
+            _random = new System.Random(seed ?? (int)((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds());
+        }
+
+        private static Random Instance => _instance ??= new Random();
+    }
 }
