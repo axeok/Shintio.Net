@@ -9,4 +9,9 @@ public static class EnumerableExtensions
             action(item);
         }
     }
+    
+    public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> enumerable)
+    {
+        return enumerable.SelectMany(i => i);
+    }
 }
