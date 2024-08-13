@@ -71,7 +71,7 @@ namespace Shintio.Essentials.Validation
 			{
 				return _isSuccess.Value;
 			}
-			
+
 			foreach (var validation in Validations)
 			{
 				Checks++;
@@ -137,10 +137,11 @@ namespace Shintio.Essentials.Validation
 			Validations.Add(validation);
 			return this;
 		}
-		
+
 		public Validator<T> Then(Func<T, bool> validation, LazyString message)
 		{
-			Validations.Add(new Func<T, ValidationResult>(data => new ValidationResult(validation.Invoke(data), message)));
+			Validations.Add(
+				new Func<T, ValidationResult>(data => new ValidationResult(validation.Invoke(data), message)));
 			return this;
 		}
 

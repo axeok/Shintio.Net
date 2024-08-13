@@ -5,7 +5,7 @@ namespace Shintio.CodeGenerator.Utils.DefaultValueProviders;
 
 public abstract class BaseDefaultValueProvider
 {
-    public virtual string Get(PropertyInfo property) => Get(property.PropertyType, property.IsNullable());
+	public virtual string Get(PropertyInfo property) => Get(property.PropertyType, property.IsNullable());
 
-    public abstract string Get(Type type, bool isNullable);
+	public abstract string Get(Type type, bool isNullable);
 }

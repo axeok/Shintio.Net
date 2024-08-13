@@ -1,4 +1,3 @@
-
 using System;
 
 
@@ -55,7 +54,7 @@ namespace ComponentAce.Compression.Libs.zlib
 		/// <returns>The resulting number from the shift operation</returns>
 		public static int URShift(int number, int bits)
 		{
-			if ( number >= 0)
+			if (number >= 0)
 				return number >> bits;
 			else
 				return (number >> bits) + (2 << ~bits);
@@ -80,7 +79,7 @@ namespace ComponentAce.Compression.Libs.zlib
 		/// <returns>The resulting number from the shift operation</returns>
 		public static long URShift(long number, int bits)
 		{
-			if ( number >= 0)
+			if (number >= 0)
 				return number >> bits;
 			else
 				return (number >> bits) + (2L << ~bits);
@@ -112,11 +111,9 @@ namespace ComponentAce.Compression.Libs.zlib
 		/// </summary>
 		/// <param name="byteArray">The array of bytes to convert</param>
 		/// <returns>The new array of chars</returns>
-		public static char[] ToCharArray(byte[] byteArray) 
+		public static char[] ToCharArray(byte[] byteArray)
 		{
 			return System.Text.UTF8Encoding.UTF8.GetChars(byteArray);
 		}
-
-
 	}
 }

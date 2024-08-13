@@ -1,7 +1,7 @@
 ﻿namespace Shintio.Json.Interfaces
 {
-    public interface IJsonReader
-    {
-        public string? Read();
-    }
+	public interface IJsonReader
+	{
+		public string? Read();
+	}
 }

@@ -4,10 +4,10 @@ namespace Shintio.Bots.Telegram.Common;
 
 public class TelegramUser : IUser
 {
-    public TelegramUser(long id)
-    {
-        Id = id;
-    }
+	public TelegramUser(long id)
+	{
+		Id = id;
+	}
 
-    public long Id { get; }
+	public long Id { get; }
 }

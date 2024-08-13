@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Json\Shintio.Json\Shintio.Json.csproj" />
+        <ProjectReference Include="..\Json\Shintio.Json\Shintio.Json.csproj"/>
     </ItemGroup>
 
 </Project>

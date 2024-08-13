@@ -1,6 +1,6 @@
 ﻿namespace Shintio.Essentials.Utils.Random
 {
-    public partial class Random
-    {
-    }
+	public partial class Random
+	{
+	}
 }

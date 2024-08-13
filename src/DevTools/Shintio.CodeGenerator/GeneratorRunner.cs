@@ -9,73 +9,73 @@ namespace Shintio.CodeGenerator;
 
 public class GeneratorRunner
 {
-    public static event Action? Clear;
+	public static event Action? Clear;
 
-    public static async Task Run(params IEnumerable<IGenerator>[] generatorsChunks)
-    {
-        Clear?.Invoke();
+	public static async Task Run(params IEnumerable<IGenerator>[] generatorsChunks)
+	{
+		Clear?.Invoke();
 
-        var files = new ConcurrentBag<FileResult>();
+		var files = new ConcurrentBag<FileResult>();
 
-        foreach (var generators in generatorsChunks)
-        {
-            await Parallel.ForEachAsync(generators, async (generator, _) => await generator.Load());
-        }
+		foreach (var generators in generatorsChunks)
+		{
+			await Parallel.ForEachAsync(generators, async (generator, _) => await generator.Load());
+		}
 
-        foreach (var generators in generatorsChunks)
-        {
-            await Parallel.ForEachAsync(generators, async (generator, _) =>
-            {
-                var result = await generator.Run();
-                foreach (var file in result)
-                {
-                    files.Add(file);
-                }
-            });
-        }
+		foreach (var generators in generatorsChunks)
+		{
+			await Parallel.ForEachAsync(generators, async (generator, _) =>
+			{
+				var result = await generator.Run();
+				foreach (var file in result)
+				{
+					files.Add(file);
+				}
+			});
+		}
 
-        SaveFiles(files);
-    }
+		SaveFiles(files);
+	}
 
-    private static void SaveFiles(IEnumerable<FileResult> files)
-    {
-        var stopwatch = Stopwatch.StartNew();
-        var savedFiles = 0;
+	private static void SaveFiles(IEnumerable<FileResult> files)
+	{
+		var stopwatch = Stopwatch.StartNew();
+		var savedFiles = 0;
 
-        foreach (var projectFiles in files.GroupBy(f => f.Project))
-        {
-            var project = projectFiles.Key;
+		foreach (var projectFiles in files.GroupBy(f => f.Project))
+		{
+			var project = projectFiles.Key;
 
-            var filesToSave = project.CombineCode && false
-                ? [CombineCode(project, projectFiles)]
-                : projectFiles.ToArray();
+			var filesToSave = project.CombineCode && false
+				? [CombineCode(project, projectFiles)]
+				: projectFiles.ToArray();
 
-            foreach (var file in filesToSave)
-            {
-                var path = Path.Combine(project.Path, "GeneratedCode", file.Name);
-                Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+			foreach (var file in filesToSave)
+			{
+				var path = Path.Combine(project.Path, "GeneratedCode", file.Name);
+				Directory.CreateDirectory(Path.GetDirectoryName(path)!);
 
-                if (File.Exists(path) && File.ReadAllText(path) == file.Content)
-                {
-                    continue;
-                }
+				if (File.Exists(path) && File.ReadAllText(path) == file.Content)
+				{
+					continue;
+				}
 
-                File.WriteAllText(path, file.Content);
-                savedFiles++;
-            }
-        }
+				File.WriteAllText(path, file.Content);
+				savedFiles++;
+			}
+		}
 
-        stopwatch.Stop();
-        Console.WriteLine($"Saved {savedFiles} files in {stopwatch.Elapsed}");
-    }
+		stopwatch.Stop();
+		Console.WriteLine($"Saved {savedFiles} files in {stopwatch.Elapsed}");
+	}
 
-    private static FileResult CombineCode(ProjectInfo project, IEnumerable<FileResult> files)
-    {
-        return new FileResult(
-            "Combined.",
-            project,
-            CodeLanguage.CSharp,
-            SharpCombiner.CombineCode(files.Select(f => f.Content))
-        );
-    }
+	private static FileResult CombineCode(ProjectInfo project, IEnumerable<FileResult> files)
+	{
+		return new FileResult(
+			"Combined.",
+			project,
+			CodeLanguage.CSharp,
+			SharpCombiner.CombineCode(files.Select(f => f.Content))
+		);
+	}
 }

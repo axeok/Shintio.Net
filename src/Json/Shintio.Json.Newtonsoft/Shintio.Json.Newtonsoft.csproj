@@ -9,8 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\libs\Newtonsoft.Json\Newtonsoft.Json.csproj" />
-      <ProjectReference Include="..\Shintio.Json\Shintio.Json.csproj" />
+        <ProjectReference Include="..\..\..\libs\Newtonsoft.Json\Newtonsoft.Json.csproj"/>
+        <ProjectReference Include="..\Shintio.Json\Shintio.Json.csproj"/>
     </ItemGroup>
 
 </Project>

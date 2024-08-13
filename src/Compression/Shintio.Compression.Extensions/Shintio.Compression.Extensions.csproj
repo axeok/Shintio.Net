@@ -11,11 +11,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Shintio.Compression.LZ4\Shintio.Compression.LZ4.csproj" />
-      <ProjectReference Include="..\Shintio.Compression.Snappy\Shintio.Compression.Snappy.csproj" />
-      <ProjectReference Include="..\Shintio.Compression.System\Shintio.Compression.System.csproj" />
-      <ProjectReference Include="..\Shintio.Compression.Zstd\Shintio.Compression.Zstd.csproj" />
-      <ProjectReference Include="..\Shintio.Compression\Shintio.Compression.csproj" />
+        <ProjectReference Include="..\Shintio.Compression.LZ4\Shintio.Compression.LZ4.csproj"/>
+        <ProjectReference Include="..\Shintio.Compression.Snappy\Shintio.Compression.Snappy.csproj"/>
+        <ProjectReference Include="..\Shintio.Compression.System\Shintio.Compression.System.csproj"/>
+        <ProjectReference Include="..\Shintio.Compression.Zstd\Shintio.Compression.Zstd.csproj"/>
+        <ProjectReference Include="..\Shintio.Compression\Shintio.Compression.csproj"/>
     </ItemGroup>
 
 </Project>

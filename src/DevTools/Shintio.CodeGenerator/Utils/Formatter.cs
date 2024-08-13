@@ -8,7 +8,7 @@ namespace Shintio.CodeGenerator.Utils
 		{
 			return $"{value.ToString(CultureInfo.InvariantCulture)}f";
 		}
-		
+
 		public static string AsDouble(float value)
 		{
 			return $"{value.ToString(CultureInfo.InvariantCulture)}";
@@ -18,7 +18,7 @@ namespace Shintio.CodeGenerator.Utils
 		{
 			return $"{value.Replace(",", ".")}f";
 		}
-		
+
 		public static string AsTimeSpan(TimeSpan value)
 		{
 			var args = new List<string>
@@ -32,12 +32,12 @@ namespace Shintio.CodeGenerator.Utils
 
 			return AsNewObject<TimeSpan>(args.ToArray());
 		}
-		
+
 		public static string AsNewObject<T>(params string[] args)
 		{
 			return $"new {typeof(T).Name}({AsArgs(args)})";
 		}
-		
+
 		public static string AsArgs(params string[] args)
 		{
 			return string.Join(", ", args.Where(a => a.Length != 0));

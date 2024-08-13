@@ -12,7 +12,8 @@ namespace Shintio.Essentials.Common
 {
 	public abstract class DataCollection : ValueObject, IDataCollection
 	{
-		private static readonly Dictionary<Type, Dictionary<Type, int>> Ids = new Dictionary<Type, Dictionary<Type, int>>();
+		private static readonly Dictionary<Type, Dictionary<Type, int>> Ids =
+			new Dictionary<Type, Dictionary<Type, int>>();
 
 		private static readonly Dictionary<Type, Dictionary<string, DataCollection>> AllValues =
 			new Dictionary<Type, Dictionary<string, DataCollection>>();
@@ -27,7 +28,7 @@ namespace Shintio.Essentials.Common
 		protected DataCollection()
 		{
 			_mainType = GetMainType();
-			
+
 			var skipFrames = 1;
 			MethodBase frameMethod;
 			do
@@ -35,7 +36,7 @@ namespace Shintio.Essentials.Common
 				frameMethod = new StackFrame(skipFrames).GetMethod();
 				skipFrames++;
 			} while (frameMethod.IsConstructor);
-			
+
 			_nestedType = frameMethod.DeclaringType!;
 
 			Ids.TryAdd(_mainType, new Dictionary<Type, int>());
@@ -86,10 +87,11 @@ namespace Shintio.Essentials.Common
 		{
 			if (!AllValues.ContainsKey(type))
 			{
-				AllValues[type] = GetFields(type).Values.Flatten().Select(f => f.GetValue(null)).Cast<DataCollection>().ToDictionary(
-					v => v.Key,
-					v => v
-				);
+				AllValues[type] = GetFields(type).Values.Flatten().Select(f => f.GetValue(null)).Cast<DataCollection>()
+					.ToDictionary(
+						v => v.Key,
+						v => v
+					);
 			}
 
 			return AllValues[type];
@@ -123,8 +125,9 @@ namespace Shintio.Essentials.Common
 
 		#endregion
 
-		protected virtual string GetKeyByField() => $"{GetPrefix(_nestedType)}{GetFields(_mainType)[_nestedType].ElementAt(_id).Name}";
-		
+		protected virtual string GetKeyByField() =>
+			$"{GetPrefix(_nestedType)}{GetFields(_mainType)[_nestedType].ElementAt(_id).Name}";
+
 		private string GetPrefix(Type nestedType)
 		{
 			var prefix = "";
@@ -135,7 +138,7 @@ namespace Shintio.Essentials.Common
 				prefix = $"{type.Name}_" + prefix;
 				type = type.DeclaringType;
 			}
-			
+
 			return prefix;
 		}
 
@@ -147,7 +150,7 @@ namespace Shintio.Essentials.Common
 				{
 					return new Dictionary<Type, ReadOnlyCollection<FieldInfo>>();
 				}
-				
+
 				var result = new Dictionary<Type, ReadOnlyCollection<FieldInfo>>();
 				var types = GetAllTypes(mainType);
 				foreach (var type in types)
@@ -156,13 +159,13 @@ namespace Shintio.Essentials.Common
 						.Where(f => f.FieldType == mainType)
 						.ToList().AsReadOnly();
 				}
-				
+
 				AllFields[mainType] = result;
 			}
 
 			return AllFields[mainType];
 		}
-		
+
 		private static List<Type> GetAllTypes(Type type)
 		{
 			return type.GetNestedTypes().SelectMany(GetAllTypes).Prepend(type).ToList();
@@ -174,7 +177,7 @@ namespace Shintio.Essentials.Common
 				? type.BaseType
 				: type;
 		}
-		
+
 		public Type GetMainType()
 		{
 			return GetMainType(GetType());

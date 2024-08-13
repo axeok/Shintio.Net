@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Shintio.Compression\Shintio.Compression.csproj" />
+        <ProjectReference Include="..\Shintio.Compression\Shintio.Compression.csproj"/>
     </ItemGroup>
 
 </Project>

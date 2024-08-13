@@ -54,7 +54,9 @@ namespace Shintio.Essentials.Validation
 #endif
 
 		public static implicit operator bool(ValidationResult<T> result) => result.IsSuccess;
-		public static implicit operator ValidationResult(ValidationResult<T> result) => new ValidationResult(result.IsSuccess, result.Message);
+
+		public static implicit operator ValidationResult(ValidationResult<T> result) =>
+			new ValidationResult(result.IsSuccess, result.Message);
 
 #if DEBUG
 		public static ValidationResult<T> NotNull(T? data, LazyString message)
