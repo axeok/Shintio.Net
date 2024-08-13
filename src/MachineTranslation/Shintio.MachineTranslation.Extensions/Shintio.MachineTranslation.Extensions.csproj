@@ -7,13 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Shintio.Compression\Shintio.Compression.csproj"/>
+        <ProjectReference Include="..\Shintio.MachineTranslation.GoogleApi\Shintio.MachineTranslation.GoogleApi.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="ZstdSharp.Port" Version="0.8.1">
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0"/>
     </ItemGroup>
 
 </Project>

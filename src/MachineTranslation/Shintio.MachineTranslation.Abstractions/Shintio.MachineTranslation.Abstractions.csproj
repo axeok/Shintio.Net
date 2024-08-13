@@ -8,11 +8,4 @@
         <LangVersion Condition="'$(TargetFramework)' == 'netcoreapp2.2.8'">8</LangVersion>
     </PropertyGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\..\..\libs\Newtonsoft.Json\Newtonsoft.Json.csproj">
-            <PrivateAssets>all</PrivateAssets>
-        </ProjectReference>
-        <ProjectReference Include="..\Shintio.Json\Shintio.Json.csproj"/>
-    </ItemGroup>
-
 </Project>

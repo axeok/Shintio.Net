@@ -52,6 +52,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shintio.Compression.Zstd", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shintio.Compression.LZ4", "src\Compression\Shintio.Compression.LZ4\Shintio.Compression.LZ4.csproj", "{2A127525-444D-47DC-9AF3-8083690374C5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MachineTranslation", "MachineTranslation", "{5901D39D-B189-447F-9348-86A09DEC2ADA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shintio.MachineTranslation.Abstractions", "src\MachineTranslation\Shintio.MachineTranslation.Abstractions\Shintio.MachineTranslation.Abstractions.csproj", "{AED021EF-1EE2-4850-8B1C-C773A3705DD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shintio.MachineTranslation.GoogleApi", "src\MachineTranslation\Shintio.MachineTranslation.GoogleApi\Shintio.MachineTranslation.GoogleApi.csproj", "{A6053E6B-1213-4038-B64E-B395169EF6CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTranslatorAPI", "libs\GTranslatorAPI\GTranslatorAPI.csproj", "{885F0D0A-22D0-4865-9FB6-D81C213D3335}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shintio.MachineTranslation.Extensions", "src\MachineTranslation\Shintio.MachineTranslation.Extensions\Shintio.MachineTranslation.Extensions.csproj", "{DA6AC97C-CED5-4D5B-A334-CB782688C145}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -130,6 +140,22 @@ Global
 		{2A127525-444D-47DC-9AF3-8083690374C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A127525-444D-47DC-9AF3-8083690374C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A127525-444D-47DC-9AF3-8083690374C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AED021EF-1EE2-4850-8B1C-C773A3705DD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AED021EF-1EE2-4850-8B1C-C773A3705DD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AED021EF-1EE2-4850-8B1C-C773A3705DD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AED021EF-1EE2-4850-8B1C-C773A3705DD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6053E6B-1213-4038-B64E-B395169EF6CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6053E6B-1213-4038-B64E-B395169EF6CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6053E6B-1213-4038-B64E-B395169EF6CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6053E6B-1213-4038-B64E-B395169EF6CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{885F0D0A-22D0-4865-9FB6-D81C213D3335}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{885F0D0A-22D0-4865-9FB6-D81C213D3335}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{885F0D0A-22D0-4865-9FB6-D81C213D3335}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{885F0D0A-22D0-4865-9FB6-D81C213D3335}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA6AC97C-CED5-4D5B-A334-CB782688C145}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA6AC97C-CED5-4D5B-A334-CB782688C145}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA6AC97C-CED5-4D5B-A334-CB782688C145}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA6AC97C-CED5-4D5B-A334-CB782688C145}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EEF6B366-84B6-4A15-8697-B3F2D2F33C31} = {8BC18793-45C6-4A3E-A364-4B1D3C1418DD}
@@ -155,5 +181,10 @@ Global
 		{99F4A2DA-DD47-4B40-8B95-06F56129A68F} = {333724E4-17CB-41C4-B4C3-51B9FD73F4E6}
 		{4440474D-2362-466A-A676-EA2DDD8CF36A} = {333724E4-17CB-41C4-B4C3-51B9FD73F4E6}
 		{2A127525-444D-47DC-9AF3-8083690374C5} = {333724E4-17CB-41C4-B4C3-51B9FD73F4E6}
+		{5901D39D-B189-447F-9348-86A09DEC2ADA} = {8BC18793-45C6-4A3E-A364-4B1D3C1418DD}
+		{AED021EF-1EE2-4850-8B1C-C773A3705DD1} = {5901D39D-B189-447F-9348-86A09DEC2ADA}
+		{A6053E6B-1213-4038-B64E-B395169EF6CA} = {5901D39D-B189-447F-9348-86A09DEC2ADA}
+		{885F0D0A-22D0-4865-9FB6-D81C213D3335} = {CD3A5D46-B01A-4F35-88FD-CAEB2BE953D4}
+		{DA6AC97C-CED5-4D5B-A334-CB782688C145} = {5901D39D-B189-447F-9348-86A09DEC2ADA}
 	EndGlobalSection
 EndGlobal

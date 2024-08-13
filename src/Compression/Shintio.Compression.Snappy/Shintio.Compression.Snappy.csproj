@@ -11,7 +11,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Snappier" Version="1.1.6"/>
+        <PackageReference Include="Snappier" Version="1.1.6">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
     </ItemGroup>
 
 </Project>
