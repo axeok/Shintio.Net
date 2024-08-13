@@ -8,8 +8,4 @@
         <LangVersion Condition="'$(TargetFramework)' == 'netcoreapp2.2.8'">8</LangVersion>
     </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\Shintio.Essentials\Shintio.Essentials.csproj" />
-    </ItemGroup>
-
 </Project>
