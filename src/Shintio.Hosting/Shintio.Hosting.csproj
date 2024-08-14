@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Shintio.Essentials\Shintio.Essentials.csproj" />
+        <ProjectReference Include="..\Bots\Shintio.Bots.Telegram\Shintio.Bots.Telegram.csproj" />
+        <ProjectReference Include="..\Compression\Shintio.Compression.Extensions\Shintio.Compression.Extensions.csproj" />
+        <ProjectReference Include="..\Json\Shintio.Json.System\Shintio.Json.System.csproj" />
+        <ProjectReference Include="..\MachineTranslation\Shintio.MachineTranslation.Extensions\Shintio.MachineTranslation.Extensions.csproj" />
+        <ProjectReference Include="..\Vision\Shintio.Vision.Tesseract\Shintio.Vision.Tesseract.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0"/>
+    </ItemGroup>
+
+</Project>

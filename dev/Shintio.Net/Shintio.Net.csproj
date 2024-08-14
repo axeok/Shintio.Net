@@ -5,10 +5,12 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Bots\Shintio.Bots.Telegram\Shintio.Bots.Telegram.csproj" />
+      <ProjectReference Include="..\..\src\Shintio.Hosting\Shintio.Hosting.csproj" />
+      <ProjectReference Include="..\..\src\Vision\Shintio.Vision.Tesseract\Shintio.Vision.Tesseract.csproj" />
     </ItemGroup>
 
     <ItemGroup>
