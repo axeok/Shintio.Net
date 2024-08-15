@@ -22,9 +22,12 @@ namespace Shintio.Json.Newtonsoft.Common
 				new JsonTypesProcessor<JsonConverter>(typeof(NewtonsoftJsonConverter<>), AddConverter);
 		}
 
-		public string Serialize(object value, JsonFormatting formatting = JsonFormatting.None)
+		public string Serialize(object? value, JsonFormatting formatting = JsonFormatting.None)
 		{
-			_typesProcessor.TryProcessType(value.GetType());
+			if (value != null)
+			{
+				_typesProcessor.TryProcessType(value.GetType());
+			}
 
 			return JsonConvert.SerializeObject(value, GetFormatting(formatting), _serializerSettings);
 		}

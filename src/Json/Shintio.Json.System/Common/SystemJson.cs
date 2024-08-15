@@ -35,9 +35,12 @@ namespace Shintio.Json.System.Common
 				new JsonTypesProcessor<JsonConverter>(typeof(SystemJsonConverter<>), AddConverter);
 		}
 
-		public string Serialize(object value, JsonFormatting formatting = JsonFormatting.None)
+		public string Serialize(object? value, JsonFormatting formatting = JsonFormatting.None)
 		{
-			_typesProcessor.TryProcessType(value.GetType());
+			if (value != null)
+			{
+				_typesProcessor.TryProcessType(value.GetType());
+			}
 
 			return JsonSerializer.Serialize(value,
 				formatting == JsonFormatting.Indented ? _indentedFormattingOptions : _noneFormattingOptions);

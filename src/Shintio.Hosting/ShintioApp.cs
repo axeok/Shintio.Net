@@ -1,18 +1,21 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Shintio.Database.Extensions;
 
 namespace Shintio.Hosting;
 
 public abstract class ShintioApp
 {
-	protected readonly IHost Host;
+	public readonly IHost Host;
 
 	private readonly ILogger<ShintioApp> _logger;
 
 	public ShintioApp(Action<HostBuilderContext, IServiceCollection> configureServices)
 	{
 		Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
+			.ConfigureServices(services => services.AddShintioNet())
 			.ConfigureServices(ConfigureServices)
 			.ConfigureServices(configureServices)
 			.Build();
@@ -27,6 +30,13 @@ public abstract class ShintioApp
 		_logger.LogInformation("Preparing...");
 
 		await PrepareInternalAsync();
+	}
+
+	public async Task MigrateAsync<TDbContext>() where TDbContext : DbContext
+	{
+		_logger.LogInformation("Applying migrations...");
+
+		await Host.ApplyMigrationsAsync<TDbContext>();
 	}
 
 	public async Task RunAsync()

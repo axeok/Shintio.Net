@@ -26,7 +26,13 @@ public class JsonTypeInfoResolver : DefaultJsonTypeInfoResolver
 	private const string LargeObjectWithParameterizedConstructorConverterWithReflectionType =
 		"System.Text.Json.Serialization.Converters.LargeObjectWithParameterizedConstructorConverterWithReflection`1";
 
+	private const string LazyLoaderType =
+		"Microsoft.EntityFrameworkCore.Infrastructure.ILazyLoader";
+
 	private static readonly Type ObjectType = typeof(object);
+
+	private static readonly Type SystemJsonIgnoreAttribute =
+		typeof(global::System.Text.Json.Serialization.JsonIgnoreAttribute);
 
 	private static readonly Assembly Assembly =
 		Assembly.GetAssembly(typeof(global::System.Text.Json.Serialization.JsonConstructorAttribute))!;
@@ -49,8 +55,12 @@ public class JsonTypeInfoResolver : DefaultJsonTypeInfoResolver
 			}
 		}
 
-		foreach (var propertyInfo in type.GetProperties()
-			         .Where(p => p.GetCustomAttribute<JsonIgnoreAttribute>() != null).ToArray())
+		foreach (var propertyInfo in type.GetProperties(ReflectionHelper.PrivateFlags)
+			         .Where(p =>
+				         p.GetCustomAttribute<JsonIgnoreAttribute>() != null ||
+				         p.GetCustomAttribute(SystemJsonIgnoreAttribute) != null ||
+				         p.PropertyType.FullName == LazyLoaderType
+			         ).ToArray())
 		{
 			var property = typeInfo.Properties.FirstOrDefault(p => p.Name == propertyInfo.Name);
 			if (property == null)

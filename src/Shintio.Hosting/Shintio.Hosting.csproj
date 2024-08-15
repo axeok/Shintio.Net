@@ -7,6 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Database\Shintio.Database.MySql\Shintio.Database.MySql.csproj" />
+        <ProjectReference Include="..\Database\Shintio.Database\Shintio.Database.csproj" />
         <ProjectReference Include="..\Shintio.Essentials\Shintio.Essentials.csproj" />
         <ProjectReference Include="..\Bots\Shintio.Bots.Telegram\Shintio.Bots.Telegram.csproj" />
         <ProjectReference Include="..\Compression\Shintio.Compression.Extensions\Shintio.Compression.Extensions.csproj" />
