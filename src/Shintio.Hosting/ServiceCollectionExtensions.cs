@@ -3,6 +3,7 @@ using Shintio.Compression.Extensions;
 using Shintio.Json.Interfaces;
 using Shintio.Json.System.Common;
 using Shintio.MachineTranslation.Extensions;
+using Shintio.Web.Extensions;
 
 namespace Shintio.Hosting;
 
@@ -13,6 +14,7 @@ public static class ServiceCollectionExtensions
 		return services
 			.AddSingleton<IJson, SystemJson>()
 			.AddCompression()
-			.AddTranslation();
+			.AddTranslation()
+			.AddWebUtils();
 	}
 }
