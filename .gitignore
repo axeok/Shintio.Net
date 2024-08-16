@@ -134,3 +134,5 @@ _NCrunch*
 
 .idea/.idea.Shintio.Net/.idea/*
 !.idea/.idea.Shintio.Net/.idea/icon.svg
+
+/NugetPackages
