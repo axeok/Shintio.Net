@@ -1,8 +1,13 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Shintio.Json.Common;
 using Shintio.Json.Enums;
 using Shintio.Json.Interfaces;
+using Shintio.Json.Nodes;
+using Shintio.Json.System.Converters;
+using Shintio.Json.System.Nodes;
 
 namespace Shintio.Json.System.Common
 {
@@ -31,6 +36,12 @@ namespace Shintio.Json.System.Common
 #endif
 			};
 
+			foreach (var converter in GetConverters())
+			{
+				_noneFormattingOptions.Converters.Add(converter);
+				_indentedFormattingOptions.Converters.Add(converter);
+			}
+
 			_typesProcessor =
 				new JsonTypesProcessor<JsonConverter>(typeof(SystemJsonConverter<>), AddConverter);
 		}
@@ -57,6 +68,28 @@ namespace Shintio.Json.System.Common
 			return JsonSerializer.Deserialize<T>(json, _noneFormattingOptions);
 		}
 
+		public IJsonArray CreateArray()
+		{
+			return new SystemJsonArray(new JsonArray());
+		}
+
+		public IJsonObject CreateObject()
+		{
+			return new SystemJsonObject(new JsonObject());
+		}
+
+		public IJsonArray CreateArray(object value)
+		{
+			// TODO: axe json
+			return Deserialize<IJsonArray>(Serialize(value));
+		}
+
+		public IJsonObject CreateObject(object value)
+		{
+			// TODO: axe json
+			return Deserialize<IJsonObject>(Serialize(value));
+		}
+
 		private void AddConverter(JsonConverter converter)
 		{
 			lock (_lock)
@@ -64,6 +97,17 @@ namespace Shintio.Json.System.Common
 				_noneFormattingOptions.Converters.Add(converter);
 				_indentedFormattingOptions.Converters.Add(converter);
 			}
+		}
+
+		private IEnumerable<JsonConverter> GetConverters()
+		{
+			yield return new JsonArrayInterfaceConverter();
+			yield return new JsonObjectInterfaceConverter();
+			yield return new JsonValueInterfaceConverter();
+
+			yield return new JsonArrayConverter();
+			yield return new JsonObjectConverter();
+			yield return new JsonValueConverter();
 		}
 	}
 }

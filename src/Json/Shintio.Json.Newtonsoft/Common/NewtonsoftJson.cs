@@ -1,7 +1,11 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Shintio.Json.Common;
 using Shintio.Json.Enums;
 using Shintio.Json.Interfaces;
+using Shintio.Json.Newtonsoft.Converters;
+using Shintio.Json.Newtonsoft.Nodes;
+using Shintio.Json.Nodes;
 
 namespace Shintio.Json.Newtonsoft.Common
 {
@@ -18,6 +22,11 @@ namespace Shintio.Json.Newtonsoft.Common
 			{
 				ContractResolver = new JsonContractResolver(),
 			};
+			
+			_serializerSettings.Converters.Add(new JsonArrayConverter());
+			_serializerSettings.Converters.Add(new JsonObjectConverter());
+			_serializerSettings.Converters.Add(new JsonValueConverter());
+			
 			_typesProcessor =
 				new JsonTypesProcessor<JsonConverter>(typeof(NewtonsoftJsonConverter<>), AddConverter);
 		}
@@ -41,6 +50,26 @@ namespace Shintio.Json.Newtonsoft.Common
 			_typesProcessor.TryProcessType(typeof(T));
 
 			return JsonConvert.DeserializeObject<T>(json, _serializerSettings);
+		}
+
+		public IJsonArray CreateArray()
+		{
+			return new NewtonsoftJsonArray(new JArray());
+		}
+
+		public IJsonObject CreateObject()
+		{
+			return new NewtonsoftJsonObject(new JObject());
+		}
+
+		public IJsonArray CreateArray(object value)
+		{
+			return new NewtonsoftJsonArray(JArray.FromObject(value));
+		}
+
+		public IJsonObject CreateObject(object value)
+		{
+			return new NewtonsoftJsonObject(JObject.FromObject(value));
 		}
 
 		private void AddConverter(JsonConverter converter)
