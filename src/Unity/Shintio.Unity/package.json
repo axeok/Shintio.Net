@@ -2,5 +2,8 @@
   "name": "shintio.unity",
   "version": "0.0.1",
   "description": "",
-  "displayName": "Shintio.Unity"
+  "displayName": "Shintio.Unity",
+  "dependencies": {
+    "shintio.json": "file:../libs/Shintio.Net/src/Json/Shintio.Json"
+  }
 }
