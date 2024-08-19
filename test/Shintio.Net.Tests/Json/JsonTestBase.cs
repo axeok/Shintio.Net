@@ -1,5 +1,6 @@
 ﻿using Shintio.Json.Interfaces;
 using Shintio.Json.Nodes;
+using Shintio.Net.Tests.Models;
 
 namespace Shintio.Net.Tests.Json;
 
@@ -105,15 +106,86 @@ public abstract class JsonTestBase<TJson> where TJson : IJson, new()
 		Assert.Equal("qwe", result.ToString());
 	}
 
-	public class TestData
+	[Fact]
+	public void SerializeHasDiscriminatorClass()
 	{
-		public TestData(int number, string row)
-		{
-			Number = number;
-			Row = row;
-		}
+		Assert.Equal(
+			"{\"X\":1,\"Discriminator\":\"TestChild1\"}",
+			_json.Serialize(new TestChild1())
+		);
+		Assert.Equal(
+			"{\"Y\":2,\"Discriminator\":\"TestChild2\"}",
+			_json.Serialize(new TestChild2())
+		);
+	}
 
-		public int Number { get; set; }
-		public string Row { get; set; }
+	[Fact]
+	public void DeserializeHasDiscriminatorClass()
+	{
+		var json1 = "{\"X\":1,\"Discriminator\":\"TestChild1\"}";
+		var json2 = "{\"Y\":2,\"Discriminator\":\"TestChild2\"}";
+
+		var test1 = _json.Deserialize<TestParent>(json1) as TestChild1;
+		var test2 = _json.Deserialize<TestParent>(json2) as TestChild2;
+
+		Assert.IsAssignableFrom<TestParent>(test1);
+		Assert.IsAssignableFrom<TestParent>(test2);
+		Assert.IsType<TestChild1>(test1);
+		Assert.IsType<TestChild2>(test2);
+		Assert.Equal(1, test1.X);
+		Assert.Equal("TestChild1", test1.Discriminator);
+		Assert.Equal(2, test2.Y);
+		Assert.Equal("TestChild2", test2.Discriminator);
+	}
+
+	[Fact]
+	public void SerializeHasDiscriminatorInterface()
+	{
+		Assert.Equal(
+			"{\"X\":1,\"Discriminator\":\"TestChild1\"}",
+			_json.Serialize(new TestChild1())
+		);
+		Assert.Equal(
+			"{\"Y\":2,\"Discriminator\":\"TestChild2\"}",
+			_json.Serialize(new TestChild2())
+		);
+	}
+
+	[Fact]
+	public void DeserializeHasDiscriminatorInterface()
+	{
+		var json1 = "{\"X\":1,\"Discriminator\":\"TestChild1\"}";
+		var json2 = "{\"Y\":2,\"Discriminator\":\"TestChild2\"}";
+
+		var test1 = _json.Deserialize<ITestChild>(json1) as TestChild1;
+		var test2 = _json.Deserialize<ITestChild>(json2) as TestChild2;
+
+		Assert.IsAssignableFrom<ITestChild>(test1);
+		Assert.IsAssignableFrom<ITestChild>(test2);
+		Assert.IsType<TestChild1>(test1);
+		Assert.IsType<TestChild2>(test2);
+		Assert.Equal(1, test1.X);
+		Assert.Equal("TestChild1", test1.Discriminator);
+		Assert.Equal(2, test2.Y);
+		Assert.Equal("TestChild2", test2.Discriminator);
+	}
+
+	[Fact]
+	public void SerializeWithIgnore()
+	{
+		Assert.Equal(
+			"{\"Row\":\"qwe\"}",
+			_json.Serialize(new TestDataWithIgnore { Row = "qwe" })
+		);
+	}
+
+	[Fact]
+	public void DeserializeWithIgnore()
+	{
+		var result = _json.Deserialize<TestDataWithIgnore>("{\"Number\":5,\"Row\":\"qwe\"}");
+
+		Assert.NotNull(result);
+		Assert.Equal(3, result.Number);
+		Assert.Equal("qwe", result.Row);
 	}
 }

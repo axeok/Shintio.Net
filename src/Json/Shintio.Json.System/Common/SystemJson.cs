@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
-using Shintio.Json.Common;
 using Shintio.Json.Enums;
 using Shintio.Json.Interfaces;
 using Shintio.Json.Nodes;
@@ -16,23 +16,19 @@ namespace Shintio.Json.System.Common
 		private readonly JsonSerializerOptions _noneFormattingOptions;
 		private readonly JsonSerializerOptions _indentedFormattingOptions;
 
-		private readonly JsonTypesProcessor<JsonConverter> _typesProcessor;
-
-		private readonly object _lock = 0;
-
 		public SystemJson()
 		{
 			_noneFormattingOptions = new JsonSerializerOptions()
 			{
 #if NET7_0_OR_GREATER
-				TypeInfoResolver = new JsonTypeInfoResolver(),
+				TypeInfoResolver = new JsonTypeInfoResolver(this),
 #endif
 			};
 			_indentedFormattingOptions = new JsonSerializerOptions()
 			{
 				WriteIndented = true,
 #if NET7_0_OR_GREATER
-				TypeInfoResolver = new JsonTypeInfoResolver(),
+				TypeInfoResolver = new JsonTypeInfoResolver(this),
 #endif
 			};
 
@@ -41,18 +37,10 @@ namespace Shintio.Json.System.Common
 				_noneFormattingOptions.Converters.Add(converter);
 				_indentedFormattingOptions.Converters.Add(converter);
 			}
-
-			_typesProcessor =
-				new JsonTypesProcessor<JsonConverter>(typeof(SystemJsonConverter<>), AddConverter);
 		}
 
 		public string Serialize(object? value, JsonFormatting formatting = JsonFormatting.None)
 		{
-			if (value != null)
-			{
-				_typesProcessor.TryProcessType(value.GetType());
-			}
-
 			return JsonSerializer.Serialize(value,
 				formatting == JsonFormatting.Indented ? _indentedFormattingOptions : _noneFormattingOptions);
 		}
@@ -63,9 +51,17 @@ namespace Shintio.Json.System.Common
         public T Deserialize<T>(string json)
 #endif
 		{
-			_typesProcessor.TryProcessType(typeof(T));
-
 			return JsonSerializer.Deserialize<T>(json, _noneFormattingOptions);
+		}
+
+		public object? Deserialize(string json, Type type)
+		{
+			return JsonSerializer.Deserialize(json, type, _noneFormattingOptions);
+		}
+
+		public IJsonNode? ParseNode(string json)
+		{
+			return SystemJsonNode.Create(JsonNode.Parse(json));
 		}
 
 		public IJsonArray CreateArray()
@@ -88,15 +84,6 @@ namespace Shintio.Json.System.Common
 		{
 			// TODO: axe json
 			return Deserialize<IJsonObject>(Serialize(value));
-		}
-
-		private void AddConverter(JsonConverter converter)
-		{
-			lock (_lock)
-			{
-				_noneFormattingOptions.Converters.Add(converter);
-				_indentedFormattingOptions.Converters.Add(converter);
-			}
 		}
 
 		private IEnumerable<JsonConverter> GetConverters()

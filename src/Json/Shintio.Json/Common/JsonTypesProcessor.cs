@@ -3,84 +3,92 @@ using System.Collections.Concurrent;
 using System.Reflection;
 using System.Threading;
 using Shintio.Json.Attributes;
+using Shintio.Json.Interfaces;
+
+// We need cache and lock for each serializator type, not one global (multithreading issue when multiple serializators try to process types)
+// ReSharper disable StaticMemberInGenericType
 
 namespace Shintio.Json.Common
 {
-	public class JsonTypesProcessor<TLibraryConverter>
+	public static class JsonTypesProcessor<TLibraryConverter>
 	{
-		private readonly Type _converterAttributeType = typeof(JsonConverterAttribute);
-		private readonly Type _shintioConverterClassType = typeof(JsonConverter<>);
-		private readonly Type _genericConverterType;
+		private static readonly Type ConverterAttributeType = typeof(JsonConverterAttribute);
+		private static readonly Type ShintioConverterClassType = typeof(JsonConverter<>);
 
-		private readonly Action<TLibraryConverter> _addConverter;
+		private static readonly ConcurrentDictionary<Type, object?> TypesCache =
+			new ConcurrentDictionary<Type, object?>();
 
-		// Concurrent HashSet alternative
-		private readonly ConcurrentDictionary<Type, byte> _typesCache = new ConcurrentDictionary<Type, byte>();
-		private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+		private static readonly ReaderWriterLockSlim Lock = new ReaderWriterLockSlim();
 
-		public JsonTypesProcessor(Type genericConverterType, Action<TLibraryConverter> addConverter)
+		public static object? TryProcessType(IJson json, Type type, Type genericConverterType)
 		{
-			_genericConverterType = genericConverterType;
-			_addConverter = addConverter;
-		}
-
-		public void TryProcessType(Type type)
-		{
-			if (!_typesCache.ContainsKey(type))
+			if (TypesCache.TryGetValue(type, out var converter))
 			{
-				_lock.EnterUpgradeableReadLock();
-
-				try
-				{
-					ProcessType(type);
-				}
-				finally
-				{
-					_lock.ExitUpgradeableReadLock();
-				}
+				return converter;
 			}
-		}
 
-		private void ProcessType(Type type)
-		{
-			_lock.EnterWriteLock();
+			Lock.EnterUpgradeableReadLock();
 
 			try
 			{
-				if (_typesCache.ContainsKey(type))
-				{
-					return;
-				}
+				converter = ProcessType(json, type, genericConverterType);
+				TypesCache[type] = converter;
 
-				if (type.GetCustomAttribute(_converterAttributeType) is Attributes.JsonConverterAttribute attribute)
-				{
-					var shintioConverterGenericArguments =
-						FindBaseType(attribute.ConverterType, _shintioConverterClassType)?.GetGenericArguments();
-					if (shintioConverterGenericArguments == null || shintioConverterGenericArguments.Length <= 0)
-					{
-						return;
-					}
-
-					var baseConverter = Activator.CreateInstance(attribute.ConverterType);
-					if (baseConverter == null)
-					{
-						return;
-					}
-
-					var converterType =
-						_genericConverterType.MakeGenericType(shintioConverterGenericArguments[0]);
-					if (Activator.CreateInstance(converterType, baseConverter) is TLibraryConverter converter)
-					{
-						_addConverter(converter);
-					}
-				}
-
-				_typesCache.TryAdd(type, 0);
+				return converter;
 			}
 			finally
 			{
-				_lock.ExitWriteLock();
+				Lock.ExitUpgradeableReadLock();
 			}
+		}
+
+		private static object? ProcessType(IJson json, Type type, Type genericConverterType)
+		{
+			Lock.EnterWriteLock();
+
+			try
+			{
+				if (TypesCache.TryGetValue(type, out var existingConverter))
+				{
+					return existingConverter;
+				}
+
+				if (type.GetCustomAttribute(ConverterAttributeType) is JsonConverterAttribute attribute)
+				{
+					var shintioConverterGenericArguments =
+						FindBaseType(attribute.ConverterType, ShintioConverterClassType)?.GetGenericArguments();
+					if (shintioConverterGenericArguments == null || shintioConverterGenericArguments.Length <= 0)
+					{
+						return null;
+					}
+
+					if (!attribute.Inheritance && type != shintioConverterGenericArguments[0])
+					{
+						return null;
+					}
+
+					var baseConverter = Activator.CreateInstance(attribute.ConverterType) as IJsonConverter;
+					if (baseConverter == null)
+					{
+						return null;
+					}
+
+					baseConverter.Converter = json;
+
+					var converterType =
+						genericConverterType.MakeGenericType(shintioConverterGenericArguments[0]);
+					if (Activator.CreateInstance(converterType, baseConverter) is TLibraryConverter converter)
+					{
+						return converter;
+					}
+				}
+			}
+			finally
+			{
+				Lock.ExitWriteLock();
+			}
+
+			return null;
 		}
 
 		private static Type? FindBaseType(Type? targetType, Type baseType)

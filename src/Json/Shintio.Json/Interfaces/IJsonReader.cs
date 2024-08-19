@@ -2,6 +2,6 @@
 {
 	public interface IJsonReader
 	{
-		public string? Read();
+		public string? GetFullJson();
 	}
 }

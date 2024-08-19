@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Shintio.Json.Common;
 using Shintio.Json.Enums;
 using Shintio.Json.Interfaces;
 using Shintio.Json.Newtonsoft.Converters;
@@ -12,32 +12,21 @@ namespace Shintio.Json.Newtonsoft.Common
 	public class NewtonsoftJson : IJson
 	{
 		private readonly JsonSerializerSettings _serializerSettings;
-		private readonly JsonTypesProcessor<JsonConverter> _typesProcessor;
-
-		private readonly object _lock = 0;
 
 		public NewtonsoftJson()
 		{
 			_serializerSettings = new JsonSerializerSettings()
 			{
-				ContractResolver = new JsonContractResolver(),
+				ContractResolver = new JsonContractResolver(this),
 			};
-			
+
 			_serializerSettings.Converters.Add(new JsonArrayConverter());
 			_serializerSettings.Converters.Add(new JsonObjectConverter());
 			_serializerSettings.Converters.Add(new JsonValueConverter());
-			
-			_typesProcessor =
-				new JsonTypesProcessor<JsonConverter>(typeof(NewtonsoftJsonConverter<>), AddConverter);
 		}
 
 		public string Serialize(object? value, JsonFormatting formatting = JsonFormatting.None)
 		{
-			if (value != null)
-			{
-				_typesProcessor.TryProcessType(value.GetType());
-			}
-
 			return JsonConvert.SerializeObject(value, GetFormatting(formatting), _serializerSettings);
 		}
 
@@ -47,9 +36,17 @@ namespace Shintio.Json.Newtonsoft.Common
 		public T Deserialize<T>(string json)
 #endif
 		{
-			_typesProcessor.TryProcessType(typeof(T));
-
 			return JsonConvert.DeserializeObject<T>(json, _serializerSettings);
+		}
+
+		public object? Deserialize(string json, Type type)
+		{
+			return JsonConvert.DeserializeObject(json, type, _serializerSettings);
+		}
+
+		public IJsonNode? ParseNode(string json)
+		{
+			return NewtonsoftJsonNode.Create(JToken.Parse(json));
 		}
 
 		public IJsonArray CreateArray()
@@ -70,14 +67,6 @@ namespace Shintio.Json.Newtonsoft.Common
 		public IJsonObject CreateObject(object value)
 		{
 			return new NewtonsoftJsonObject(JObject.FromObject(value));
-		}
-
-		private void AddConverter(JsonConverter converter)
-		{
-			lock (_lock)
-			{
-				_serializerSettings.Converters.Add(converter);
-			}
 		}
 
 		private Formatting GetFormatting(JsonFormatting formatting) => formatting switch

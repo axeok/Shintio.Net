@@ -1,4 +1,5 @@
-﻿using Shintio.Json.Enums;
+﻿using System;
+using Shintio.Json.Enums;
 using Shintio.Json.Nodes;
 
 namespace Shintio.Json.Interfaces
@@ -12,7 +13,11 @@ namespace Shintio.Json.Interfaces
 #else
 		public T Deserialize<T>(string json);
 #endif
+		
+		public object? Deserialize(string json, Type type);
 
+		public IJsonNode? ParseNode(string json);
+		
 		public IJsonArray CreateArray();
 		public IJsonObject CreateObject();
 

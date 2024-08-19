@@ -7,12 +7,15 @@ public class SystemJsonReader : IJsonReader
 {
 	private readonly string? _value;
 
-	public SystemJsonReader(Utf8JsonReader reader)
+	public SystemJsonReader(ref Utf8JsonReader reader)
 	{
-		_value = reader.GetString();
+		using var document = JsonDocument.ParseValue(ref reader);
+
+		_value = document.RootElement.GetRawText();
+		// _value = reader.GetString();
 	}
 
-	public string? Read()
+	public string? GetFullJson()
 	{
 		return _value;
 	}

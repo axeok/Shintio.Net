@@ -1,13 +1,25 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Shintio.Json.Attributes;
+using Shintio.Json.Common;
+using Shintio.Json.Interfaces;
+using JsonConstructorAttribute = Shintio.Json.Attributes.JsonConstructorAttribute;
+using JsonIgnoreAttribute = Shintio.Json.Attributes.JsonIgnoreAttribute;
 
 namespace Shintio.Json.Newtonsoft.Common
 {
 	public class JsonContractResolver : DefaultContractResolver
 	{
+		private readonly object _lock = 0;
+		private readonly IJson _json;
+
+		public JsonContractResolver(IJson json)
+		{
+			_json = json;
+		}
+		
 		protected override JsonObjectContract CreateObjectContract(Type objectType)
 		{
 			var contract = base.CreateObjectContract(objectType);
@@ -24,16 +36,24 @@ namespace Shintio.Json.Newtonsoft.Common
 				property.Ignored = true;
 			}
 
-			var constructorInfo = objectType.GetConstructors()
-				.FirstOrDefault(c => c.GetCustomAttribute<JsonConstructorAttribute>() != null);
-			if (constructorInfo != null)
+			if (JsonTypesProcessor<JsonConverter>.TryProcessType(_json, objectType, typeof(NewtonsoftJsonConverter<>))
+			    is JsonConverter converter)
 			{
-				contract.OverrideCreator = CreateParameterizedConstructor(constructorInfo);
-				contract.CreatorParameters.Clear();
-
-				foreach (var property in CreateConstructorParameters(constructorInfo, contract.Properties))
+				contract.Converter = converter;
+			}
+			else
+			{
+				var constructorInfo = objectType.GetConstructors()
+					.FirstOrDefault(c => c.GetCustomAttribute<JsonConstructorAttribute>() != null);
+				if (constructorInfo != null)
 				{
-					contract.CreatorParameters.Add(property);
+					contract.OverrideCreator = CreateParameterizedConstructor(constructorInfo);
+					contract.CreatorParameters.Clear();
+
+					foreach (var property in CreateConstructorParameters(constructorInfo, contract.Properties))
+					{
+						contract.CreatorParameters.Add(property);
+					}
 				}
 			}
 

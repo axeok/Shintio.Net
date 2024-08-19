@@ -1,10 +1,12 @@
-﻿using System.Text.Json.Nodes;
+﻿using System;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using Shintio.Json.Nodes;
 using BaseNode = global::System.Text.Json.Nodes.JsonNode;
 
 namespace Shintio.Json.System.Nodes
 {
-	public abstract class SystemJsonNode<TNode> : IJsonNode where TNode : BaseNode
+	public abstract class SystemJsonNode<TNode> : SystemJsonNode, IJsonNode where TNode : BaseNode
 	{
 		public SystemJsonNode(TNode node)
 		{
@@ -26,6 +28,24 @@ namespace Shintio.Json.System.Nodes
 			return Node;
 		}
 
+		public T ToObject<T>()
+		{
+			return Node.Deserialize<T>();
+		}
+
+		public object? ToObject(Type type)
+		{
+			return Node.Deserialize(type);
+		}
+
+		public override string ToString()
+		{
+			return Node.ToString();
+		}
+	}
+
+	public abstract class SystemJsonNode
+	{
 		public static IJsonNode? Create(BaseNode? node) => node switch
 		{
 			JsonArray n => new SystemJsonArray(n),
@@ -33,10 +53,5 @@ namespace Shintio.Json.System.Nodes
 			JsonValue n => new SystemJsonValue(n),
 			_ => null,
 		};
-
-		public override string ToString()
-		{
-			return Node.ToString();
-		}
 	}
 }

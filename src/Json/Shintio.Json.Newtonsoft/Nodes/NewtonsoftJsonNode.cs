@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using Newtonsoft.Json.Linq;
 using Shintio.Json.Nodes;
 
 namespace Shintio.Json.Newtonsoft.Nodes
 {
-	public abstract class NewtonsoftJsonNode<TNode> : IJsonNode where TNode : JToken
+	public abstract class NewtonsoftJsonNode<TNode> : NewtonsoftJsonNode, IJsonNode where TNode : JToken
 	{
 		public NewtonsoftJsonNode(TNode node)
 		{
@@ -25,6 +26,24 @@ namespace Shintio.Json.Newtonsoft.Nodes
 			return Node;
 		}
 
+		public T ToObject<T>()
+		{
+			return Node.ToObject<T>();
+		}
+
+		public object? ToObject(Type type)
+		{
+			return Node.ToObject(type);
+		}
+
+		public override string ToString()
+		{
+			return Node.ToString();
+		}
+	}
+
+	public abstract class NewtonsoftJsonNode
+	{
 		public static IJsonNode? Create(JToken? node) => node switch
 		{
 			JArray n => new NewtonsoftJsonArray(n),
@@ -32,10 +51,5 @@ namespace Shintio.Json.Newtonsoft.Nodes
 			JValue n => new NewtonsoftJsonValue(n),
 			_ => null,
 		};
-
-		public override string ToString()
-		{
-			return Node.ToString();
-		}
 	}
 }

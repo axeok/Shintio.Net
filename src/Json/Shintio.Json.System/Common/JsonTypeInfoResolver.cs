@@ -8,6 +8,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using Shintio.Essentials.Utils;
+using Shintio.Json.Common;
+using Shintio.Json.Interfaces;
 using JsonConstructorAttribute = Shintio.Json.Attributes.JsonConstructorAttribute;
 using JsonIgnoreAttribute = Shintio.Json.Attributes.JsonIgnoreAttribute;
 
@@ -37,6 +39,13 @@ public class JsonTypeInfoResolver : DefaultJsonTypeInfoResolver
 	private static readonly Assembly Assembly =
 		Assembly.GetAssembly(typeof(global::System.Text.Json.Serialization.JsonConstructorAttribute))!;
 
+	private readonly IJson _json;
+
+	public JsonTypeInfoResolver(IJson json)
+	{
+		_json = json;
+	}
+
 	public override JsonTypeInfo GetTypeInfo(Type type, JsonSerializerOptions options)
 	{
 		var typeInfo = CreateJsonTypeInfo(type, options);
@@ -62,6 +71,7 @@ public class JsonTypeInfoResolver : DefaultJsonTypeInfoResolver
 				         p.PropertyType.FullName == LazyLoaderType
 			         ).ToArray())
 		{
+			Console.WriteLine($"Ignore: {propertyInfo.Name}");
 			var property = typeInfo.Properties.FirstOrDefault(p => p.Name == propertyInfo.Name);
 			if (property == null)
 			{
@@ -77,20 +87,22 @@ public class JsonTypeInfoResolver : DefaultJsonTypeInfoResolver
 
 	private JsonTypeInfo CreateJsonTypeInfo(Type type, JsonSerializerOptions options)
 	{
-		JsonConverter converter;
-
-		var constructorInfo = type.GetConstructors()
-			.FirstOrDefault(c => c.GetCustomAttribute<JsonConstructorAttribute>() != null);
-		if (constructorInfo != null)
+		if (JsonTypesProcessor<JsonConverter>.TryProcessType(_json, type, typeof(SystemJsonConverter<>)) is not
+		    JsonConverter converter)
 		{
-			converter = CreateConverter(type, constructorInfo, options);
-		}
-		else
-		{
-			converter = (JsonConverter)(
-				GetType().BaseType!.GetMethod("GetConverterForType", ReflectionHelper.StaticFlags)
-					!.Invoke(this, new object[] { type, options, true })
-			)!;
+			var constructorInfo = type.GetConstructors()
+				.FirstOrDefault(c => c.GetCustomAttribute<JsonConstructorAttribute>() != null);
+			if (constructorInfo != null)
+			{
+				converter = CreateConverter(type, constructorInfo, options);
+			}
+			else
+			{
+				converter = (JsonConverter)(
+					GetType().BaseType!.GetMethod("GetConverterForType", ReflectionHelper.StaticFlags)
+						!.Invoke(this, new object[] { type, options, true })
+				)!;
+			}
 		}
 
 		return (JsonTypeInfo)(

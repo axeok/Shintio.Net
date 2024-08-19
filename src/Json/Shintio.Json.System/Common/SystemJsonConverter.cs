@@ -16,7 +16,7 @@ public class SystemJsonConverter<TType> : JsonConverter<TType>
 
 	public override TType? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 	{
-		return _converter.Read(new SystemJsonReader(reader), typeToConvert);
+		return _converter.Read(new SystemJsonReader(ref reader), typeToConvert);
 	}
 
 	public override void Write(Utf8JsonWriter writer, TType value, JsonSerializerOptions options)
