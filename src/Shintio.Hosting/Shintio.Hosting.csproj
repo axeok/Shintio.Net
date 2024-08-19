@@ -13,6 +13,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Database\Shintio.Database.MySql\Shintio.Database.MySql.csproj" />
         <ProjectReference Include="..\Database\Shintio.Database\Shintio.Database.csproj" />
+        <ProjectReference Include="..\Formats\Shintio.Formats\Shintio.Formats.csproj" />
         <ProjectReference Include="..\Misc\Shintio.Web\Shintio.Web.csproj" />
         <ProjectReference Include="..\Shintio.Essentials\Shintio.Essentials.csproj" />
         <ProjectReference Include="..\Bots\Shintio.Bots.Telegram\Shintio.Bots.Telegram.csproj" />
