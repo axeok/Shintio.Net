@@ -4,6 +4,7 @@
   "description": "",
   "displayName": "Shintio.Unity",
   "dependencies": {
+    "com.unity.ads": "4.4.2",
     "shintio.json": "file:../libs/Shintio.Net/src/Json/Shintio.Json"
   }
 }

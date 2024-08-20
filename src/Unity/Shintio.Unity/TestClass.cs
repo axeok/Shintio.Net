@@ -1,4 +1,6 @@
 ﻿using Shintio.Json.Interfaces;
+using UnityEngine;
+using UnityEngine.Advertisements;
 
 namespace Shintio.Unity
 {
