@@ -2,7 +2,7 @@
 
 namespace Shintio.Formats.Interfaces
 {
-	public interface IPixelImage
+	public interface IPixelImage : IFormatType
 	{
 		public int Width { get; }
 		public int Height { get; }
