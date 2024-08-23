@@ -10,7 +10,7 @@ public abstract class ShintioApp
 {
 	public readonly IHost Host;
 
-	private readonly ILogger<ShintioApp> _logger;
+	protected readonly ILogger<ShintioApp> Logger;
 
 	public ShintioApp(Action<HostBuilderContext, IServiceCollection> configureServices)
 	{
@@ -20,28 +20,28 @@ public abstract class ShintioApp
 			.ConfigureServices(configureServices)
 			.Build();
 
-		_logger = Host.Services.GetRequiredService<ILogger<ShintioApp>>();
+		Logger = Host.Services.GetRequiredService<ILogger<ShintioApp>>();
 
-		_logger.LogInformation("Created");
+		Logger.LogInformation("Created");
 	}
 
 	public virtual async Task PrepareAsync()
 	{
-		_logger.LogInformation("Preparing...");
+		Logger.LogInformation("Preparing...");
 
 		await PrepareInternalAsync();
 	}
 
 	public async Task MigrateAsync<TDbContext>() where TDbContext : DbContext
 	{
-		_logger.LogInformation("Applying migrations...");
+		Logger.LogInformation("Applying migrations...");
 
 		await Host.ApplyMigrationsAsync<TDbContext>();
 	}
 
 	public async Task RunAsync()
 	{
-		_logger.LogInformation("Running...");
+		Logger.LogInformation("Running...");
 
 		await BeforeRun();
 

@@ -1,5 +1,5 @@
 ﻿{
   "name": "Shintio.Unity",
   "rootNamespace": "Shintio.Unity",
-  "references": ["Shintio.Json"]
+  "references": ["Shintio.Json", "UnityEngine.Advertisements"]
 }
