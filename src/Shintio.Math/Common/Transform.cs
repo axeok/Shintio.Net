@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using Rox.Domain.Utils;
 using Shintio.Essentials.Common;
 using Shintio.Json.Attributes;
-using Shintio.Math.Common;
+using Shintio.Math.Common.Enums;
+using Shintio.Math.Utils;
 
-namespace Rox.Domain.ValueObjects
+namespace Shintio.Math.Common
 {
 	public class Transform : ValueObject
 	{

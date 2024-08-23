@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using Rox.Domain.ValueObjects;
 using Shintio.Math.Common;
 
-namespace Rox.Domain.Utils
+namespace Shintio.Math.Utils
 {
 	public static class Mathf
 	{
@@ -93,7 +91,7 @@ namespace Rox.Domain.Utils
 		
 		public static DateTime Min(DateTime first, DateTime second)
 		{
-			return new DateTime(Math.Min(first.Ticks, second.Ticks));
+			return new DateTime(System.Math.Min(first.Ticks, second.Ticks));
 		}
 
 		public static float Max(float a, float b) => MathF.Max(a, b);
@@ -138,7 +136,7 @@ namespace Rox.Domain.Utils
 		
 		public static DateTime Max(DateTime first, DateTime second)
 		{
-			return new DateTime(Math.Max(first.Ticks, second.Ticks));
+			return new DateTime(System.Math.Max(first.Ticks, second.Ticks));
 		}
 
 		// Returns /f/ raised to power /p/.
@@ -471,7 +469,7 @@ namespace Rox.Domain.Utils
 
 		private static int GetNumberOfDecimalsForMinimumDifference(double minDifference)
 		{
-			return (int)Math.Max(0, -Math.Floor(Math.Log10(Math.Abs(minDifference))));
+			return (int)System.Math.Max(0, -System.Math.Floor(System.Math.Log10(System.Math.Abs(minDifference))));
 		}
 
 		private static float RoundBasedOnMinimumDifference(float valueToRound, float minDifference)
@@ -486,7 +484,7 @@ namespace Rox.Domain.Utils
 		{
 			if (minDifference == 0)
 				return DiscardLeastSignificantDecimal(valueToRound);
-			return Math.Round(valueToRound, GetNumberOfDecimalsForMinimumDifference(minDifference),
+			return System.Math.Round(valueToRound, GetNumberOfDecimalsForMinimumDifference(minDifference),
 				MidpointRounding.AwayFromZero);
 		}
 
@@ -498,10 +496,10 @@ namespace Rox.Domain.Utils
 
 		private static double DiscardLeastSignificantDecimal(double v)
 		{
-			var decimals = Math.Max(0, (int)(5 - Math.Log10(Math.Abs(v))));
+			var decimals = System.Math.Max(0, (int)(5 - System.Math.Log10(System.Math.Abs(v))));
 			try
 			{
-				return Math.Round(v, decimals);
+				return System.Math.Round(v, decimals);
 			}
 			catch (ArgumentOutOfRangeException)
 			{
@@ -664,7 +662,7 @@ namespace Rox.Domain.Utils
 
 		public static uint GetPercentOrMax(uint value, uint percent, uint max)
 		{
-			return Math.Min((uint)(value / 100f * percent), max);
+			return System.Math.Min((uint)(value / 100f * percent), max);
 		}
 
 		public static int GetValueFromPercents(int percents, int min, int max)
@@ -677,7 +675,7 @@ namespace Rox.Domain.Utils
 		public static float Map(float value, float inMin, float inMax, float outMin, float outMax, bool clamped = true)
 		{
 			var res = (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
-			return clamped ? Math.Clamp(res, outMin, outMax) : res;
+			return clamped ? System.Math.Clamp(res, outMin, outMax) : res;
 		}
 		
 		public static float GetHeadingError(float initial, float final)
@@ -760,7 +758,7 @@ namespace Rox.Domain.Utils
 		{
 			int x = 0, y = 0, dx = 0, dy = -1;
 			
-			var t = Math.Max(gridSizeX, gridSizeY);
+			var t = System.Math.Max(gridSizeX, gridSizeY);
 			var maxI = t * t;
 			for (var i = 0; i < maxI; i++)
 			{

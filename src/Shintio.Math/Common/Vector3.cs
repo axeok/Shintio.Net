@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using RiseRp.Core.Enums;
-using Rox.Domain.Enums;
-using Rox.Domain.Utils;
-using Rox.Domain.ValueObjects;
-using Rox.Domain.ValueObjects.Geometry;
 using Shintio.Essentials.Common;
 using Shintio.Json.Attributes;
+using Shintio.Math.Common.Enums;
+using Shintio.Math.Utils;
 
 namespace Shintio.Math.Common
 {

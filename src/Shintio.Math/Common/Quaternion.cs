@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
-using Rox.Domain.Utils;
 using Shintio.Essentials.Common;
 using Shintio.Json.Attributes;
-using Shintio.Math.Common;
+using Shintio.Math.Common.Enums;
+using Shintio.Math.Utils;
 
-namespace Rox.Domain.ValueObjects
+namespace Shintio.Math.Common
 {
 	public class Quaternion : ValueObject
 	{
@@ -39,9 +38,9 @@ namespace Rox.Domain.ValueObjects
 			var radians = angleDegrees * Mathf.Deg2Rad;
 			radians *= 0.5f;
 			axis = axis.GetNormalized();
-			axis *= (float)Math.Sin(radians);
+			axis *= (float)System.Math.Sin(radians);
 
-			var result = new Quaternion(axis, (float)Math.Cos(radians));
+			var result = new Quaternion(axis, (float)System.Math.Cos(radians));
 
 			return result.GetNormalized();
 		}
@@ -77,14 +76,14 @@ namespace Rox.Domain.ValueObjects
 			var roll = euler.Z;
 
 			var rollOver2 = roll * 0.5f;
-			var sinRollOver2 = (float)Math.Sin(rollOver2);
-			var cosRollOver2 = (float)Math.Cos(rollOver2);
+			var sinRollOver2 = (float)System.Math.Sin(rollOver2);
+			var cosRollOver2 = (float)System.Math.Cos(rollOver2);
 			var pitchOver2 = pitch * 0.5f;
-			var sinPitchOver2 = (float)Math.Sin(pitchOver2);
-			var cosPitchOver2 = (float)Math.Cos(pitchOver2);
+			var sinPitchOver2 = (float)System.Math.Sin(pitchOver2);
+			var cosPitchOver2 = (float)System.Math.Cos(pitchOver2);
 			var yawOver2 = yaw * 0.5f;
-			var sinYawOver2 = (float)Math.Sin(yawOver2);
-			var cosYawOver2 = (float)Math.Cos(yawOver2);
+			var sinYawOver2 = (float)System.Math.Sin(yawOver2);
+			var cosYawOver2 = (float)System.Math.Cos(yawOver2);
 
 			var result = new Quaternion(
 				cosYawOver2 * cosPitchOver2 * cosRollOver2 + sinYawOver2 * sinPitchOver2 * sinRollOver2,
@@ -141,11 +140,11 @@ namespace Rox.Domain.ValueObjects
 			if (cosHalfAngle < 0.99f)
 			{
 				// do proper slerp for big angles
-				var halfAngle = (float)Math.Acos(cosHalfAngle);
-				var sinHalfAngle = (float)Math.Sin(halfAngle);
+				var halfAngle = (float)System.Math.Acos(cosHalfAngle);
+				var sinHalfAngle = (float)System.Math.Sin(halfAngle);
 				var oneOverSinHalfAngle = 1.0f / sinHalfAngle;
-				blendA = (float)Math.Sin(halfAngle * (1.0f - t)) * oneOverSinHalfAngle;
-				blendB = (float)Math.Sin(halfAngle * t) * oneOverSinHalfAngle;
+				blendA = (float)System.Math.Sin(halfAngle * (1.0f - t)) * oneOverSinHalfAngle;
+				blendB = (float)System.Math.Sin(halfAngle * t) * oneOverSinHalfAngle;
 			}
 			else
 			{
@@ -188,9 +187,9 @@ namespace Rox.Domain.ValueObjects
 			var radians = degree * DegToRad;
 			radians *= 0.5f;
 			axis = axis.GetNormalized();
-			axis *= (float)Math.Sin(radians);
+			axis *= (float)System.Math.Sin(radians);
 
-			var result = new Quaternion(axis, (float)Math.Cos(radians));
+			var result = new Quaternion(axis, (float)System.Math.Cos(radians));
 
 			return result.GetNormalized();
 		}
@@ -327,17 +326,17 @@ namespace Rox.Domain.ValueObjects
 			// Преобразование кватерниона в углы Эйлера
 			double sinr_cosp = 2 * (q.W * q.X + q.Y * q.Z);
 			double cosr_cosp = 1 - 2 * (q.X * q.X + q.Y * q.Y);
-			roll = Math.Atan2(sinr_cosp, cosr_cosp);
+			roll = System.Math.Atan2(sinr_cosp, cosr_cosp);
 
 			double sinp = 2 * (q.W * q.Y - q.Z * q.X);
-			if (Math.Abs(sinp) >= 1)
-				pitch = Math.PI / 2 * Math.Sign(sinp);
+			if (System.Math.Abs(sinp) >= 1)
+				pitch = System.Math.PI / 2 * System.Math.Sign(sinp);
 			else
-				pitch = Math.Asin(sinp);
+				pitch = System.Math.Asin(sinp);
 
 			double siny_cosp = 2 * (q.W * q.Z + q.X * q.Y);
 			double cosy_cosp = 1 - 2 * (q.Y * q.Y + q.Z * q.Z);
-			yaw = Math.Atan2(siny_cosp, cosy_cosp);
+			yaw = System.Math.Atan2(siny_cosp, cosy_cosp);
 
 			// Переводим радианы в градусы
 			// roll = roll * 180 / Math.PI;
@@ -351,7 +350,7 @@ namespace Rox.Domain.ValueObjects
 
 		public float Length()
 		{
-			return (float)Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
+			return (float)System.Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
 		}
 
 		public float LengthSquared()
