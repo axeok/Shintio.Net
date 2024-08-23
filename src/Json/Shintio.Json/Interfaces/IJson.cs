@@ -23,5 +23,6 @@ namespace Shintio.Json.Interfaces
 
 		public IJsonArray CreateArray(object value);
 		public IJsonObject CreateObject(object value);
+		public IJsonNode CreateNode(object value);
 	}
 }

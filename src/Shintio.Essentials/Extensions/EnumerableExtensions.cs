@@ -137,5 +137,23 @@ namespace Shintio.Essentials.Extensions
 				.OrderBy(i => Math.Pow(Utils.Random.Random.Instance.NextDouble(), i.Chance))
 				.ToList();
 		}
+
+		public static List<List<T>> ToLists<T>(this T[,] source)
+		{
+			var result = new List<List<T>>();
+
+			for (var i = 0; i < source.GetLength(0); i++)
+			{
+				var row = new List<T>();
+				for (var j = 0; j < source.GetLength(1); j++)
+				{
+					row.Add(source[i, j]);
+				}
+
+				result.Add(row);
+			}
+
+			return result;
+		}
 	}
 }

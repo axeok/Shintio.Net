@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Shintio.Json.Interfaces;
 
@@ -16,6 +17,11 @@ namespace Shintio.Json.Newtonsoft.Common
 		public string? GetFullJson()
 		{
 			return JToken.ReadFrom(_reader).ToString();
+		}
+
+		public string? GetString()
+		{
+			return _reader.Value?.ToString();
 		}
 	}
 }

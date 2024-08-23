@@ -10,5 +10,7 @@ namespace Shintio.Json.Nodes
 		
 		public T ToObject<T>();
 		public object? ToObject(Type type);
+
+		public bool DeepEquals(IJsonNode? other);
 	}
 }

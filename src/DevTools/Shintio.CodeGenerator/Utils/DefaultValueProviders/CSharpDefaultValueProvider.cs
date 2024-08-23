@@ -4,6 +4,8 @@ using System.Reflection;
 using System.Text.Json;
 using Shintio.CodeGenerator.Extensions;
 using Shintio.Essentials.Common;
+using Shintio.Json.Nodes;
+using Shintio.Json.Utils;
 
 namespace Shintio.CodeGenerator.Utils.DefaultValueProviders;
 
@@ -61,6 +63,18 @@ public class CSharpDefaultValueProvider : BaseDefaultValueProvider
 		if (type.FullName!.Contains(ReadOnlyCollectionTypeName))
 		{
 			return $"new {typeString.Replace(ReadOnlyCollectionTypeName, ListTypeName)}().AsReadOnly()";
+		}
+
+		if (type == typeof(IJsonObject))
+		{
+			return
+				$"{typeof(JsonConverter).FullName}.{nameof(JsonConverter.Instance)}.{nameof(JsonConverter.Instance.CreateObject)}()";
+		}
+
+		if (type == typeof(IJsonArray))
+		{
+			return
+				$"{typeof(JsonConverter).FullName}.{nameof(JsonConverter.Instance)}.{nameof(JsonConverter.Instance.CreateArray)}()";
 		}
 
 		return $"new {typeString}()";

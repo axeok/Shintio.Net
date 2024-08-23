@@ -23,6 +23,26 @@ namespace Shintio.Json.Newtonsoft.Common
 			_serializerSettings.Converters.Add(new JsonArrayConverter());
 			_serializerSettings.Converters.Add(new JsonObjectConverter());
 			_serializerSettings.Converters.Add(new JsonValueConverter());
+
+			try
+			{
+				JsonConvert.DefaultSettings = GetSettings;
+			}
+			catch
+			{
+				var property = typeof(JsonConvert).GetProperty(nameof(JsonConvert.DefaultSettings));
+				if (property != null && property.CanWrite)
+				{
+					Func<JsonSerializerSettings> settingsFunc = GetSettings;
+
+					property.SetValue(null, settingsFunc);
+				}
+			}
+		}
+
+		private JsonSerializerSettings GetSettings()
+		{
+			return _serializerSettings;
 		}
 
 		public string Serialize(object? value, JsonFormatting formatting = JsonFormatting.None)
@@ -67,6 +87,11 @@ namespace Shintio.Json.Newtonsoft.Common
 		public IJsonObject CreateObject(object value)
 		{
 			return new NewtonsoftJsonObject(JObject.FromObject(value));
+		}
+
+		public IJsonNode CreateNode(object value)
+		{
+			return NewtonsoftJsonNode.Create(JToken.FromObject(value));
 		}
 
 		private Formatting GetFormatting(JsonFormatting formatting) => formatting switch

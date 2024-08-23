@@ -71,7 +71,6 @@ public class JsonTypeInfoResolver : DefaultJsonTypeInfoResolver
 				         p.PropertyType.FullName == LazyLoaderType
 			         ).ToArray())
 		{
-			Console.WriteLine($"Ignore: {propertyInfo.Name}");
 			var property = typeInfo.Properties.FirstOrDefault(p => p.Name == propertyInfo.Name);
 			if (property == null)
 			{

@@ -19,4 +19,9 @@ public class SystemJsonReader : IJsonReader
 	{
 		return _value;
 	}
+
+	public string? GetString()
+	{
+		return _value?.Trim('\"');
+	}
 }

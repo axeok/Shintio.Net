@@ -36,6 +36,11 @@ namespace Shintio.Json.Newtonsoft.Nodes
 			return Node.ToObject(type);
 		}
 
+		public bool DeepEquals(IJsonNode? other)
+		{
+			return other is NewtonsoftJsonNode<TNode> casted && JToken.DeepEquals(Node, casted.Node);
+		}
+
 		public override string ToString()
 		{
 			return Node.ToString();

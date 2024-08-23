@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using Shintio.Essentials.Common;
 using Shintio.Essentials.Interfaces;
 using Shintio.Json.Common;
 using Shintio.Json.Interfaces;
 
 namespace Shintio.Essentials.Converters
 {
-	public static class HasDiscriminatorJsonConverter
+	public class DataCollectionHasDiscriminatorJsonConverter<T> : JsonConverter<T>
+		where T : class, IDataCollection, IHasDiscriminator
 	{
-		public static Dictionary<Type, Dictionary<string, Type>> TypesMap =
-			new Dictionary<Type, Dictionary<string, Type>>();
-	}
-
-	public class HasDiscriminatorJsonConverter<T> : JsonConverter<T>
-	{
-		public override bool CanWrite { get; } = false;
-
 		public override void Write(IJsonWriter writer, T value)
 		{
+			var result = Converter.CreateObject();
+
+			result[nameof(IDataCollection.Key)] = Converter.CreateNode(value.Key);
+			result[nameof(IHasDiscriminator.Discriminator)] = Converter.CreateNode(value.Discriminator);
+
+			writer.WriteValue(Converter.Serialize(result));
 		}
 
 #if NETCOREAPP3_0_OR_GREATER
@@ -51,10 +50,16 @@ namespace Shintio.Essentials.Converters
 				return default;
 			}
 
+			var key = jsonObject[nameof(DataCollection.Key)]?.ToString();
+			if (key == null)
+			{
+				return default;
+			}
+
 #if NETCOREAPP3_0_OR_GREATER
-			return (T?)jsonObject.ToObject(concreteType);
+			return key == null ? null : DataCollection.TryParseOrDefault(concreteType, key) as T;
 #else
-			return (T)jsonObject.ToObject(concreteType);
+			return key == null ? null : DataCollection.TryParseOrDefault(concreteType, key) as T;
 #endif
 		}
 
@@ -68,7 +73,7 @@ namespace Shintio.Essentials.Converters
 			// TODO: axe json
 			// На клиенте RAGE MP нет доступа к сборкам(Assembly), поэтому типы нельзя получить автоматически и нужно задавать вручную
 			// Для этого есть генерато HasDiscriminatorTypesGenerator
-#if NETCOREAPP3_0_OR_GREATER
+#if !DEBUG
 			if (!HasDiscriminatorJsonConverter.TypesMap[parent].ContainsKey(discriminator))
 			{
 				HasDiscriminatorJsonConverter.TypesMap[parent].Add(

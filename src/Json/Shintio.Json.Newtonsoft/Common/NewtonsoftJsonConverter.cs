@@ -7,8 +7,8 @@ namespace Shintio.Json.Newtonsoft.Common
 	{
 		private readonly Json.Common.JsonConverter<TType> _converter;
 
-		public override bool CanRead { get; } = true;
-		public override bool CanWrite { get; } = true;
+		public override bool CanRead => _converter.CanRead;
+		public override bool CanWrite => _converter.CanWrite;
 
 		public NewtonsoftJsonConverter(Json.Common.JsonConverter<TType> converter)
 		{

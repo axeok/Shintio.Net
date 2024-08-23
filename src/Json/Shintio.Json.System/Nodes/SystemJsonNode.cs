@@ -38,6 +38,17 @@ namespace Shintio.Json.System.Nodes
 			return Node.Deserialize(type);
 		}
 
+		public bool DeepEquals(IJsonNode? other)
+		{
+			if (other is not SystemJsonNode<TNode> casted)
+			{
+				return false;
+			}
+
+			// TODO: axe json
+			return false;
+		}
+
 		public override string ToString()
 		{
 			return Node.ToString();

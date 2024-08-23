@@ -3,5 +3,6 @@
 	public interface IJsonReader
 	{
 		public string? GetFullJson();
+		public string? GetString();
 	}
 }

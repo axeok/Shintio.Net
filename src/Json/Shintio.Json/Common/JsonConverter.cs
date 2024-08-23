@@ -6,6 +6,9 @@ namespace Shintio.Json.Common
 	public abstract class JsonConverter<T> : IJsonConverter
 	{
 		public IJson Converter { get; set; } = null!;
+		
+		public virtual bool CanRead { get; } = true;
+		public virtual bool CanWrite { get; } = true;
 
 #if NETCOREAPP3_0_OR_GREATER
         public abstract void Write(IJsonWriter writer, T? value);

@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace Shintio.Essentials.Common
 {
+	// TODO: axe json - add converter
 	public class ValueObjectDictionary<TKey, TValue> : ValueObject, 
 		IReadOnlyDictionary<TKey, TValue>,
 		IDictionary<TKey, TValue> // TODO: axe
@@ -80,7 +81,7 @@ namespace Shintio.Essentials.Common
 		public TValue this[TKey key]
 		{
 			get => _dictionary[key];
-			set => throw new NotImplementedException();
+			set { }
 		}
 		
 		public IEnumerable<TKey> Keys => _dictionary.Keys;
