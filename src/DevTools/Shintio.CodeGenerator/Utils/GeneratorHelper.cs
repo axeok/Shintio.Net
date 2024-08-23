@@ -49,7 +49,7 @@ public static class GeneratorHelper
 			value = $"\\\"{value}\\\"";
 		}
 
-		var deserializeMethod = $"Newtonsoft.Json.JsonConvert.DeserializeObject";
+		var deserializeMethod = $"Shintio.Json.Utils.JsonConverter.Deserialize";
 
 		return $"{deserializeMethod}<{property.GetTypeString()}>(\"{value}\"){(isNullable ? "" : "!")}";
 	}

@@ -7,11 +7,14 @@ using Shintio.Json.Interfaces;
 
 namespace Shintio.Essentials.Converters
 {
-	public class HasDiscriminatorJsonConverter<T> : JsonConverter<T>
+	public static class HasDiscriminatorJsonConverter
 	{
 		public static Dictionary<Type, Dictionary<string, Type>> TypesMap =
 			new Dictionary<Type, Dictionary<string, Type>>();
+	}
 
+	public class HasDiscriminatorJsonConverter<T> : JsonConverter<T>
+	{
 		public override void Write(IJsonWriter writer, T value)
 		{
 			// writer.WriteValue(value);
@@ -56,24 +59,26 @@ namespace Shintio.Essentials.Converters
 
 		protected static Type? GetConcreteType(Type parent, string discriminator)
 		{
-			if (!TypesMap.ContainsKey(parent))
+			if (!HasDiscriminatorJsonConverter.TypesMap.ContainsKey(parent))
 			{
-				TypesMap.Add(parent, new Dictionary<string, Type>());
+				HasDiscriminatorJsonConverter.TypesMap.Add(parent, new Dictionary<string, Type>());
 			}
 
 			// TODO: axe json
 			// На клиенте RAGE MP нет доступа к сборкам(Assembly), поэтому типы нельзя получить автоматически и нужно задавать вручную
 			// Для этого есть генерато HasDiscriminatorTypesGenerator
-			if (!TypesMap[parent].ContainsKey(discriminator))
+#if !DEBUG
+			if (!HasDiscriminatorJsonConverter.TypesMap[parent].ContainsKey(discriminator))
 			{
-				TypesMap[parent].Add(
+				HasDiscriminatorJsonConverter.TypesMap[parent].Add(
 					discriminator,
 					parent.Assembly.GetTypes()
 						.FirstOrDefault(t => parent.IsAssignableFrom(t) && t.Name == discriminator)
 				);
 			}
+#endif
 
-			TypesMap[parent].TryGetValue(discriminator, out var type);
+			HasDiscriminatorJsonConverter.TypesMap[parent].TryGetValue(discriminator, out var type);
 
 			return type;
 		}

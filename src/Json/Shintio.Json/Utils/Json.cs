@@ -7,12 +7,17 @@ namespace Shintio.Json.Utils
 	{
 		public static IJson Instance = null!;
 
-		public static string Serialize(object value, JsonFormatting formatting = JsonFormatting.None)
+		public static string Serialize(object? value, JsonFormatting formatting)
 		{
 			return Instance.Serialize(value, formatting);
 		}
 
-#if NETCOREAPP3_0_OR_GREATER
+		public static string Serialize(object? value)
+		{
+			return Serialize(value, JsonFormatting.None);
+		}
+
+#if DEBUG
         public static T? Deserialize<T>(string json)
 #else
 		public static T Deserialize<T>(string json)

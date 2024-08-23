@@ -10,7 +10,6 @@ public static class ServiceCollectionExtensions
 	{
 		return services
 			.AddScoped<TelegramBot>()
-			.AddSingleton<TService>()
 			.AddHostedService<TService>();
 	}
 }

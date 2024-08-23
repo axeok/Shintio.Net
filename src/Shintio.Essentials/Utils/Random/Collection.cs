@@ -6,51 +6,50 @@ namespace Shintio.Essentials.Utils.Random
 {
 	public partial class Random
 	{
-		public static char Item(string text)
+		public char Item(string text)
 		{
-			return text[Random.Int(text.Length, false)];
+			return text[Int(text.Length, false)];
 		}
 
-		public static int Item(int number)
+		public int Item(int number)
 		{
 			return Item(number.ToString());
 		}
 
-		// ReSharper disable once MethodOverloadWithOptionalParameter
-		public static T Item<T>(System.Random? random = null) where T : Enum
+		public T Item<T>() where T : Enum
 		{
 			var values = (T[])Enum.GetValues(typeof(T));
 
-			return (T)values.GetValue(Random.Int(values.Length, false, random))!;
+			return (T)values.GetValue(Int(values.Length, false))!;
 		}
 
-		public static T Item<T>(List<T> list)
+		public T Item<T>(List<T> list)
 		{
-			return list[Random.Int(list.Count, false)];
+			return list[Int(list.Count, false)];
 		}
 
-		public static T Item<T>(IEnumerable<T> list)
+		public T Item<T>(IEnumerable<T> list)
 		{
 			return Item(list.ToArray());
 		}
 
-		public static T Item<T>(T[] array, System.Random? random = null)
+		public T Item<T>(T[] array)
 		{
-			return array[Random.Int(array.Length, false, random)];
+			return array[Int(array.Length, false)];
 		}
 
-		public static TValue Item<TKey, TValue>(Dictionary<TKey, TValue> dictionary) where TKey : notnull
+		public TValue Item<TKey, TValue>(Dictionary<TKey, TValue> dictionary) where TKey : notnull
 		{
 			return dictionary[Item(dictionary.Keys.ToArray())];
 		}
 
-		public static KeyValuePair<TKey, TValue> ItemWithKey<TKey, TValue>(Dictionary<TKey, TValue> dictionary)
+		public KeyValuePair<TKey, TValue> ItemWithKey<TKey, TValue>(Dictionary<TKey, TValue> dictionary)
 			where TKey : notnull
 		{
-			return dictionary.ElementAt(Random.Int(dictionary.Count, false));
+			return dictionary.ElementAt(Int(dictionary.Count, false));
 		}
 
-		public static T[] Items<T>(T[] pool, int count, bool canRepeat = true, System.Random? random = null)
+		public T[] Items<T>(T[] pool, int count, bool canRepeat = true)
 		{
 			if (!canRepeat)
 			{
@@ -74,13 +73,13 @@ namespace Shintio.Essentials.Utils.Random
 
 			for (var i = 0; i < count; i++)
 			{
-				var item = Item(pool, random);
+				var item = Item(pool);
 
 				if (!canRepeat)
 				{
 					while (items.Contains(item))
 					{
-						item = Item(pool, random);
+						item = Item(pool);
 					}
 				}
 
@@ -90,7 +89,7 @@ namespace Shintio.Essentials.Utils.Random
 			return items;
 		}
 
-		public static T[] Items<T>(int count, bool canRepeat = true, System.Random? random = null) where T : Enum
+		public T[] Items<T>(int count, bool canRepeat = true) where T : Enum
 		{
 			if (!canRepeat)
 			{
@@ -110,13 +109,13 @@ namespace Shintio.Essentials.Utils.Random
 
 			for (var i = 0; i < count; i++)
 			{
-				var item = Item<T>(random);
+				var item = Item<T>();
 
 				if (!canRepeat)
 				{
 					while (items.Contains(item))
 					{
-						item = Item<T>(random);
+						item = Item<T>();
 					}
 				}
 

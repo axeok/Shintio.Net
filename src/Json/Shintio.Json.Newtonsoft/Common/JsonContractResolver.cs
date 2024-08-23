@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
@@ -7,6 +8,8 @@ using Shintio.Json.Common;
 using Shintio.Json.Interfaces;
 using JsonConstructorAttribute = Shintio.Json.Attributes.JsonConstructorAttribute;
 using JsonIgnoreAttribute = Shintio.Json.Attributes.JsonIgnoreAttribute;
+using JsonObjectAttribute = Shintio.Json.Attributes.JsonObjectAttribute;
+using MemberSerialization = Shintio.Json.Enums.MemberSerialization;
 
 namespace Shintio.Json.Newtonsoft.Common
 {
@@ -19,22 +22,18 @@ namespace Shintio.Json.Newtonsoft.Common
 		{
 			_json = json;
 		}
-		
+
+		protected override List<MemberInfo> GetSerializableMembers(Type objectType)
+		{
+			// TODO: учесть все наши атрибуты
+			return base.GetSerializableMembers(objectType);
+		}
+
 		protected override JsonObjectContract CreateObjectContract(Type objectType)
 		{
 			var contract = base.CreateObjectContract(objectType);
 
-			foreach (var propertyInfo in objectType.GetProperties()
-				         .Where(p => p.GetCustomAttribute<JsonIgnoreAttribute>() != null).ToArray())
-			{
-				var property = contract.Properties.FirstOrDefault(p => p.UnderlyingName == propertyInfo.Name);
-				if (property == null)
-				{
-					continue;
-				}
-
-				property.Ignored = true;
-			}
+			ApplyIgnore(contract, objectType);
 
 			if (JsonTypesProcessor<JsonConverter>.TryProcessType(_json, objectType, typeof(NewtonsoftJsonConverter<>))
 			    is JsonConverter converter)
@@ -58,6 +57,41 @@ namespace Shintio.Json.Newtonsoft.Common
 			}
 
 			return contract;
+		}
+
+		private void ApplyIgnore(JsonObjectContract contract, Type type)
+		{
+			var jsonObjectAttribute = type.GetCustomAttribute<JsonObjectAttribute>();
+			var memberSerialization = jsonObjectAttribute?.MemberSerialization ?? MemberSerialization.OptOut;
+			
+			foreach (var propertyInfo in type.GetProperties())
+			{
+				var property = contract.Properties.FirstOrDefault(p => p.UnderlyingName == propertyInfo.Name);
+				if (property == null)
+				{
+					continue;
+				}
+				
+				property.Ignored = IsIgnored(propertyInfo, memberSerialization);
+			}
+		}
+
+		private bool IsIgnored(MemberInfo memberInfo, MemberSerialization memberSerialization)
+		{
+			switch (memberSerialization)
+			{
+				case MemberSerialization.OptOut:
+					return memberInfo.GetCustomAttribute<JsonIgnoreAttribute>() != null;
+				case MemberSerialization.OptIn:
+					return memberInfo.GetCustomAttribute<JsonPropertyAttribute>() == null;
+				case MemberSerialization.Fields:
+					// TODO
+					break;
+				default:
+					return false;
+			}
+
+			return false;
 		}
 
 		private ObjectConstructor<object> CreateParameterizedConstructor(MethodBase method)

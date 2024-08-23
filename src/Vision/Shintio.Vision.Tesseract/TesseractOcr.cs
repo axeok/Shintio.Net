@@ -1,5 +1,4 @@
 ﻿using LibGit2Sharp;
-using Shintio.Git.Services;
 using Shintio.Vision.Abstractions;
 using Tesseract;
 
@@ -10,11 +9,46 @@ public class TesseractOcr : IOcr
 	private const string DataPath = "tessdata";
 	private const string DataRepository = "https://github.com/tesseract-ocr/tessdata.git";
 
-	public async Task Initialize(Action<string> log)
-	{
-		var service = new GitService(DataPath, DataRepository, log);
+	private int _lastReceivedObjects = -1;
 
-		await service.Initialize();
+	public Task Initialize(Action<string> log)
+	{
+		if (!Repository.IsValid(DataPath))
+		{
+			var options = new CloneOptions()
+			{
+				FetchOptions =
+				{
+					OnProgress = output =>
+					{
+						log(output);
+
+						return true;
+					},
+					OnTransferProgress = progress =>
+					{
+						if (_lastReceivedObjects == progress.ReceivedObjects)
+						{
+							return true;
+						}
+
+						log($"Received {progress.ReceivedObjects}/{progress.TotalObjects} objects");
+						_lastReceivedObjects = progress.ReceivedObjects;
+
+						return true;
+					},
+				},
+				OnCheckoutProgress = (path, steps, totalSteps) =>
+				{
+					log($"Cloning Tesseract data({steps}/{totalSteps}): {path}");
+				}
+			};
+
+			log("Cloning Tesseract data...");
+			Repository.Clone(DataRepository, DataPath, options);
+		}
+
+		return Task.CompletedTask;
 	}
 
 	public async Task<string> GetText(byte[] image, string language)

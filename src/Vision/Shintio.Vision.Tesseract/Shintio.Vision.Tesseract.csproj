@@ -8,11 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Misc\Shintio.Git\Shintio.Git.csproj" />
         <ProjectReference Include="..\Shintio.Vision.Abstractions\Shintio.Vision.Abstractions.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="LibGit2Sharp" Version="0.30.0"/>
         <PackageReference Include="Tesseract" Version="5.2.0">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
