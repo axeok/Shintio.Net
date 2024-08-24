@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
@@ -139,7 +140,32 @@ public class JsonTypeInfoResolver : DefaultJsonTypeInfoResolver
 				{
 					if (i < parameterCount)
 					{
-						typeArguments[i + 1] = parameters[i].ParameterType;
+						// if (typeToConvert.FullName == "Shintio.Math.Common.Vector3")
+						// {
+						// 	var result = new StringBuilder();
+						//
+						// 	var type = typeToConvert.GetProperties()
+						// 		.FirstOrDefault(p =>
+						// 			p.Name.ToLowerInvariant().Contains(parameters[i].Name.ToLowerInvariant()))?
+						// 		.PropertyType ?? typeToConvert.GetFields()
+						// 		.FirstOrDefault(p =>
+						// 			p.Name.ToLowerInvariant().Contains(parameters[i].Name.ToLowerInvariant()))?
+						// 		.FieldType ?? parameters[i].ParameterType;
+						//
+						// 	result.AppendLine(constructor.ToString());
+						// 	result.AppendLine(type.FullName);
+						// 	result.AppendLine(parameters[i].ParameterType.FullName);
+						// 	
+						// 	throw new Exception(result.ToString());
+						// }
+						typeArguments[i + 1] = typeToConvert.GetProperties()
+							.FirstOrDefault(p =>
+								p.Name.ToLowerInvariant().Contains(parameters[i].Name.ToLowerInvariant()))?
+							.PropertyType ?? typeToConvert.GetFields()
+							.FirstOrDefault(p =>
+								p.Name.ToLowerInvariant().Contains(parameters[i].Name.ToLowerInvariant()))?
+							.FieldType ?? parameters[i].ParameterType;
+						// typeArguments[i + 1] = parameters[i].ParameterType;
 					}
 					else
 					{

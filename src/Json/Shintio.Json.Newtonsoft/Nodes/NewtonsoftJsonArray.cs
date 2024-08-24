@@ -28,7 +28,10 @@ namespace Shintio.Json.Newtonsoft.Nodes
 
 		public IEnumerator<IJsonNode?> GetEnumerator()
 		{
-			return Node.Select(Create).GetEnumerator();
+			foreach (var token in Node)
+			{
+				yield return Create(token);
+			}
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
@@ -55,10 +58,14 @@ namespace Shintio.Json.Newtonsoft.Nodes
 
 		public void CopyTo(IJsonNode?[] array, int arrayIndex)
 		{
-			if (Node is ICollection<JToken> collection)
+			var list = new List<IJsonNode>();
+
+			foreach (var token in Node)
 			{
-				collection.Select(Create).ToArray().CopyTo(array, arrayIndex);
+				list.Add(Create(token));
 			}
+
+			list.ToArray().CopyTo(array, arrayIndex);
 		}
 
 		public bool Remove(IJsonNode? item)
@@ -92,7 +99,7 @@ namespace Shintio.Json.Newtonsoft.Nodes
 
 		public IJsonNode? this[int index]
 		{
-			get => Create(Node.ElementAtOrDefault(index));
+			get => index >= Node.Count ? null : Create(Node[index]);
 			set => Node[index] = value?.GetRealNode() as JToken;
 		}
 

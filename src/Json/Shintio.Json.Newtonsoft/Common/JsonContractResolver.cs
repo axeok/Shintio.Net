@@ -47,11 +47,19 @@ namespace Shintio.Json.Newtonsoft.Common
 				if (constructorInfo != null)
 				{
 					contract.OverrideCreator = CreateParameterizedConstructor(constructorInfo);
-					contract.CreatorParameters.Clear();
+					
+					// fix for RAGE MP
+					// contract.CreatorParameters.Clear();
+					var creatorParametersProperty = contract.GetType().GetProperty("CreatorParameters")!;
+					creatorParametersProperty.PropertyType.GetMethod("Clear")!
+						.Invoke(creatorParametersProperty.GetValue(contract), new object[] { });
 
 					foreach (var property in CreateConstructorParameters(constructorInfo, contract.Properties))
 					{
-						contract.CreatorParameters.Add(property);
+						// fix for RAGE MP
+						// contract.CreatorParameters.Add(property);
+						creatorParametersProperty.PropertyType.GetMethod("Add")!
+							.Invoke(creatorParametersProperty.GetValue(contract), new object[] { property });
 					}
 				}
 			}
@@ -66,7 +74,11 @@ namespace Shintio.Json.Newtonsoft.Common
 			
 			foreach (var propertyInfo in type.GetProperties())
 			{
-				var property = contract.Properties.FirstOrDefault(p => p.UnderlyingName == propertyInfo.Name);
+				// fix for RAGE MP
+				// var property = contract.Properties.FirstOrDefault(p => p.UnderlyingName == propertyInfo.Name);
+				var properties =
+					(IEnumerable<JsonProperty>)contract.GetType().GetProperty("Properties")!.GetValue(contract);
+				var property = properties.FirstOrDefault(p => p.UnderlyingName == propertyInfo.Name);
 				if (property == null)
 				{
 					continue;

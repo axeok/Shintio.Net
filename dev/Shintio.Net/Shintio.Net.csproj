@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\Json\Shintio.Json.Newtonsoft\Shintio.Json.Newtonsoft.csproj" />
       <ProjectReference Include="..\..\src\Shintio.Hosting\Shintio.Hosting.csproj" />
       <ProjectReference Include="..\..\src\Vision\Shintio.Vision.Tesseract\Shintio.Vision.Tesseract.csproj" />
     </ItemGroup>

@@ -1,4 +1,6 @@
-﻿using Shintio.Json.Attributes;
+﻿using Shintio.Essentials.Converters;
+using Shintio.Essentials.Interfaces;
+using Shintio.Json.Attributes;
 
 namespace Shintio.Net
 {
@@ -20,7 +22,28 @@ namespace Shintio.Net
 			Name = "asd";
 		}
 
-		[JsonIgnore] public int Id { get; set; }
+		public int Id { get; set; }
 		public string Name { get; set; }
+	}
+
+	[JsonConverter(typeof(HasDiscriminatorJsonConverter<A>), false)]
+	public abstract class A : IHasDiscriminator
+	{
+		public A()
+		{
+			Discriminator = GetType().Name;
+		}
+
+		public string Discriminator { get; }
+	}
+
+	public class B : A
+	{
+		public int X { get; set; } = 5;
+	}
+
+	public class C : A
+	{
+		[JsonIgnore]public int Y { get; set; } = 10;
 	}
 }
