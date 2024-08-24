@@ -1,5 +1,9 @@
-﻿using Shintio.Json.Interfaces;
+﻿using System.Collections.ObjectModel;
+using Shintio.Json.Interfaces;
+using Shintio.Json.Newtonsoft.Common;
 using Shintio.Json.Nodes;
+using Shintio.Json.System.Common;
+using Shintio.Math.Common;
 using Shintio.Net.Tests.Models;
 
 namespace Shintio.Net.Tests.Json;
@@ -187,5 +191,98 @@ public abstract class JsonTestBase<TJson> where TJson : IJson, new()
 		Assert.NotNull(result);
 		Assert.Equal(3, result.Number);
 		Assert.Equal("qwe", result.Row);
+	}
+
+	[Fact]
+	public void SerializeReadOnlyCollection()
+	{
+		Assert.Equal(
+			"[0,5,999]",
+			_json.Serialize(new ReadOnlyCollection<int>([0, 5, 999]))
+		);
+	}
+
+	[Fact]
+	public void DeserializeReadOnlyCollection()
+	{
+		var result = _json.Deserialize<ReadOnlyCollection<int>>("[0,5,999]");
+
+		Assert.NotNull(result);
+		Assert.Equal(0, result[0]);
+		Assert.Equal(5, result[1]);
+		Assert.Equal(999, result[2]);
+	}
+
+	[Fact]
+	public void SerializeReadOnlyDictionary()
+	{
+		Assert.Equal(
+			"{\"q\":0,\"w\":5,\"e\":999}",
+			_json.Serialize(new ReadOnlyDictionary<string, int>(new Dictionary<string, int>()
+			{
+				["q"] = 0,
+				["w"] = 5,
+				["e"] = 999,
+			}))
+		);
+	}
+
+	[Fact]
+	public void DeserializeReadOnlyDictionary()
+	{
+		var result = _json.Deserialize<ReadOnlyDictionary<string, int>>("{\"q\":0,\"w\":5,\"e\":999}");
+
+		Assert.NotNull(result);
+		Assert.Equal(0, result["q"]);
+		Assert.Equal(5, result["w"]);
+		Assert.Equal(999, result["e"]);
+	}
+
+	[Fact]
+	public void SerializeVector3()
+	{
+		if (_json is NewtonsoftJson)
+		{
+			Assert.Equal(
+				"{\"X\":1.0,\"Y\":5.0,\"Z\":999.0}",
+				_json.Serialize(new Vector3(1, 5, 999))
+			);
+		}
+		else if (_json is SystemJson)
+		{
+			Assert.Equal(
+				"{\"X\":1,\"Y\":5,\"Z\":999}",
+				_json.Serialize(new Vector3(1, 5, 999))
+			);
+		}
+	}
+
+	[Fact]
+	public void DeserializeVector3()
+	{
+		var result = _json.Deserialize<Vector3>("{\"X\":1.0,\"Y\":5.0,\"Z\":999.0}");
+
+		Assert.NotNull(result);
+		Assert.Equal(1, result.X);
+		Assert.Equal(5, result.Y);
+		Assert.Equal(999, result.Z);
+	}
+
+	[Fact]
+	public void SerializeDataCollection()
+	{
+		Assert.Equal(
+			"\"Value1\"",
+			_json.Serialize(TestDataCollection.Value1)
+		);
+	}
+
+	[Fact]
+	public void DeserializeDataCollection()
+	{
+		var result = _json.Deserialize<TestDataCollection>("\"Value1\"");
+
+		Assert.NotNull(result);
+		Assert.Equal(TestDataCollection.Value1, result);
 	}
 }
