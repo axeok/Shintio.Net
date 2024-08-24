@@ -21,6 +21,8 @@ namespace Shintio.Json.Newtonsoft.Nodes
 			set => Node[propertyName] = (value as NewtonsoftJsonNode<TNode>)?.Node;
 		}
 
+		public string Path => Node.Path;
+
 		public object GetRealNode()
 		{
 			return Node;

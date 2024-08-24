@@ -90,5 +90,12 @@ namespace Shintio.Essentials.Extensions.ReflectionExtensions
 
 			return null;
 		}
+
+		public static bool IsNullable(this Type type)
+		{
+			
+			// TODO: добавить проверку на ? рядом с типом. 
+			return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+		}
 	}
 }

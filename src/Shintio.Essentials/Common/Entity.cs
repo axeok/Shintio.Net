@@ -1,5 +1,8 @@
 ﻿using System;
+
+#if NETCOREAPP2_2_OR_GREATER
 using System.ComponentModel.DataAnnotations;
+#endif
 
 namespace Shintio.Essentials.Common
 {
@@ -23,7 +26,10 @@ namespace Shintio.Essentials.Common
 
 		private const string ProxyPrefix = "Castle.Proxies.";
 
-		[Key] public TId Id { get; set; } = default(TId)!;
+#if NETCOREAPP2_2_OR_GREATER
+		[Key]
+#endif
+		public TId Id { get; set; } = default(TId)!;
 
 		public virtual bool IsTransient()
 		{

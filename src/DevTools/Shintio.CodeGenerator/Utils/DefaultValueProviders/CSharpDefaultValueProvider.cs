@@ -6,6 +6,8 @@ using Shintio.CodeGenerator.Extensions;
 using Shintio.Essentials.Common;
 using Shintio.Json.Nodes;
 using Shintio.Json.Utils;
+using Shintio.Localization.Interfaces;
+using Shintio.Localization.ValueObjects;
 
 namespace Shintio.CodeGenerator.Utils.DefaultValueProviders;
 
@@ -51,6 +53,11 @@ public class CSharpDefaultValueProvider : BaseDefaultValueProvider
 		if (type.BaseType?.Name == "DataCollection")
 		{
 			return "null!";
+		}
+		
+		if (type == typeof(IHasTranslation))
+		{
+			return $"new {typeof(StringContainer).FullName}()";
 		}
 
 		var typeString = type.GetTypeString();

@@ -52,6 +52,11 @@ namespace Shintio.Essentials.Utils.Random
 			return Int(100) <= chance;
 		}
 
+		public bool Bool(float chance)
+		{
+			return Float(100) <= chance;
+		}
+
 		public float Sign(int chance = 50)
 		{
 			return Bool(chance) ? -1 : 1;

@@ -23,6 +23,8 @@ namespace Shintio.Json.System.Nodes
 			set => Node[propertyName] = (value as SystemJsonNode<TNode>)?.Node;
 		}
 
+		public string Path => Node.GetPath();
+
 		public object GetRealNode()
 		{
 			return Node;

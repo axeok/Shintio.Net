@@ -9,8 +9,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Json\Shintio.Json\Shintio.Json.csproj" />
-	  <ProjectReference Include="..\Shintio.Essentials\Shintio.Essentials.csproj" />
+	  <ProjectReference Include="..\..\Json\Shintio.Json\Shintio.Json.csproj" />
+	  <ProjectReference Include="..\..\Shintio.Essentials\Shintio.Essentials.csproj" />
 	</ItemGroup>
 
 </Project>

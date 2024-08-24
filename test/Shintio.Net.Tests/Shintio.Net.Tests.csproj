@@ -23,7 +23,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\src\Json\Shintio.Json.Newtonsoft\Shintio.Json.Newtonsoft.csproj" />
       <ProjectReference Include="..\..\src\Json\Shintio.Json.System\Shintio.Json.System.csproj" />
-      <ProjectReference Include="..\..\src\Shintio.Math\Shintio.Math.csproj" />
+      <ProjectReference Include="..\..\src\Misc\Shintio.Math\Shintio.Math.csproj" />
     </ItemGroup>
 
 </Project>
