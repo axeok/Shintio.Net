@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Shintio.Json.Enums;
@@ -24,12 +25,13 @@ namespace Shintio.Json.Newtonsoft.Common
 			_serializerSettings.Converters.Add(new JsonObjectConverter());
 			_serializerSettings.Converters.Add(new JsonValueConverter());
 
-			try
-			{
-				JsonConvert.DefaultSettings = GetSettings;
-			}
-			catch
-			{
+			// TODO: axe json
+			// try
+			// {
+			// 	JsonConvert.DefaultSettings = GetSettings;
+			// }
+			// catch(TargetInvocationException ex)
+			// {
 				var property = typeof(JsonConvert).GetProperty(nameof(JsonConvert.DefaultSettings));
 				if (property != null && property.CanWrite)
 				{
@@ -37,7 +39,7 @@ namespace Shintio.Json.Newtonsoft.Common
 
 					property.SetValue(null, settingsFunc);
 				}
-			}
+			// }
 		}
 
 		private JsonSerializerSettings GetSettings()
