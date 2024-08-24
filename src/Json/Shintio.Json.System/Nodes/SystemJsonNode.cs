@@ -20,7 +20,7 @@ namespace Shintio.Json.System.Nodes
 		public IJsonNode? this[string propertyName]
 		{
 			get => Create(Node[propertyName]);
-			set => Node[propertyName] = (value as SystemJsonNode<TNode>)?.Node;
+			set => Node[propertyName] = value?.GetRealNode() as BaseNode;
 		}
 
 		public string Path => Node.GetPath();

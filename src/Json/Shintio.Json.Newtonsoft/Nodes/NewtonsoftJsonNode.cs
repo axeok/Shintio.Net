@@ -18,7 +18,7 @@ namespace Shintio.Json.Newtonsoft.Nodes
 		public IJsonNode? this[string propertyName]
 		{
 			get => Create(Node[propertyName]);
-			set => Node[propertyName] = (value as NewtonsoftJsonNode<TNode>)?.Node;
+			set => Node[propertyName] = value?.GetRealNode() as JToken;
 		}
 
 		public string Path => Node.Path;

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Shintio.Json.Nodes;
@@ -27,6 +28,11 @@ namespace Shintio.Json.Newtonsoft.Nodes
 			{
 				yield return new KeyValuePair<string, IJsonNode?>(key, Create(value));
 			}
+		}
+
+		public bool ContainsKey(string key)
+		{
+			return Node.ContainsKey(key);
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()

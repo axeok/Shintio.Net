@@ -29,6 +29,11 @@ namespace Shintio.Json.System.Nodes
 			}
 		}
 
+		public bool ContainsKey(string key)
+		{
+			return Node.ContainsKey(key);
+		}
+
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
