@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Shintio.Essentials.Common;
 using Shintio.Essentials.Interfaces;
 using Shintio.Json.Common;
