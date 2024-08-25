@@ -5,7 +5,7 @@ using Shintio.Localization.Enums;
 
 namespace Shintio.Localization.Interfaces
 {
-	[JsonConverter(typeof(HasDiscriminatorJsonConverter<IHasTranslation>))]
+	[JsonConverter(typeof(HasDiscriminatorJsonConverter<IHasTranslation>), false)]
 	public interface IHasTranslation : IHasDiscriminator
 	{
 		string Get(II18N i18N, Language language);

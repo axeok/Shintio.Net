@@ -82,7 +82,11 @@ namespace Shintio.Essentials.Extensions
 			}
 		}
 
+#if NETCOREAPP3_0_OR_GREATER
 		public static T? Random<T>(this List<T> loot) where T : class, IChanceItem
+#else
+		public static T Random<T>(this List<T> loot) where T : class, IChanceItem
+#endif
 		{
 			var count = loot.Count;
 

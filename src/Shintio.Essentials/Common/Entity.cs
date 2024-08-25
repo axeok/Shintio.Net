@@ -1,9 +1,5 @@
 ﻿using System;
 
-#if NETCOREAPP2_2_OR_GREATER
-using System.ComponentModel.DataAnnotations;
-#endif
-
 namespace Shintio.Essentials.Common
 {
 	public abstract class Entity : Entity<int>
@@ -27,7 +23,7 @@ namespace Shintio.Essentials.Common
 		private const string ProxyPrefix = "Castle.Proxies.";
 
 #if NETCOREAPP2_2_OR_GREATER
-		[Key]
+		[System.ComponentModel.DataAnnotations.Key]
 #endif
 		public TId Id { get; set; } = default(TId)!;
 

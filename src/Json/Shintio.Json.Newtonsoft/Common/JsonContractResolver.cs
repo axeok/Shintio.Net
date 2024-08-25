@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using global::Newtonsoft.Json;
+using global::Newtonsoft.Json.Serialization;
 using Shintio.Json.Common;
 using Shintio.Json.Interfaces;
 using JsonConstructorAttribute = Shintio.Json.Attributes.JsonConstructorAttribute;

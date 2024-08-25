@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Shintio.Essentials.Common;
 using Shintio.Essentials.Interfaces;
 using Shintio.Json.Common;
 using Shintio.Json.Interfaces;
@@ -13,7 +14,7 @@ namespace Shintio.Essentials.Converters
 			new Dictionary<Type, Dictionary<string, Type>>();
 	}
 
-	public class HasDiscriminatorJsonConverter<T> : JsonConverter<T>
+	public class HasDiscriminatorJsonConverter<T> : JsonConverter<T> where T : class, IHasDiscriminator
 	{
 		public override bool CanWrite { get; } = false;
 
@@ -27,13 +28,7 @@ namespace Shintio.Essentials.Converters
 		public override T Read(IJsonReader reader, Type type)
 #endif
 		{
-			var json = reader.GetFullJson();
-			if (json == null)
-			{
-				return default;
-			}
-
-			var jsonObject = Converter.ParseNode(json);
+			var jsonObject = reader.GetObject();
 			if (jsonObject == null)
 			{
 				return default;
@@ -44,11 +39,16 @@ namespace Shintio.Essentials.Converters
 			{
 				return default;
 			}
-
+			
 			var concreteType = GetConcreteType(type, discriminator);
 			if (concreteType == null)
 			{
 				return default;
+			}
+
+			if (concreteType.IsSubclassOf(typeof(DataCollection)))
+			{
+				return DataCollection.TryParseOrDefault(concreteType, jsonObject[nameof(IHasKey.Key)]!.ToString()) as T;
 			}
 
 #if NETCOREAPP3_0_OR_GREATER

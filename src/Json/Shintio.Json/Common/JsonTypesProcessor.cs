@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using Shintio.Json.Attributes;
@@ -15,8 +15,9 @@ namespace Shintio.Json.Common
 		private static readonly Type ConverterAttributeType = typeof(JsonConverterAttribute);
 		private static readonly Type ShintioConverterClassType = typeof(JsonConverter<>);
 
-		private static readonly ConcurrentDictionary<Type, object?> TypesCache =
-			new ConcurrentDictionary<Type, object?>();
+		// TODO: axe json - ConcurrentDictionary not available in RAGE client
+		private static readonly Dictionary<Type, object?> TypesCache =
+			new Dictionary<Type, object?>();
 
 		private static readonly ReaderWriterLockSlim Lock = new ReaderWriterLockSlim();
 
@@ -103,7 +104,7 @@ namespace Shintio.Json.Common
 					return targetType;
 				}
 
-				targetType = targetType.BaseType;
+				targetType = targetType.GetType().GetProperty("BaseType").GetValue(targetType) as Type;
 			}
 
 			return null;

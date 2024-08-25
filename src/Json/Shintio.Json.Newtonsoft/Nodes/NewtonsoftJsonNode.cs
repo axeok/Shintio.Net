@@ -1,5 +1,5 @@
 ﻿using System;
-using Newtonsoft.Json.Linq;
+using global::Newtonsoft.Json.Linq;
 using Shintio.Json.Nodes;
 
 namespace Shintio.Json.Newtonsoft.Nodes

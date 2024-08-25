@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using global::Newtonsoft.Json;
 using Shintio.Json.Interfaces;
 
 namespace Shintio.Json.Newtonsoft.Common

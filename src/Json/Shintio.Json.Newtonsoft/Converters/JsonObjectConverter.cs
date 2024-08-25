@@ -1,6 +1,6 @@
 ﻿using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using global::Newtonsoft.Json;
+using global::Newtonsoft.Json.Linq;
 using Shintio.Json.Newtonsoft.Nodes;
 using Shintio.Json.Nodes;
 

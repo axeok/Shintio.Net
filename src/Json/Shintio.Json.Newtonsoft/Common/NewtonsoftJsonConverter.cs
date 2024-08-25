@@ -1,5 +1,5 @@
 ﻿using System;
-using Newtonsoft.Json;
+using global::Newtonsoft.Json;
 
 namespace Shintio.Json.Newtonsoft.Common
 {
@@ -15,11 +15,16 @@ namespace Shintio.Json.Newtonsoft.Common
 			_converter = converter;
 		}
 
+#if NETCOREAPP3_0_OR_GREATER
 		public override void WriteJson(JsonWriter writer, TType? value, JsonSerializer serializer)
+#else
+		public override void WriteJson(JsonWriter writer, TType value, JsonSerializer serializer)
+#endif
 		{
 			_converter.Write(new NewtonsoftJsonWriter(writer), value);
 		}
 
+#if NETCOREAPP3_0_OR_GREATER
 		public override TType? ReadJson(
 			JsonReader reader,
 			Type objectType,
@@ -27,6 +32,15 @@ namespace Shintio.Json.Newtonsoft.Common
 			bool hasExistingValue,
 			JsonSerializer serializer
 		)
+#else
+		public override TType ReadJson(
+			JsonReader reader,
+			Type objectType,
+			TType existingValue,
+			bool hasExistingValue,
+			JsonSerializer serializer
+		)
+#endif
 		{
 			return _converter.Read(new NewtonsoftJsonReader(reader), objectType);
 		}
