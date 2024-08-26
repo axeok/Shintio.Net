@@ -1,16 +1,20 @@
-﻿using Shintio.DependencyInjection.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Shintio.DependencyInjection.Interfaces;
 
 namespace Shintio.DependencyInjection.Common
 {
 	public sealed class ServiceProvider
 	{
-		private IServiceCollection _serviceCollection;
+		private readonly IServiceCollection _serviceCollection;
 
-		private Dictionary<Type, object> _services = new Dictionary<Type, object>();
+		private readonly Dictionary<Type, object> _services;
 
-		public ServiceProvider(IServiceCollection serviceCollection)
+		public ServiceProvider(IServiceCollection serviceCollection, Dictionary<Type, object> services)
 		{
 			_serviceCollection = serviceCollection;
+			_services = services;
 			_services.Add(serviceCollection.GetType(), _serviceCollection);
 			_services.Add(typeof(ServiceProvider), this);
 		}

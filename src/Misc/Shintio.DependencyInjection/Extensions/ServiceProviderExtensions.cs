@@ -1,4 +1,5 @@
-﻿using Shintio.DependencyInjection.Common;
+﻿using System;
+using Shintio.DependencyInjection.Common;
 
 namespace Shintio.DependencyInjection.Extensions
 {

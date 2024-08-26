@@ -1,4 +1,6 @@
-﻿using Shintio.DependencyInjection.Common;
+﻿using System;
+using System.Collections.Generic;
+using Shintio.DependencyInjection.Common;
 
 namespace Shintio.DependencyInjection.Interfaces
 {

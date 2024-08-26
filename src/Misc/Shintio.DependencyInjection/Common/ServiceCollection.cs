@@ -1,10 +1,13 @@
-﻿using Shintio.DependencyInjection.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using Shintio.DependencyInjection.Interfaces;
 
 namespace Shintio.DependencyInjection.Common
 {
 	public class ServiceCollection : IServiceCollection
 	{
 		private readonly Dictionary<Type, Type> _servicesMap = new Dictionary<Type, Type>();
+		private readonly Dictionary<Type, object> _implementations = new Dictionary<Type, object>();
 
 		public ServiceCollection()
 		{
@@ -28,6 +31,17 @@ namespace Shintio.DependencyInjection.Common
 			return this;
 		}
 
+		public IServiceCollection AddSingleton<TService>(TService implementation)
+			where TService : class
+		{
+			var serviceType = typeof(TService);
+			
+			_servicesMap[serviceType] = implementation.GetType();
+			_implementations[serviceType] = implementation;
+
+			return this;
+		}
+
 		public IEnumerable<Type> GetAllServices()
 		{
 			return _servicesMap.Keys;
@@ -35,7 +49,7 @@ namespace Shintio.DependencyInjection.Common
 
 		public ServiceProvider BuildServiceProvider()
 		{
-			return new ServiceProvider(this);
+			return new ServiceProvider(this, _implementations);
 		}
 
 		public Type? GetService(Type serviceType)
