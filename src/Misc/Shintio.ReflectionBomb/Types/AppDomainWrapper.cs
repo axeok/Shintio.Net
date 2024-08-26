@@ -30,5 +30,10 @@ namespace Shintio.ReflectionBomb.Types
 				.Select(a => new AssemblyWrapper(a));
 #endif
 		}
+
+		public static AssemblyWrapper? GetAssembly(string partOfName)
+		{
+			return GetAssemblies().FirstOrDefault(a => a.FullName.Contains(partOfName));
+		}
 	}
 }

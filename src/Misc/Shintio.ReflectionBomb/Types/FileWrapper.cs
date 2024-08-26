@@ -7,7 +7,13 @@ namespace Shintio.ReflectionBomb.Types
 {
 	public static class FileWrapper
 	{
-		public static readonly Type FileType = GetFileType();
+		public static readonly Type FileType =
+#if NETCOREAPP3_0_OR_GREATER
+			TypesHelper.GetType(TypesHelper.TypeFromSystem, "System", "IO", "File")!;
+#else
+			AppDomainWrapper.GetAssembly("System." + "IO" + ".FileSystem")!.GetNativeType("System." + "IO" +
+				".File")!;
+#endif
 
 		private static readonly MethodInfo ExistsMethod = FileType.GetMethod("Exists")!;
 		private static readonly MethodInfo ReadAllBytesMethod = FileType.GetMethod("ReadAllBytes")!;
@@ -27,26 +33,6 @@ namespace Shintio.ReflectionBomb.Types
 			var bytes = ReadAllBytes(path);
 
 			return Encoding.UTF8.GetString(bytes);
-		}
-
-		private static Type GetFileType()
-		{
-			var possibleNames = new[]
-			{
-				new[] { "System", "IO", "File" },
-				new[] { "Internal", "IO", "File" },
-			};
-
-			foreach (var name in possibleNames)
-			{
-				var type = TypesHelper.GetType(TypesHelper.TypeFromSystem, name);
-				if (type != null)
-				{
-					return type;
-				}
-			}
-
-			throw new Exception("File type not found");
 		}
 	}
 }
