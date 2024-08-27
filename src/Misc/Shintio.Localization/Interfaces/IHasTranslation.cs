@@ -8,6 +8,7 @@ namespace Shintio.Localization.Interfaces
 	[JsonConverter(typeof(HasDiscriminatorJsonConverter<IHasTranslation>), false)]
 	public interface IHasTranslation : IHasDiscriminator
 	{
-		string Get(II18N i18N, Language language);
+		public string Get(II18N i18N, Language language);
+		public string GetRaw();
 	}
 }

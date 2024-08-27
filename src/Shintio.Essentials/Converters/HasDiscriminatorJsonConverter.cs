@@ -69,14 +69,14 @@ namespace Shintio.Essentials.Converters
 			// На клиенте RAGE MP нет доступа к сборкам(Assembly), поэтому типы нельзя получить автоматически и нужно задавать вручную
 			// Для этого есть генерато HasDiscriminatorTypesGenerator
 #if NETCOREAPP3_0_OR_GREATER
-			if (!HasDiscriminatorJsonConverter.TypesMap[parent].ContainsKey(discriminator))
-			{
-				HasDiscriminatorJsonConverter.TypesMap[parent].Add(
-					discriminator,
-					parent.Assembly.GetTypes()
-						.FirstOrDefault(t => parent.IsAssignableFrom(t) && t.Name == discriminator)
-				);
-			}
+			// if (!HasDiscriminatorJsonConverter.TypesMap[parent].ContainsKey(discriminator))
+			// {
+			// 	HasDiscriminatorJsonConverter.TypesMap[parent].Add(
+			// 		discriminator,
+			// 		parent.Assembly.GetTypes()
+			// 			.FirstOrDefault(t => parent.IsAssignableFrom(t) && t.Name == discriminator)
+			// 	);
+			// }
 #endif
 
 			HasDiscriminatorJsonConverter.TypesMap[parent].TryGetValue(discriminator, out var type);

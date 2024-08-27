@@ -31,6 +31,11 @@ namespace Shintio.Localization.ValueObjects
 			return Value;
 		}
 		
+		public string GetRaw()
+		{
+			return Value;
+		}
+		
 		protected override IEnumerable<object?> GetEqualityComponents()
 		{
 			yield return Value;
