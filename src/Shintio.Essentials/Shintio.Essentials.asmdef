@@ -1,0 +1,7 @@
+﻿{
+  "name": "Shintio.Essentials",
+  "rootNamespace": "Shintio.Essentials",
+  "references": [
+    "Shintio.Json"
+  ]
+}
