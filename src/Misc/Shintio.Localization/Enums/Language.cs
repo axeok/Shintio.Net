@@ -2,11 +2,10 @@
 {
 	public enum Language : int
 	{
-		Default = Ru,
-		En = 0,
-		Ru = 1,
-		Uk = 2,
-		Ge = 3,
-		Ka = Ge,
+		Unknown = 0,
+		En = 1,
+		Ru = 2,
+		Uk = 3,
+		Ka = 4,
 	}
 }
