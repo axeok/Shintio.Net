@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Shintio.Essentials.Interfaces;
 
@@ -9,13 +10,25 @@ namespace Shintio.Essentials.Extensions
 	public static class EnumerableExtensions
 	{
 #if NETCOREAPP3_0_OR_GREATER
-        public static async Task WriteTo(this IAsyncEnumerable<string> source, Action<string> action)
-        {
-            await foreach (var item in source)
-            {
-                action(item);
-            }
-        }
+		public static async Task WriteTo(this IAsyncEnumerable<string> source, Action<string> action)
+		{
+			await foreach (var item in source)
+			{
+				action(item);
+			}
+		}
+		
+		public static async Task<string> Join(this IAsyncEnumerable<string> source)
+		{
+			var result = new StringBuilder();
+			
+			await foreach (var item in source)
+			{
+				result.Append(item);
+			}
+			
+			return result.ToString();
+		}
 #endif
 
 		public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> enumerable)
