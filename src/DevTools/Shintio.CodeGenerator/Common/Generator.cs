@@ -4,11 +4,27 @@ using Shintio.CodeGenerator.Interfaces;
 using Shintio.CodeGenerator.Models;
 using Shintio.CodeGenerator.Utils;
 using Shintio.CodeProcessor.Utils;
+using Shintio.Essentials.Extensions;
 
 namespace Shintio.CodeGenerator.Common;
 
 public abstract class Generator : IGenerator
 {
+	private static object _lock = new();
+
+	private readonly string _name;
+	private readonly ConsoleColor _color;
+
+	public Generator()
+	{
+		_name = GetType().Name;
+
+		var colors = Enum.GetValues<ConsoleColor>()
+			.Exclude(ConsoleColor.White, ConsoleColor.Gray, ConsoleColor.Black)
+			.ToArray();
+		_color = colors[Math.Abs(_name.Sum(c => c)) % (colors.Length - 1)];
+	}
+
 	public async Task Load()
 	{
 		var stopwatch = Stopwatch.StartNew();
@@ -16,7 +32,7 @@ public abstract class Generator : IGenerator
 		await Preload();
 
 		stopwatch.Stop();
-		Console.WriteLine($"{GetType().Name} preloaded in {stopwatch.ElapsedMilliseconds}ms");
+		Log($"preloaded in {stopwatch.ElapsedMilliseconds}ms");
 	}
 
 	public async Task<IEnumerable<FileResult>> Run()
@@ -26,13 +42,20 @@ public abstract class Generator : IGenerator
 		var stopwatch = Stopwatch.StartNew();
 		foreach (var template in GetTemplates())
 		{
+			var templateStopwatch = Stopwatch.StartNew();
 			files.AddRange((await template.Run()).Select(p => new FileResult(
 				p.Key,
 				template.ProjectInfo,
 				template.CodeLanguage,
 				p.Value
 			)));
+			templateStopwatch.Stop();
+			Log($"{template.GetType().Name} runned in {templateStopwatch.ElapsedMilliseconds}ms");
 		}
+
+		stopwatch.Stop();
+		Log($"generated in {stopwatch.ElapsedMilliseconds}ms");
+		stopwatch.Restart();
 
 		var sharp = new Dictionary<ProjectInfo, List<FileResult>>();
 		foreach (var file in files.ToArray())
@@ -75,11 +98,24 @@ public abstract class Generator : IGenerator
 		}
 
 		stopwatch.Stop();
-		Console.WriteLine($"{GetType().Name} generated in {stopwatch.ElapsedMilliseconds}ms");
+		Log($"formatted in {stopwatch.ElapsedMilliseconds}ms");
 
 		return files;
 	}
 
 	protected abstract Task Preload();
 	protected abstract IEnumerable<ITemplate> GetTemplates();
+
+	private void Log(string message)
+	{
+		lock (_lock)
+		{
+			var oldColor = Console.ForegroundColor;
+			Console.Write("[");
+			Console.ForegroundColor = _color;
+			Console.Write(_name);
+			Console.ForegroundColor = oldColor;
+			Console.WriteLine($"] {message}");
+		}
+	}
 }
