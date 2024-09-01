@@ -35,6 +35,11 @@ namespace Shintio.Json.Newtonsoft.Nodes
 			return Node.ContainsKey(key);
 		}
 
+		public bool Remove(string key)
+		{
+			return Node.Remove(key);
+		}
+
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();

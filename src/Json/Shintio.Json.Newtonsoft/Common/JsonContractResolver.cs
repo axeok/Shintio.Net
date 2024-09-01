@@ -42,7 +42,7 @@ namespace Shintio.Json.Newtonsoft.Common
 			}
 			else
 			{
-				var constructorInfo = objectType.GetConstructors()
+				var constructorInfo = objectType.GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
 					.FirstOrDefault(c => c.GetCustomAttribute<JsonConstructorAttribute>() != null);
 				if (constructorInfo != null)
 				{

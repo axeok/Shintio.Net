@@ -25,21 +25,9 @@ namespace Shintio.Json.Newtonsoft.Common
 			_serializerSettings.Converters.Add(new JsonObjectConverter());
 			_serializerSettings.Converters.Add(new JsonValueConverter());
 
-			// TODO: axe json
-			// try
-			// {
-			// 	JsonConvert.DefaultSettings = GetSettings;
-			// }
-			// catch(TargetInvocationException ex)
-			// {
-				var property = typeof(JsonConvert).GetProperty(nameof(JsonConvert.DefaultSettings));
-				if (property != null && property.CanWrite)
-				{
-					Func<JsonSerializerSettings> settingsFunc = GetSettings;
-
-					property.SetValue(null, settingsFunc);
-				}
-			// }
+			var property = typeof(JsonConvert).GetProperty(nameof(JsonConvert.DefaultSettings))!;
+			var settingsDelegate = Delegate.CreateDelegate(property.PropertyType, this, nameof(GetSettings));
+			property.SetValue(null, settingsDelegate);
 		}
 
 		private JsonSerializerSettings GetSettings()

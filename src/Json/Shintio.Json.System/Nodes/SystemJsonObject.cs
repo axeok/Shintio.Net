@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text.Json.Nodes;
 using Shintio.Json.Nodes;
@@ -32,6 +33,11 @@ namespace Shintio.Json.System.Nodes
 		public bool ContainsKey(string key)
 		{
 			return Node.ContainsKey(key);
+		}
+
+		public bool Remove(string key)
+		{
+			return Node.Remove(key);
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()

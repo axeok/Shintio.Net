@@ -90,7 +90,7 @@ public class JsonTypeInfoResolver : DefaultJsonTypeInfoResolver
 		if (JsonTypesProcessor<JsonConverter>.TryProcessType(_json, type, typeof(SystemJsonConverter<>)) is not
 		    JsonConverter converter)
 		{
-			var constructorInfo = type.GetConstructors()
+			var constructorInfo = type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
 				.FirstOrDefault(c => c.GetCustomAttribute<JsonConstructorAttribute>() != null);
 			if (constructorInfo != null)
 			{
