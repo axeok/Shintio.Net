@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Shintio.Essentials.Enums;
-using Shintio.Essentials.Interfaces;
+using Shintio.Unity.Enums;
+using Shintio.Unity.Interfaces;
 using Shintio.Unity.Utils;
 using TMPro;
 using UnityEngine;

@@ -1,4 +1,4 @@
-﻿using Shintio.Essentials.Interfaces.Managers;
+﻿using Shintio.Unity.Interfaces.Managers;
 using UnityEngine;
 using Zenject;
 
