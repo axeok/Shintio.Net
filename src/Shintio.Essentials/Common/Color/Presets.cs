@@ -19,6 +19,7 @@ namespace Shintio.Essentials.Common
         public static readonly Color LightBlue = new Color(0, 212, 252);
         public static readonly Color LighterBlue = new Color(173, 223, 255);
 
+        // TODO: убрать в проект Роксланда
         public static readonly Color Roxland = new Color(49, 24, 148);
 
         public static readonly Color Error = new Color(255, 81, 38);

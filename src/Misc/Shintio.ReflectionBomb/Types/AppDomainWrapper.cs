@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
+using System.Threading;
 using Shintio.ReflectionBomb.Utils;
 
 namespace Shintio.ReflectionBomb.Types
@@ -10,8 +12,16 @@ namespace Shintio.ReflectionBomb.Types
 	{
 		public static readonly Type AppDomainType =
 			TypesHelper.GetType(TypesHelper.TypeFromSystem, "System", "AppDomain")!;
+		
+		public static readonly Type ThreadType =
+			TypesHelper.GetType(TypesHelper.TypeFromSystem, "System.Threading", "Thread")!;
+		
+		public static readonly Type AppContextType =
+			TypesHelper.GetType(TypesHelper.TypeFromSystem, "System", "AppContext")!;
 
-		private static readonly PropertyInfo CurrentDomainProperty = AppDomainType.GetProperty("CurrentDomain")!;
+		public static readonly PropertyInfo CurrentDomainProperty = AppDomainType.GetProperty("CurrentDomain")!;
+		
+		public static readonly PropertyInfo CurrentThreadProperty = ThreadType.GetProperty("CurrentThread")!;
 
 		public static IEnumerable<AssemblyWrapper> GetAssemblies()
 		{
@@ -34,6 +44,27 @@ namespace Shintio.ReflectionBomb.Types
 		public static AssemblyWrapper? GetAssembly(string partOfName)
 		{
 			return GetAssemblies().FirstOrDefault(a => a.FullName.Contains(partOfName));
+		}
+		
+		public static int GetCurrentThreadId()
+		{
+			return (int)ThreadType.GetProperty("ManagedThreadId")!.GetValue(CurrentThreadProperty.GetValue(null));
+		}
+
+		public static void SubscribeToUnhandledException(UnhandledExceptionEventHandler handler)
+		{
+			SubscribeToCurrentDomainEvent("UnhandledException", handler);
+		}
+		
+		public static void SubscribeToFirstChanceException(EventHandler<FirstChanceExceptionEventArgs> handler)
+		{
+			SubscribeToCurrentDomainEvent("FirstChanceException", handler);
+		}
+		
+		private static void SubscribeToCurrentDomainEvent(string name, Delegate handler)
+		{
+			var eventInfo = CurrentDomainProperty.PropertyType.GetEvent(name, BindingFlags.Instance | BindingFlags.Public)!;
+			eventInfo.AddEventHandler(CurrentDomainProperty.GetValue(null), handler);
 		}
 	}
 }
