@@ -25,6 +25,7 @@ namespace Shintio.ReflectionBomb.Types
 
 		public Type Type { get; }
 		public string FullName { get; }
+		public object Assembly => _assembly;
 
 		public static AssemblyWrapper Load(string path)
 		{

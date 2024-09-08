@@ -61,6 +61,11 @@ namespace Shintio.ReflectionBomb.Types
 			SubscribeToCurrentDomainEvent("FirstChanceException", handler);
 		}
 		
+		public static void SubscribeToAssemblyResolve(ResolveEventHandler handler)
+		{
+			SubscribeToCurrentDomainEvent("AssemblyResolve", handler);
+		}
+		
 		private static void SubscribeToCurrentDomainEvent(string name, Delegate handler)
 		{
 			var eventInfo = CurrentDomainProperty.PropertyType.GetEvent(name, BindingFlags.Instance | BindingFlags.Public)!;
