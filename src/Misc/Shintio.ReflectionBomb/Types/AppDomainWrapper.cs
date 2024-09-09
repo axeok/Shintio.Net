@@ -45,6 +45,17 @@ namespace Shintio.ReflectionBomb.Types
 		{
 			return GetAssemblies().FirstOrDefault(a => a.FullName.Contains(partOfName));
 		}
+
+		public static AssemblyWrapper? GetOrLoadAssembly(string name)
+		{
+			var result = GetAssembly(name);
+			if (result == null)
+			{
+				result = AssemblyWrapper.Load(name);
+			}
+
+			return result;
+		}
 		
 		public static int GetCurrentThreadId()
 		{

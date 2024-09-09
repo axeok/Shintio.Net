@@ -12,10 +12,16 @@ namespace Shintio.ReflectionBomb.Types
 			(char)PathType.GetField("DirectorySeparatorChar").GetValue(null);
 
 		private static readonly MethodInfo CombineMethod = PathType.GetMethod("Combine", new[] { typeof(string[]) })!;
+		private static readonly MethodInfo GetTempPathMethod = PathType.GetMethod("GetTempPath")!;
 
 		public static string Combine(params string[] path)
 		{
 			return (string)CombineMethod.Invoke(null, new object[] { path });
+		}
+
+		public static string GetTempPath()
+		{
+			return (string)GetTempPathMethod.Invoke(null, new object[] { });
 		}
 	}
 }

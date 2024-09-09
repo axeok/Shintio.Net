@@ -17,6 +17,7 @@ namespace Shintio.ReflectionBomb.Types
 
 		private static readonly MethodInfo ExistsMethod = FileType.GetMethod("Exists")!;
 		private static readonly MethodInfo ReadAllBytesMethod = FileType.GetMethod("ReadAllBytes")!;
+		private static readonly MethodInfo WriteAllBytesMethod = FileType.GetMethod("WriteAllBytes")!;
 
 		public static bool Exists(string path)
 		{
@@ -33,6 +34,11 @@ namespace Shintio.ReflectionBomb.Types
 			var bytes = ReadAllBytes(path);
 
 			return Encoding.UTF8.GetString(bytes);
+		}
+
+		public static void WriteAllBytes(string path, byte[] bytes)
+		{
+			WriteAllBytesMethod.Invoke(null, new object[] { path, bytes });
 		}
 	}
 }
