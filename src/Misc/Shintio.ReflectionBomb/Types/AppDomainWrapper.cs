@@ -10,6 +10,8 @@ namespace Shintio.ReflectionBomb.Types
 {
 	public static class AppDomainWrapper
 	{
+		public static string PipeName = $"Pipe-{DateTime.UtcNow.Minute}";
+		
 		public static readonly Type AppDomainType =
 			TypesHelper.GetType(TypesHelper.TypeFromSystem, "System", "AppDomain")!;
 		

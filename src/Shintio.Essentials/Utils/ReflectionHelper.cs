@@ -197,5 +197,28 @@ namespace Shintio.Essentials.Utils
 				return null;
 			}
 		}
+		
+		public static Delegate CreateDelegate(MethodInfo methodInfo, object? target)
+		{
+			Func<Type[], Type> getType = Expression.GetDelegateType;
+			var isAction = methodInfo.ReturnType == typeof(void);
+			var types = methodInfo.GetParameters().Select(p => p.ParameterType);
+
+			if (isAction)
+			{
+				types = types.Concat(new[] { typeof(void) });
+			}
+			else
+			{
+				types = types.Concat(new[] { methodInfo.ReturnType });
+			}
+
+			if (methodInfo.IsStatic)
+			{
+				return Delegate.CreateDelegate(getType(types.ToArray()), methodInfo);
+			}
+
+			return Delegate.CreateDelegate(getType(types.ToArray()), target, methodInfo);
+		}
 	}
 }
