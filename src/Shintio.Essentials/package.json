@@ -1,0 +1,9 @@
+{
+  "name": "shintio.essentials",
+  "version": "0.0.1",
+  "description": "",
+  "displayName": "Shintio.Essentials",
+  "dependencies": {
+    "shintio.json": "file:../libs/Shintio.Net/src/Json/Shintio.Json"
+  }
+}
