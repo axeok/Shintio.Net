@@ -22,5 +22,11 @@
                 Changed?.Invoke(_value);
             }
         }
+
+        public void SetValueSilently(T value)
+        {
+            _value = value;
+        }
+        }
     }
 }
