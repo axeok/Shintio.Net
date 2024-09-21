@@ -23,6 +23,8 @@ namespace Shintio.Unity.Ui.Buttons
             var adProvider = await GetAdProvider(AdType.Long);
             if (adProvider == null)
             {
+                Debug.LogWarning("No ad provider available.");
+                ToggleLoading(false);
                 return;
             }
 
