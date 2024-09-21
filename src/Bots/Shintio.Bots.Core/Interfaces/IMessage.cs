@@ -2,5 +2,5 @@
 
 public interface IMessage
 {
-    public string Text { get; }
+	public string Text { get; }
 }

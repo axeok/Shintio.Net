@@ -5,7 +5,7 @@ namespace Shintio.Bots.Telegram.Services;
 
 public abstract class TelegramBotService : BotService<TelegramBot, TelegramUser, TelegramMessage>
 {
-    public TelegramBotService(TelegramBot bot) : base(bot)
-    {
-    }
+	public TelegramBotService(TelegramBot bot) : base(bot)
+	{
+	}
 }

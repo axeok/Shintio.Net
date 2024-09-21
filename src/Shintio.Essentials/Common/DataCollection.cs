@@ -1,43 +1,31 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reflection;
-using Shintio.Essentials.Attributes;
-using Shintio.Essentials.Extensions;
 using Shintio.Essentials.Interfaces;
 
 namespace Shintio.Essentials.Common
 {
 	public abstract class DataCollection : ValueObject, IDataCollection
 	{
-		private static readonly Dictionary<Type, Dictionary<Type, int>> Ids = new Dictionary<Type, Dictionary<Type, int>>();
+		private static readonly Dictionary<Type, int> Ids = new Dictionary<Type, int>();
 
 		private static readonly Dictionary<Type, Dictionary<string, DataCollection>> AllValues =
 			new Dictionary<Type, Dictionary<string, DataCollection>>();
 
-		private static readonly Dictionary<Type, Dictionary<Type, ReadOnlyCollection<FieldInfo>>> AllFields =
-			new Dictionary<Type, Dictionary<Type, ReadOnlyCollection<FieldInfo>>>();
+		private static readonly Dictionary<Type, ReadOnlyCollection<FieldInfo>> AllFields =
+			new Dictionary<Type, ReadOnlyCollection<FieldInfo>>();
 
 		private readonly int _id;
-		private readonly Type _mainType;
-		private readonly Type _nestedType;
 
 		protected DataCollection()
 		{
-			_mainType = GetMainType();
-			
-			var skipFrames = 1;
-			MethodBase frameMethod;
-			do
-			{
-				frameMethod = new StackFrame(skipFrames).GetMethod();
-				skipFrames++;
-			} while (frameMethod.IsConstructor);
-			
-			_nestedType = frameMethod.DeclaringType!;
+			var type = GetType();
 
-			Ids.TryAdd(_mainType, new Dictionary<Type, int>());
-			Ids[_mainType].TryAdd(_nestedType, 0);
-			_id = Ids[_mainType][_nestedType]++;
+			Ids.TryAdd(type, 0);
+
+			_id = Ids[type]++;
 
 			Key = GetKeyByField();
 		}
@@ -83,7 +71,7 @@ namespace Shintio.Essentials.Common
 		{
 			if (!AllValues.ContainsKey(type))
 			{
-				AllValues[type] = GetFields(type).Values.Flatten().Select(f => f.GetValue(null)).Cast<DataCollection>().ToDictionary(
+				AllValues[type] = GetFields(type).Select(f => f.GetValue(null)).Cast<DataCollection>().ToDictionary(
 					v => v.Key,
 					v => v
 				);
@@ -120,61 +108,20 @@ namespace Shintio.Essentials.Common
 
 		#endregion
 
-		protected virtual string GetKeyByField() => $"{GetPrefix(_nestedType)}{GetFields(_mainType)[_nestedType].ElementAt(_id).Name}";
-		
-		private string GetPrefix(Type nestedType)
-		{
-			var prefix = "";
+		protected virtual string GetKeyByField() => GetFields(GetType()).ElementAt(_id).Name;
 
-			var type = nestedType;
-			while (type != null && !typeof(DataCollection).IsAssignableFrom(type))
-			{
-				prefix = $"{type.Name}_" + prefix;
-				type = type.DeclaringType;
-			}
-			
-			return prefix;
-		}
-
-		private static Dictionary<Type, ReadOnlyCollection<FieldInfo>> GetFields(Type mainType)
+		private static IEnumerable<FieldInfo> GetFields(Type type)
 		{
-			if (!AllFields.ContainsKey(mainType))
+			if (!AllFields.ContainsKey(type))
 			{
-				if (!mainType.IsSubclassOf(typeof(DataCollection)) && mainType != typeof(DataCollection))
-				{
-					return new Dictionary<Type, ReadOnlyCollection<FieldInfo>>();
-				}
-				
-				var result = new Dictionary<Type, ReadOnlyCollection<FieldInfo>>();
-				var types = GetAllTypes(mainType);
-				foreach (var type in types)
-				{
-					result[type] = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-						.Where(f => f.FieldType == mainType)
-						.ToList().AsReadOnly();
-				}
-				
-				AllFields[mainType] = result;
+				AllFields[type] = type.IsSubclassOf(typeof(DataCollection)) || type == typeof(DataCollection)
+					? type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+						.Where(f => f.FieldType == type)
+						.ToList().AsReadOnly()
+					: new List<FieldInfo>().AsReadOnly();
 			}
 
-			return AllFields[mainType];
-		}
-		
-		private static List<Type> GetAllTypes(Type type)
-		{
-			return type.GetNestedTypes().SelectMany(GetAllTypes).Prepend(type).ToList();
-		}
-
-		private static Type GetMainType(Type type)
-		{
-			return type.BaseType?.GetCustomAttribute<MainDataCollectionTypeAttribute>() != null
-				? type.BaseType
-				: type;
-		}
-		
-		public Type GetMainType()
-		{
-			return GetMainType(GetType());
+			return AllFields[type];
 		}
 	}
 }

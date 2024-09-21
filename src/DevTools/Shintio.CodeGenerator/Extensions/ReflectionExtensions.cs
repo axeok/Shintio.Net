@@ -14,19 +14,19 @@ namespace Shintio.CodeGenerator.Extensions
 				{
 					return "typeof(void)";
 				}
-				
+
 				return "void";
 			}
 
 			if (type.IsGenericType)
 			{
 				var returnType = ReflectionHelper.GetGenericTypeString(type, true);
-				
+
 				if (withoutVariable)
 				{
 					return $"typeof({returnType})";
 				}
-				
+
 				return returnType;
 			}
 
@@ -46,7 +46,7 @@ namespace Shintio.CodeGenerator.Extensions
 				{
 					return $"typeof({type.Namespace}.{type.GetElementType()!.Name}).MakeByPointerType()";
 				}
-				
+
 				return $"{type.Namespace}.{type.GetElementType()!.Name}*";
 			}
 
@@ -54,7 +54,7 @@ namespace Shintio.CodeGenerator.Extensions
 			{
 				return $"typeof({type.Namespace}.{type.Name})";
 			}
-			
+
 			return $"{type.Namespace}.{type.Name}";
 		}
 

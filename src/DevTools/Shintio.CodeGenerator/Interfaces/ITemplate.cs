@@ -5,7 +5,7 @@ namespace Shintio.CodeGenerator.Interfaces;
 
 public interface ITemplate
 {
-    public ProjectInfo ProjectInfo { get; }
-    public CodeLanguage CodeLanguage { get; }
-    public Task<IEnumerable<KeyValuePair<string, string>>> Run();
+	public ProjectInfo ProjectInfo { get; }
+	public CodeLanguage CodeLanguage { get; }
+	public Task<IEnumerable<KeyValuePair<string, string>>> Run();
 }

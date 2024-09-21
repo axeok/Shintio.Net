@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    </PropertyGroup>
+
+    <ItemGroup>
+		<ProjectReference Include="..\..\Misc\Shintio.Git\Shintio.Git.csproj" />
+        <ProjectReference Include="..\Shintio.Vision.Abstractions\Shintio.Vision.Abstractions.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Tesseract" Version="5.2.0">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+</Project>

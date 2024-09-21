@@ -1,0 +1,13 @@
+{
+  "name": "shintio.unity",
+  "version": "0.0.1",
+  "description": "",
+  "displayName": "Shintio.Unity",
+  "dependencies": {
+	"com.unity.ads": "4.4.2",
+	"com.unity.textmeshpro": "3.0.9",
+	"com.unity.ugui": "1.0.0",
+	"shintio.json": "file:../libs/Shintio.Net/src/Json/Shintio.Json",
+	"shintio.essentials": "file:../libs/Shintio.Net/src/Shintio.Essentials"
+  }
+}

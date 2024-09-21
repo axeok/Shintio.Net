@@ -1,0 +1,10 @@
+﻿{
+  "name": "Shintio.Unity",
+  "rootNamespace": "Shintio.Unity",
+  "references": [
+	"Shintio.Json",
+	"Shintio.Essentials",
+	"UnityEngine.Advertisements",
+	"Unity.TextMeshPro"
+  ]
+}

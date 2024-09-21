@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Shintio.Compression.LZ4\Shintio.Compression.LZ4.csproj"/>
+        <ProjectReference Include="..\Shintio.Compression.Snappy\Shintio.Compression.Snappy.csproj"/>
+        <ProjectReference Include="..\Shintio.Compression.System\Shintio.Compression.System.csproj"/>
+        <ProjectReference Include="..\Shintio.Compression.Zstd\Shintio.Compression.Zstd.csproj"/>
+        <ProjectReference Include="..\Shintio.Compression\Shintio.Compression.csproj"/>
+    </ItemGroup>
+
+</Project>

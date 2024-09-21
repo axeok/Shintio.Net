@@ -7,8 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Shintio.CodeProcessor\Shintio.CodeProcessor.csproj" />
-      <ProjectReference Include="..\..\Shintio.Essentials\Shintio.Essentials.csproj" />
+        <ProjectReference Include="..\..\Misc\Shintio.Localization\Shintio.Localization.csproj" />
+        <ProjectReference Include="..\Shintio.CodeProcessor\Shintio.CodeProcessor.csproj"/>
+        <ProjectReference Include="..\..\Shintio.Essentials\Shintio.Essentials.csproj"/>
     </ItemGroup>
 
 </Project>

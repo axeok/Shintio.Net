@@ -1,71 +1,83 @@
-﻿namespace Shintio.Essentials.Utils.Random;
+﻿using System.Text;
 
-public partial class Random
+namespace Shintio.Essentials.Utils.Random
 {
-    public static double NextDouble()
-    {
-        return Instance._random.NextDouble();
-    }
+	public partial class Random
+	{
+		public double NextDouble()
+		{
+			return _random.NextDouble();
+		}
 
-    public static float Float(float min, float max, bool includeMax = true)
-    {
-        return (float)Instance._random.NextDouble() * (max - min) + min;
-    }
+		public float Float(float min, float max, bool includeMax = true)
+		{
+			// TODO: добавить поддержку includeMax
+			return (float)_random.NextDouble() * (max - min) + min;
+		}
 
-    public static float Float(float max, bool includeMax = true)
-    {
-        return Float(0f, max, includeMax);
-    }
+		public float Float(float max, bool includeMax = true)
+		{
+			return Float(0f, max, includeMax);
+		}
 
-    public static float Float((float min, float max) range, bool includeMax = true)
-    {
-        return Float(range.min, range.max, includeMax);
-    }
+		public float Float((float min, float max) range, bool includeMax = true)
+		{
+			return Float(range.min, range.max, includeMax);
+		}
 
-    public static int Int(int max, bool includeMax = true, System.Random? random = null)
-    {
-        return Int(0, max, includeMax, random);
-    }
+		public int Int(int max, bool includeMax = true)
+		{
+			return Int(0, max, includeMax);
+		}
 
-    public static int Int(int min, int max, bool includeMax = true, System.Random? random = null)
-    {
-        var value = (random ?? Instance._random).Next(min, max + (includeMax ? 1 : 0));
+		public int Int(int min, int max, bool includeMax = true)
+		{
+			var value = _random.Next(min, max + (includeMax ? 1 : 0));
 
-        return value;
-    }
+			return value;
+		}
 
-    public static uint UInt(uint min, uint max, bool includeMax = true)
-    {
-        return (uint)Int((int)min, (int)max, includeMax);
-    }
+		public uint UInt(uint min, uint max, bool includeMax = true)
+		{
+			return (uint)Int((int)min, (int)max, includeMax);
+		}
 
-    public static byte Byte()
-    {
-        return (byte)Int(0, 255);
-    }
+		public byte Byte()
+		{
+			return (byte)Int(0, 255);
+		}
 
-    public static bool Bool(int chance = 50)
-    {
-        return Int(100) <= chance;
-    }
+		public bool Bool(int chance = 50)
+		{
+			return Int(100) <= chance;
+		}
 
-    public static float Negative(int chance = 50)
-    {
-        return Bool(chance) ? -1 : 1;
-    }
+		public bool Bool(float chance)
+		{
+			return Float(100) <= chance;
+		}
 
-    public static string String(int length = 8, bool numbers = true, bool lowers = true, bool uppers = true)
-    {
-        var chars = (numbers ? "0123456789" : "") + (uppers ? "ABCDEFGHIJKLMNOPQRSTUVWXYZ" : "") +
-                    (lowers ? "abcdefghijklmnopqrstuvwxyz" : "");
+		public float Sign(int chance = 50)
+		{
+			return Bool(chance) ? -1 : 1;
+		}
 
-        var result = "";
+		public string String(int length = 8, bool numbers = true, bool lowers = true, bool uppers = true)
+		{
+			const string numbersString = "0123456789";
+			const string uppersString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			const string lowersString = "abcdefghijklmnopqrstuvwxyz";
 
-        for (var i = 0; i < length; i++)
-        {
-            result += Item(chars);
-        }
+			var chars = (numbers ? numbersString : "") + (uppers ? uppersString : "") + (lowers ? lowersString : "");
 
-        return result;
-    }
+			var result = new StringBuilder();
+
+			for (var i = 0; i < length; i++)
+			{
+				result.Append(Item(chars));
+			}
+
+			return result.ToString();
+		}
+	}
 }

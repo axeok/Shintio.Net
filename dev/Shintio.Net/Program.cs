@@ -1,29 +1,42 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using LibGit2Sharp;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Shintio.Bots.Telegram.Common;
-using Shintio.Bots.Telegram.Configuration;
-using Shintio.Bots.Telegram.Extensions;
-using Shintio.Bots.Telegram.Services;
+using Shintio.Git.Services;
+using Shintio.Json.Interfaces;
+using Shintio.Json.Newtonsoft.Common;
+using Shintio.Json.Nodes;
 using Shintio.Net;
 
-var builder = Host.CreateApplicationBuilder(args);
-builder.Logging.AddConsole();
+var app = new TestApp(ConfigureServices);
+await app.PrepareAsync();
 
-builder.Services.AddTelegramBot<TestBot>();
+var logger = app.Host.Services.GetRequiredService<ILogger<GitService>>();
+var service = new GitService("test-repo", "https://github.com/SciSharp/LLamaSharp.git",
+	message => logger.LogInformation(message));
 
-if (builder.Environment.EnvironmentName is { } environment)
+
+await service.Initialize();
+using var repo = service.GetRepository();
+
+
+foreach (var commit in repo.Commits)
 {
-    builder.Configuration.AddJsonFile($"appsettings.{environment}.json");
+	var parent = commit.Parents.FirstOrDefault();
+	foreach (var change in repo.Diff.Compare<Patch>(parent.Tree, commit.Tree))
+	{
+		Console.WriteLine(change.Patch);
+	}
+
+	break;
 }
 
-if (builder.Environment.IsDevelopment())
+
+await app.RunAsync();
+
+return;
+
+static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
-    builder.Configuration.AddUserSecrets<Program>();
+	// services.AddSingleton<IJson, NewtonsoftJson>();
 }
-
-builder.Services.Configure<TelegramSecrets>(builder.Configuration.GetSection("Telegram"));
-
-using var host = builder.Build();
-await host.RunAsync();
