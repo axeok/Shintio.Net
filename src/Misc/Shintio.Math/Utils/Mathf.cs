@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Shintio.Math.Common;
 
@@ -211,7 +212,7 @@ namespace Shintio.Math.Utils
 			return f >= 0F ? 1F : -1F;
 		}
 
-		// Clamps a value between a minimum float and maximum float value.
+		// Clamps value between min and max and returns value.
 		public static float Clamp(float value, float min, float max)
 		{
 			if (value < min)
@@ -222,9 +223,6 @@ namespace Shintio.Math.Utils
 		}
 
 		// Clamps value between min and max and returns value.
-		// Set the position of the transform to be that of the time
-		// but never less than 1 or more than 3
-		//
 		public static int Clamp(int value, int min, int max)
 		{
 			if (value < min)
@@ -234,13 +232,34 @@ namespace Shintio.Math.Utils
 			return value;
 		}
 
-		// Clamps value between 0 and 1 and returns value
+		// Clamps value between 0 and 1 and returns value.
 		public static float Clamp01(float value)
 		{
 			if (value < 0F)
 				return 0F;
 			if (value > 1F)
 				return 1F;
+			return value;
+		}
+		
+		// Clamps enum value between min and max values of this enum and returns value.
+		public static TEnum Clamp<TEnum>(TEnum value) where TEnum : struct, Enum
+		{
+			var values = Enum.GetValues<TEnum>();
+			var minValue = values.First();
+			var maxValue = values.Last();
+			var comparer = Comparer<TEnum>.Default;
+            
+			if (comparer.Compare(value, minValue) < 0)
+			{
+				return minValue;
+			}
+            
+			if (comparer.Compare(value, maxValue) > 0)
+			{
+				return maxValue;
+			}
+
 			return value;
 		}
 
