@@ -7,7 +7,7 @@ using Shintio.Unity.Utils;
 using TMPro;
 using UnityEngine;
 
-namespace Shintio.Unity.Ui.Buttons
+namespace Shintio.Unity.Components.Ui.Buttons
 {
     public class ShowAdButton : MonoBehaviour
     {
