@@ -2,7 +2,7 @@
 using UnityEngine;
 using Zenject;
 
-namespace Shintio.Unity.Ui.Buttons
+namespace Shintio.Unity.Components.Ui.Buttons
 {
     public class SaveOrLoadButton : MonoBehaviour
     {
