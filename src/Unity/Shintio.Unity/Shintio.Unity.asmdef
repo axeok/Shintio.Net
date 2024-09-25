@@ -5,6 +5,7 @@
 	"Shintio.Json",
 	"Shintio.Essentials",
 	"UnityEngine.Advertisements",
-	"Unity.TextMeshPro"
+	"Unity.TextMeshPro",
+    "Unity.VectorGraphics"
   ]
 }

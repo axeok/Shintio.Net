@@ -1,0 +1,11 @@
+﻿{
+  "name": "Shintio.Unity.Editor",
+  "rootNamespace": "Shintio.Unity.Editor",
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "references": [
+    "Shintio.Unity"
+  ]
+}
