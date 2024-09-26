@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "displayName": "Shintio.Essentials",
+  "author": { "name": "Shintio", "url": "https://shint.io/" },
   "dependencies": {
     "shintio.json": "file:../libs/Shintio.Net/src/Json/Shintio.Json"
   }
