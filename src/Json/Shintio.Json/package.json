@@ -2,5 +2,6 @@
   "name": "shintio.json",
   "version": "0.0.1",
   "description": "",
-  "displayName": "Shintio.Json"
+  "displayName": "Shintio.Json",
+  "author": { "name": "Shintio", "url": "https://shint.io/" }
 }
