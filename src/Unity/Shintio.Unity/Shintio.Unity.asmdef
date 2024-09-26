@@ -6,6 +6,7 @@
 	"Shintio.Essentials",
 	"UnityEngine.Advertisements",
 	"Unity.TextMeshPro",
-    "Unity.VectorGraphics"
+    "Unity.VectorGraphics",
+    "UniTask"
   ]
 }
