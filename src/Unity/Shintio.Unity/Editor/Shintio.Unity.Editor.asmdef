@@ -6,6 +6,7 @@
   ],
   "excludePlatforms": [],
   "references": [
-    "Shintio.Unity"
+    "Shintio.Unity",
+    "R3.Unity"
   ]
 }
