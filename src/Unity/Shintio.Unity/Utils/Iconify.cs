@@ -8,16 +8,17 @@ namespace Shintio.Unity.Utils
 {
 	public static class Iconify
 	{
-		public static readonly string IconsPath = Path.Combine("Assets", "Resources", "Icons", "Smart");
+		public static readonly string IconsPath = "Assets/Resources/Icons/Smart";
 
 		public static async UniTask<Sprite?> LoadIcon(string iconName)
 		{
 			var imagePath = GetImagePath(iconName);
-			var path = Path.Combine(IconsPath, $"{imagePath}.svg");
+			var path = $"{IconsPath}/{imagePath}.svg";
 
-			if (File.Exists(path))
+			var sprite = LoadSprite(path);
+			if (sprite != null)
 			{
-				return LoadSprite(path);
+				return sprite;
 			}
 
 #if UNITY_EDITOR
@@ -46,7 +47,9 @@ namespace Shintio.Unity.Utils
 
 		private static Sprite? LoadSprite(string path)
 		{
-			return AssetDatabase.LoadAssetAtPath<Sprite>(path);
+			path = path.Replace("Assets/Resources/", "").Replace(".svg", "");
+
+			return Resources.Load<Sprite>(path);
 		}
 
 		private static string GetImagePath(string iconName)
