@@ -5,10 +5,10 @@
   "displayName": "Shintio.Unity",
   "author": { "name": "Shintio", "url": "https://shint.io/" },
   "dependencies": {
-    "com.unity.ads": "4.12.0",
 	"com.unity.textmeshpro": "3.0.9",
 	"com.unity.ugui": "1.0.0",
     "com.unity.vectorgraphics": "2.0.0-preview.24",
+    "com.unity.services.levelplay": "8.4.0",
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
 	"shintio.json": "file:../libs/Shintio.Net/src/Json/Shintio.Json",
 	"shintio.essentials": "file:../libs/Shintio.Net/src/Shintio.Essentials"

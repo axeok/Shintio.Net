@@ -6,10 +6,9 @@
 //
 // namespace Shintio.Unity.Utils
 // {
-//     public class UnityAdProvider : IAdProvider, IUnityAdsLoadListener, IUnityAdsShowListener,
-//         IUnityAdsInitializationListener
+//     public class IronSourceAdProvider : IAdProvider
 //     {
-//         private const string AndroidGameId = "5653705";
+//         private const string CoreId = "7971808895149";
 //
 //         private static bool _isInitialized = false;
 //
@@ -95,7 +94,8 @@
 //             {
 //                 return true;
 //             }
-//
+//             
+//             IronSource.Agent.init(CoreId);
 //             if (!Advertisement.isInitialized && Advertisement.isSupported)
 //             {
 //                 _initializeAdSource = new TaskCompletionSource<bool>();
