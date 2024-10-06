@@ -28,6 +28,7 @@ namespace Shintio.Json.Utils
 		{
 // fix for xunit
 #if DEBUG
+			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 			if (Instance == null)
 			{
 				Assembly.Load("Shintio.Json.Newtonsoft");
@@ -37,14 +38,14 @@ namespace Shintio.Json.Utils
 					{
 						if (type.FullName == "Shintio.Json.Newtonsoft.Common.NewtonsoftJson")
 						{
-							Instance = Activator.CreateInstance(type) as IJson;
+							Instance = (Activator.CreateInstance(type) as IJson)!;
 						}
 					}
 				}
 			}
 #endif
 
-			return Instance.Deserialize<T>(json);
+			return Instance!.Deserialize<T>(json);
 		}
 	}
 }
