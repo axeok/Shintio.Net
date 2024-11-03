@@ -245,7 +245,12 @@ namespace Shintio.Math.Utils
 		// Clamps enum value between min and max values of this enum and returns value.
 		public static TEnum Clamp<TEnum>(TEnum value) where TEnum : struct, Enum
 		{
+#if NETCOREAPP3_0_OR_GREATER
 			var values = Enum.GetValues<TEnum>();
+#else
+			var values = Enum.GetValues(typeof(TEnum)).Cast<TEnum>().ToArray();
+#endif
+
 			var minValue = values.First();
 			var maxValue = values.Last();
 			var comparer = Comparer<TEnum>.Default;
