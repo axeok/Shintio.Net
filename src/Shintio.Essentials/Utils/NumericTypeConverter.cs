@@ -74,9 +74,9 @@ namespace Shintio.Essentials.Utils
 				case bool boolValue:
 					arg = boolValue ? 1 : 0;
 					return true;
+				default:
+					return false;
 			}
-
-			return false;
 		}
 
 		private static bool TryConvertToUint(ref object arg, bool allowOverflow)
@@ -92,9 +92,9 @@ namespace Shintio.Essentials.Utils
 				case byte byteValue:
 					arg = (uint)byteValue;
 					return true;
+				default:
+					return false;
 			}
-
-			return false;
 		}
 
 		private static bool TryConvertToLong(ref object arg, bool allowOverflow)
@@ -110,43 +110,39 @@ namespace Shintio.Essentials.Utils
 				case byte byteValue:
 					arg = (long)byteValue;
 					return true;
+				default:
+					return false;
 			}
-
-			return true;
 		}
 
 		private static bool TryConvertToFloat(ref object arg, bool allowOverflow)
 		{
-			if (arg is double doubleValue)
+			switch (arg)
 			{
-				arg = (float)doubleValue;
-				return true;
+				case double doubleValue:
+					arg = (float)doubleValue;
+					return true;
+				case int intValue:
+					arg = (float)intValue;
+					return true;
+				default:
+					return false;
 			}
-
-			if (arg is int intValue)
-			{
-				arg = (float)intValue;
-				return true;
-			}
-
-			return true;
 		}
 
 		private static bool TryConvertToDouble(ref object arg, bool allowOverflow)
 		{
-			if (arg is float floatValue)
+			switch (arg)
 			{
-				arg = (double)floatValue;
-				return true;
+				case float floatValue:
+					arg = (double)floatValue;
+					return true;
+				case int intValue:
+					arg = (double)intValue;
+					return true;
+				default:
+					return false;
 			}
-
-			if (arg is int intValue)
-			{
-				arg = (double)intValue;
-				return true;
-			}
-
-			return true;
 		}
 
 		private static bool TryConvertToByte(ref object arg, bool allowOverflow)
@@ -160,9 +156,9 @@ namespace Shintio.Essentials.Utils
 				case uint uintValue when allowOverflow || uintValue <= byte.MaxValue:
 					arg = (byte)uintValue;
 					return true;
+				default:
+					return false;
 			}
-
-			return true;
 		}
 
 		private static bool TryConvertToBool(ref object arg, bool allowOverflow)
@@ -170,12 +166,14 @@ namespace Shintio.Essentials.Utils
 			switch (arg)
 			{
 				case int intValue:
-					return intValue == 1;
+					arg = intValue != 0;
+					return true;
 				case uint uintValue:
-					return uintValue == 1;
+					arg = uintValue != 0;
+					return true;
+				default:
+					return false;
 			}
-
-			return true;
 		}
 	}
 }
