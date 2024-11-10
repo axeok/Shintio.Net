@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Shintio.Essentials.Extensions;
 
 namespace Shintio.Communication.Core.Common
 {
@@ -25,8 +26,13 @@ namespace Shintio.Communication.Core.Common
 
 		public virtual object?[] Deserialize(byte[] bytes)
 		{
-			var result = new List<object?>();
 			var memory = new Memory<byte>(bytes);
+			return Deserialize(memory);
+		}
+
+		public virtual object?[] Deserialize(Memory<byte> memory)
+		{
+			var result = new List<object?>();
 
 			var count = BitConverter.ToInt32(memory.Span);
 			memory = memory.Slice(IntSize);
@@ -107,13 +113,14 @@ namespace Shintio.Communication.Core.Common
 					buffer.AddRange(stringBytes);
 					break;
 				case TypeCode.Object:
+					buffer.AddRange(BitConverter.GetBytes(obj.ToIntPtr().ToInt64()));
+					break;
 				case TypeCode.DBNull:
 				case TypeCode.Empty:
 				default:
 					break;
 			}
 		}
-
 
 		protected virtual int ReadObject(ref Memory<byte> memory, out object? result)
 		{
@@ -142,7 +149,7 @@ namespace Shintio.Communication.Core.Common
 					return sizeof(ushort);
 				case TypeCode.Int32:
 					result = BitConverter.ToInt32(memory.Span);
-					return sizeof(int);
+					return IntSize;
 				case TypeCode.UInt32:
 					result = BitConverter.ToUInt32(memory.Span);
 					return sizeof(uint);
@@ -162,19 +169,22 @@ namespace Shintio.Communication.Core.Common
 					result = new decimal(new int[]
 					{
 						BitConverter.ToInt32(memory.Span),
-						BitConverter.ToInt32(memory.Span.Slice(sizeof(int))),
-						BitConverter.ToInt32(memory.Span.Slice(2 * sizeof(int))),
-						BitConverter.ToInt32(memory.Span.Slice(3 * sizeof(int)))
+						BitConverter.ToInt32(memory.Span.Slice(IntSize)),
+						BitConverter.ToInt32(memory.Span.Slice(2 * IntSize)),
+						BitConverter.ToInt32(memory.Span.Slice(3 * IntSize))
 					});
-					return 4 * sizeof(int);
+					return 4 * IntSize;
 				case TypeCode.DateTime:
 					result = DateTime.FromBinary(BitConverter.ToInt64(memory.Span));
 					return sizeof(long);
 				case TypeCode.String:
 					var length = BitConverter.ToInt32(memory.Span);
-					result = System.Text.Encoding.UTF8.GetString(memory.Span.Slice(sizeof(int), length));
-					return sizeof(int) + length;
+					result = System.Text.Encoding.UTF8.GetString(memory.Span.Slice(IntSize, length));
+					return IntSize + length;
 				case TypeCode.Object:
+					var intPtr = new IntPtr(BitConverter.ToInt64(memory.Span));
+					result = intPtr.ToObject();
+					return sizeof(long);
 				case TypeCode.DBNull:
 				case TypeCode.Empty:
 				default:
