@@ -14,6 +14,19 @@ namespace Shintio.Essentials.Utils
 				return true;
 			}
 
+			if (originalType.IsEnum)
+			{
+				var underlyingType = Enum.GetUnderlyingType(originalType);
+				var underlyingValue = Convert.ChangeType(arg, underlyingType);
+				var result = TryConvert(ref underlyingValue, expectedType, allowOverflow);
+				if (result)
+				{
+					arg = underlyingValue;
+				}
+
+				return result;
+			}
+
 			if (expectedType.IsEnum)
 			{
 				var underlyingType = Enum.GetUnderlyingType(expectedType);
