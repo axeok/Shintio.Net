@@ -5,7 +5,6 @@ using Shintio.Communication.ReflectionPipes.Types;
 
 namespace Shintio.Communication.ReflectionPipes.Common
 {
-
 	public class PipeServer : CommunicationServer
 	{
 		private readonly PipeCommunicationStream<NamedPipeServerStreamWrapper> _stream;

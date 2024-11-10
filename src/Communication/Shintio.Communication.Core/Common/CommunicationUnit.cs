@@ -126,7 +126,7 @@ namespace Shintio.Communication.Core.Common
 			{
 				case MessageType.Message:
 				{
-					var message = _serializer.Deserialize(memory.ToArray());
+					var message = _serializer.Deserialize(memory);
 					var nameObject = message.ElementAtOrDefault(0);
 					if (nameObject is string name && _messagesHandlers.TryGetValue(name, out var handler))
 					{
@@ -139,7 +139,7 @@ namespace Shintio.Communication.Core.Common
 					var id = BitConverter.ToInt32(memory.Span);
 					memory = memory.Slice(sizeof(int));
 
-					var request = _serializer.Deserialize(memory.ToArray());
+					var request = _serializer.Deserialize(memory);
 					var nameObject = request.ElementAtOrDefault(0);
 					if (nameObject is string name && _requestsHandlers.TryGetValue(name, out var handler))
 					{
