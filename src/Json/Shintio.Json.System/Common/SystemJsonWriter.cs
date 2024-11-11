@@ -16,4 +16,9 @@ public class SystemJsonWriter : IJsonWriter
 	{
 		_writer.WriteStringValue(value);
 	}
+
+	public void WriteRawValue(string json)
+	{
+		_writer.WriteRawValue(json);
+	}
 }
