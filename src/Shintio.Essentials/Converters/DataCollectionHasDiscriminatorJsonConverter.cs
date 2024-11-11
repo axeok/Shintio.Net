@@ -18,7 +18,7 @@ namespace Shintio.Essentials.Converters
 			result[nameof(IDataCollection.Key)] = Converter.CreateNode(value.Key);
 			result[nameof(IHasDiscriminator.Discriminator)] = Converter.CreateNode(value.Discriminator);
 
-			writer.WriteValue(Converter.Serialize(result));
+			writer.WriteRawValue(Converter.Serialize(result));
 		}
 
 #if NETCOREAPP3_0_OR_GREATER

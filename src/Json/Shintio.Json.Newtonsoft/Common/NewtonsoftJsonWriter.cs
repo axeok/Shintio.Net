@@ -16,5 +16,10 @@ namespace Shintio.Json.Newtonsoft.Common
 		{
 			_writer.WriteValue(value);
 		}
+
+		public void WriteRawValue(string json)
+		{
+			_writer.WriteRawValue(json);
+		}
 	}
 }
