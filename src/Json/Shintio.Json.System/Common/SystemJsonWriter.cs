@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Shintio.Json.Interfaces;
+using Shintio.Json.System.Extensions;
 
 namespace Shintio.Json.System.Common;
 
@@ -20,5 +21,10 @@ public class SystemJsonWriter : IJsonWriter
 	public void WriteRawValue(string json)
 	{
 		_writer.WriteRawValue(json);
+	}
+
+	public void WriteObject(object? value)
+	{
+		_writer.WriteObject(value);
 	}
 }
