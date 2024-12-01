@@ -30,6 +30,8 @@ namespace Shintio.Json.Newtonsoft.Common
 			property.SetValue(null, settingsDelegate);
 		}
 
+		public Type SerializerType { get; } = typeof(JsonConvert);
+
 		private JsonSerializerSettings GetSettings()
 		{
 			return _serializerSettings;
