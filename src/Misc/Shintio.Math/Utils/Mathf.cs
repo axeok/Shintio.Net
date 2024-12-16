@@ -802,5 +802,28 @@ namespace Shintio.Math.Utils
 				y += dy;
 			}
 		}
+		
+		public delegate float MathFunctionDelegate(float t);
+		public static float GetDerivative(MathFunctionDelegate func, float t, float epsilon = 1e-5f)
+		{
+			// return (func(t + epsilon) - func(t - epsilon)) / (2 * epsilon);
+			return (func(t + epsilon) - func(t)) / epsilon;
+		}
+
+		public static (float min, float max) GetMinMaxDerivative(MathFunctionDelegate func)
+		{
+			var minDerivative = float.MaxValue;
+			var maxDerivative = float.MinValue;
+        
+			// Evaluate derivative over the interval
+			for (var x = 0f; x <= 1f; x += 0.01f)
+			{
+				var dValue = GetDerivative(func, x);
+				if (dValue < minDerivative) minDerivative = dValue;
+				if (dValue > maxDerivative) maxDerivative = dValue;
+			}
+
+			return (minDerivative, maxDerivative);
+		}
 	}
 }

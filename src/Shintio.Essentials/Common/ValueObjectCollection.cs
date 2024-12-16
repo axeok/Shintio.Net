@@ -6,7 +6,7 @@ using Shintio.Json.Attributes;
 
 namespace Shintio.Essentials.Common
 {
-	public class ValueObjectCollection<TValue> : ValueObject, IEnumerable<TValue>
+	public class ValueObjectCollection<TValue> : ValueObject, IEnumerable<TValue>, IReadOnlyCollection<TValue>
 	{
 		private readonly ReadOnlyCollection<TValue> _values;
 
@@ -47,6 +47,8 @@ namespace Shintio.Essentials.Common
 		}
 		
 		public TValue this[int index] => _values[index];
+		
+		public int Count => _values.Count;
 	}
 
 	public static class EnumerableExtensions
