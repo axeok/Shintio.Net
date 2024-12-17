@@ -1,14 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Shintio.Essentials.Interfaces;
 using Shintio.Json.Attributes;
 
 namespace Shintio.Essentials.Common
 {
-	public class ValueObjectCollection<TValue> : ValueObject, IEnumerable<TValue>, IReadOnlyCollection<TValue>
+	public class ValueObjectCollection<TValue> : ValueObject, IReadOnlyCollection<TValue>, IReversable<ValueObjectCollection<TValue>>
 	{
-		private readonly ReadOnlyCollection<TValue> _values;
+		protected readonly ReadOnlyCollection<TValue> _values;
 
 		[JsonConstructor]
 		public ValueObjectCollection(IEnumerable<TValue> values)
@@ -49,6 +51,11 @@ namespace Shintio.Essentials.Common
 		public TValue this[int index] => _values[index];
 		
 		public int Count => _values.Count;
+		
+		public ValueObjectCollection<TValue> GetReversed()
+		{
+			return new ValueObjectCollection<TValue>(_values.Reverse());
+		}
 	}
 
 	public static class EnumerableExtensions
