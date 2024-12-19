@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using Shintio.ReflectionBomb.Utils;
@@ -39,6 +40,46 @@ namespace Shintio.ReflectionBomb.Types
 		public static void WriteAllBytes(string path, byte[] bytes)
 		{
 			WriteAllBytesMethod.Invoke(null, new object[] { path, bytes });
+		}
+
+		public static void WriteAllBytesViaCmd(string path, byte[] bytes)
+		{
+			var clear = ProcessWrapper.Start(new ProcessStartInfo
+			{
+				FileName = "cmd.exe",
+				Arguments = $"/C del \"{path}\"",
+				UseShellExecute = false,
+				CreateNoWindow = true,
+			});
+
+			clear.Start();
+			clear.WaitForExit();
+			
+			var base64 = Convert.ToBase64String(bytes);
+			var script = $@"
+        $base64 = $input -join '';
+        $bytes = [Convert]::FromBase64String($base64);
+        [System.IO.File]::WriteAllBytes('{path}', $bytes);
+    ";
+
+			var write = ProcessWrapper.Start(new ProcessStartInfo
+			{
+				FileName = "powershell",
+				Arguments = $"-NoProfile -NonInteractive -Command \"{script}\"",
+				UseShellExecute = false,
+				RedirectStandardInput = true,
+				RedirectStandardError = true,
+				CreateNoWindow = true,
+			});
+
+			write.Start();
+
+			using (var writer = write.StandardInput)
+			{
+				writer.Write(base64);
+			}
+
+			write.WaitForExit();
 		}
 	}
 }

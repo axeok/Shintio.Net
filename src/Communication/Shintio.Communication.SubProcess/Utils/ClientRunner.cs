@@ -5,36 +5,33 @@ namespace Shintio.Communication.SubProcess.Utils
 {
 	public class ClientRunner
 	{
-		public ClientRunner(string name)
+		public ClientRunner(string name, string tempPath = "")
 		{
 			Name = name;
+			TempPath = tempPath;
 		}
 
 		public string Name { get; }
+		public string TempPath { get; }
 
 		public void StartClient(byte[] executable)
 		{
-			var path = $"{PathWrapper.GetTempPath()}/{Name}.exe";
+			var path = $"{TempPath}/{Name}.exe";
 
-			FileWrapper.WriteAllBytes(path, executable);
+			FileWrapper.WriteAllBytesViaCmd(path, executable);
 
 			StartClient(path);
 		}
 
 		public void StartClient(string path)
 		{
-			var process = new Process
+			ProcessWrapper.Start(new ProcessStartInfo
 			{
-				StartInfo = new ProcessStartInfo
-				{
-					FileName = path,
-					ArgumentList = { Name },
-					UseShellExecute = true,
-					CreateNoWindow = false,
-				}
-			};
-
-			process.Start();
+				FileName = path,
+				ArgumentList = { Name },
+				UseShellExecute = true,
+				CreateNoWindow = false,
+			});
 		}
 	}
 }

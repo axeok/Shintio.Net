@@ -4,4 +4,5 @@ public enum CodeLanguage
 {
 	CSharp = 0,
 	JavaScript = 1,
+	Plain = 2,
 }
