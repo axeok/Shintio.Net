@@ -334,6 +334,11 @@ namespace Shintio.Math.Common
 			       0 < AMAD && AMAD < Vector2.Dot(AD, AD);
 		}
 
+		public static Vector3 Reflection(Vector3 direction, Vector3 normal)
+		{
+			return direction - normal * Vector3.Dot(direction, normal) * 2;
+		}
+
 		public static Vector3 operator +(Vector3 a, Vector3 b) => new Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
 
 		public static Vector3 operator -(Vector3 a, Vector3 b) => new Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);

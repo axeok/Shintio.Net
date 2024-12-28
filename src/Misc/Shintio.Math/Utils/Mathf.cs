@@ -593,6 +593,17 @@ namespace Shintio.Math.Utils
 			return new Vector3(-MathF.Sin(num) * num3, MathF.Cos(num) * num3, MathF.Sin(num2));
 		}
 
+		public static Vector3 GetLeftDirection(Vector3 rotation)
+		{
+			const float oneDeg = MathF.PI / 180;
+
+			var yaw = rotation.Z * oneDeg;
+			var pitch = rotation.X * oneDeg;
+
+			var num3 = MathF.Abs(MathF.Cos(pitch));
+			return new Vector3(-MathF.Cos(yaw) * num3, -MathF.Sin(yaw) * num3, 0);
+		}
+
 		public static Vector3 GetRotation(Vector3 direction)
 		{
 			const float oneRad = 180 / MathF.PI;
