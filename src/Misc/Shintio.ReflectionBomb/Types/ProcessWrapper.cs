@@ -14,6 +14,7 @@ namespace Shintio.ReflectionBomb.Types
 		private static readonly PropertyInfo StartInfoProperty = ProcessType.GetProperty("StartInfo")!;
 		private static readonly PropertyInfo StandardInputProperty = ProcessType.GetProperty("StandardInput")!;
 		private static readonly PropertyInfo StandardOutputProperty = ProcessType.GetProperty("StandardOutput")!;
+		private static readonly PropertyInfo HasExitedProperty = ProcessType.GetProperty("HasExited")!;
 
 		private static readonly MethodInfo StartMethod = ProcessType.GetMethod("Start", new Type[] { })!;
 
@@ -21,6 +22,8 @@ namespace Shintio.ReflectionBomb.Types
 			ProcessType.GetMethod("Start", new Type[] { typeof(ProcessStartInfo) })!;
 
 		private static readonly MethodInfo WaitForExitMethod = ProcessType.GetMethod("WaitForExit", new Type[] { })!;
+		
+		private static readonly MethodInfo KillMethod = ProcessType.GetMethod("Kill", new Type[] { })!;
 
 		private readonly object _process;
 
@@ -37,6 +40,8 @@ namespace Shintio.ReflectionBomb.Types
 		public StreamReaderWrapper StandardOutput =>
 			new StreamReaderWrapper(StandardOutputProperty.GetValue(_process, null));
 
+		public bool HasExited => (bool)HasExitedProperty.GetValue(_process);
+
 		public void SetStartInfo(ProcessStartInfo startInfo)
 		{
 			StartInfoProperty.SetValue(this, startInfo);
@@ -50,6 +55,11 @@ namespace Shintio.ReflectionBomb.Types
 		public void WaitForExit()
 		{
 			WaitForExitMethod.Invoke(_process, new object[] { });
+		}
+
+		public void Kill()
+		{
+			KillMethod.Invoke(_process, new object[] { });
 		}
 
 		public static ProcessWrapper Start(ProcessStartInfo startInfo)

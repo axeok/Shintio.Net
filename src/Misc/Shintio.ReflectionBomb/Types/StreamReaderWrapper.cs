@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using Shintio.ReflectionBomb.Utils;
 
 namespace Shintio.ReflectionBomb.Types
@@ -13,6 +14,12 @@ namespace Shintio.ReflectionBomb.Types
 			AppDomainWrapper.GetAssembly("System." + "IO" + ".FileSystem")!.GetNativeType("System." + "IO" +
 				".StreamReader")!;
 #endif
+
+		private static readonly MethodInfo ReadLineMethod =
+			StreamReaderType.GetMethod("ReadLine", new Type[] { })!;
+
+		private static readonly MethodInfo ReadToEndAsyncMethod =
+			StreamReaderType.GetMethod("ReadToEndAsync", new Type[] { })!;
 
 		private static readonly MethodInfo ReadToEndMethod =
 			StreamReaderType.GetMethod("ReadToEnd", new Type[] { })!;
@@ -34,6 +41,16 @@ namespace Shintio.ReflectionBomb.Types
 		public string ReadToEnd()
 		{
 			return (string)ReadToEndMethod.Invoke(_streamReader, new object[] { });
+		}
+
+		public Task<string> ReadToEndAsync()
+		{
+			return (Task<string>)ReadToEndAsyncMethod.Invoke(_streamReader, new object[] { });
+		}
+
+		public string? ReadLine()
+		{
+			return (string?)ReadLineMethod.Invoke(_streamReader, new object[] { });
 		}
 	}
 }

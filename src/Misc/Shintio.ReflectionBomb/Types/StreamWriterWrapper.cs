@@ -16,6 +16,9 @@ namespace Shintio.ReflectionBomb.Types
 
 		private static readonly MethodInfo WriteStringMethod =
 			StreamWriterType.GetMethod("Write", new Type[] { typeof(string) })!;
+		
+		private static readonly MethodInfo WriteLineMethod =
+			StreamWriterType.GetMethod("Write", new Type[] { typeof(string) })!;
 
 		private readonly object _streamWriter;
 
@@ -34,6 +37,11 @@ namespace Shintio.ReflectionBomb.Types
 		public void Write(string value)
 		{
 			WriteStringMethod.Invoke(_streamWriter, new object[] { value });
+		}
+
+		public void WriteLine(string value)
+		{
+			WriteLineMethod.Invoke(_streamWriter, new object[] { value });
 		}
 	}
 }
