@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\Communication\Shintio.Communication.SubProcess\Shintio.Communication.SubProcess.csproj" />
+      <ProjectReference Include="..\Shintio.Communication.SubProcess\Shintio.Communication.SubProcess.csproj" />
     </ItemGroup>
 
 </Project>

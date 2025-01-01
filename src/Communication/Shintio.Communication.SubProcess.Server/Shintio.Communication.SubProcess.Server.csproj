@@ -9,8 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\src\Communication\Shintio.Communication.SubProcess\Shintio.Communication.SubProcess.csproj" />
-        <ProjectReference Include="..\src\Misc\Shintio.ReflectionBomb\Shintio.ReflectionBomb.csproj" />
+        <ProjectReference Include="..\Shintio.Communication.SubProcess\Shintio.Communication.SubProcess.csproj" />
+        <ProjectReference Include="..\..\Misc\Shintio.ReflectionBomb\Shintio.ReflectionBomb.csproj" />
     </ItemGroup>
 
 </Project>

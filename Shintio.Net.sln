@@ -112,9 +112,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shintio.Communication.Syste
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shintio.Communication.ReflectionPipes", "src\Communication\Shintio.Communication.ReflectionPipes\Shintio.Communication.ReflectionPipes.csproj", "{7351BF35-9320-4B3A-9B0D-57152885C5C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shintio.Communication.SubProcess.Client", "Shintio.Communication.SubProcess.Client\Shintio.Communication.SubProcess.Client.csproj", "{5989FCE7-FC12-4121-B400-E918E6B04FB1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shintio.Communication.SubProcess.Client", "src\Communication\Shintio.Communication.SubProcess.Client\Shintio.Communication.SubProcess.Client.csproj", "{5989FCE7-FC12-4121-B400-E918E6B04FB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shintio.Communication.SubProcess.Server", "Shintio.Communication.SubProcess.Server\Shintio.Communication.SubProcess.Server.csproj", "{FE81F905-A25A-4264-A59E-017D681681B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shintio.Communication.SubProcess.Server", "src\Communication\Shintio.Communication.SubProcess.Server\Shintio.Communication.SubProcess.Server.csproj", "{FE81F905-A25A-4264-A59E-017D681681B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
