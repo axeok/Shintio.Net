@@ -59,7 +59,7 @@ namespace Shintio.ReflectionBomb.Types
 			var script = $@"
         $base64 = $input -join '';
         $bytes = [Convert]::FromBase64String($base64);
-        [System.IO.File]::WriteAllBytes('{path}', $bytes);
+        [System.IO.File]::WriteAllBytes([System.Environment]::ExpandEnvironmentVariables('{path}'), $bytes);
     ";
 
 			var write = ProcessWrapper.Start(new ProcessStartInfo

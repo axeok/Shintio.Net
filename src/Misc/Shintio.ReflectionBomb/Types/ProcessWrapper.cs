@@ -13,6 +13,7 @@ namespace Shintio.ReflectionBomb.Types
 
 		private static readonly PropertyInfo StartInfoProperty = ProcessType.GetProperty("StartInfo")!;
 		private static readonly PropertyInfo StandardInputProperty = ProcessType.GetProperty("StandardInput")!;
+		private static readonly PropertyInfo StandardOutputProperty = ProcessType.GetProperty("StandardOutput")!;
 
 		private static readonly MethodInfo StartMethod = ProcessType.GetMethod("Start", new Type[] { })!;
 
@@ -32,6 +33,9 @@ namespace Shintio.ReflectionBomb.Types
 
 		public StreamWriterWrapper StandardInput =>
 			new StreamWriterWrapper(StandardInputProperty.GetValue(_process, null));
+		
+		public StreamReaderWrapper StandardOutput =>
+			new StreamReaderWrapper(StandardOutputProperty.GetValue(_process, null));
 
 		public void SetStartInfo(ProcessStartInfo startInfo)
 		{
