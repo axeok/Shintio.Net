@@ -28,9 +28,9 @@ namespace Shintio.Communication.SubProcess.Server.Common
 
 		public void Dispose()
 		{
-			_builder.AppendLine(SubProcessConstants.EndRequestString);
+			_builder?.AppendLine(SubProcessConstants.EndRequestString);
 
-			_process.StandardInput.Write(_builder.ToString());
+			_process?.StandardInput?.Write(_builder?.ToString());
 		}
 	}
 }

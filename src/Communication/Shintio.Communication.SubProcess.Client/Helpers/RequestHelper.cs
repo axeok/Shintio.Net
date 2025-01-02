@@ -7,6 +7,7 @@ namespace Shintio.Communication.SubProcess.Client.Helpers
 	public static class RequestHelper
 	{
 		public static event Action<string>? MessageReceived;
+		public static event Action? Closed;
 
 		private static Timer? _timer;
 
@@ -70,6 +71,7 @@ namespace Shintio.Communication.SubProcess.Client.Helpers
 
 		private static void TimerOnElapsed(object? sender, ElapsedEventArgs e)
 		{
+			Closed?.Invoke();
 			Environment.Exit(0);
 		}
 	}

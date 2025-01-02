@@ -130,7 +130,14 @@ namespace Shintio.Communication.Core.Common
 					var nameObject = message.ElementAtOrDefault(0);
 					if (nameObject is string name && _messagesHandlers.TryGetValue(name, out var handler))
 					{
-						handler.Invoke(message.Skip(1).ToArray());
+						try
+						{
+							handler.Invoke(message.Skip(1).ToArray());
+						}
+						catch (Exception e)
+						{
+							Console.Error.WriteLine(e);
+						}
 					}
 				}
 					break;
