@@ -604,6 +604,24 @@ namespace Shintio.Math.Utils
 			return new Vector3(-MathF.Cos(yaw) * num3, -MathF.Sin(yaw) * num3, 0);
 		}
 
+		public static Vector3 GetUpDirection(Vector3 rotation)
+		{
+			const float oneDeg = MathF.PI / 180;
+
+			var yaw = rotation.Z * oneDeg;
+			var pitch = rotation.X * oneDeg;
+			var roll = rotation.Y * oneDeg;
+
+			var forward = GetDirection(rotation);
+			var right = new Vector3(
+				MathF.Cos(yaw) * MathF.Cos(roll) - MathF.Sin(yaw) * MathF.Sin(pitch) * MathF.Sin(roll),
+				MathF.Sin(yaw) * MathF.Cos(roll) + MathF.Cos(yaw) * MathF.Sin(pitch) * MathF.Sin(roll),
+				-MathF.Cos(pitch) * MathF.Sin(roll)
+			);
+
+			return -Vector3.Cross(forward, right).GetNormalized();
+		}
+
 		public static Vector3 GetRotation(Vector3 direction)
 		{
 			const float oneRad = 180 / MathF.PI;
