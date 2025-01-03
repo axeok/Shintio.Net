@@ -339,6 +339,45 @@ namespace Shintio.Math.Common
 			return direction - normal * Vector3.Dot(direction, normal) * 2;
 		}
 
+		public static Vector3[] GetPerimeterPoints(IEnumerable<Vector3> points)
+		{
+			var arr = points.ToArray();
+
+			if (arr.Length < 3)
+			{
+				return Array.Empty<Vector3>();
+			}
+
+			var hull = new List<Vector3>();
+
+			var leftmost = arr.OrderBy(p => p.X).ThenBy(p => p.Y).First();
+			var current = leftmost;
+
+			do
+			{
+				hull.Add(current);
+
+				var next = arr[0];
+
+				foreach (var point in arr)
+				{
+					if (next == current || IsCounterClockwise(current, next, point))
+					{
+						next = point;
+					}
+				}
+
+				current = next;
+			} while (current != leftmost);
+
+			return hull.ToArray();
+		}
+
+		private static bool IsCounterClockwise(Vector3 p1, Vector3 p2, Vector3 p3)
+		{
+			return (p2.X - p1.X) * (p3.Y - p1.Y) - (p2.Y - p1.Y) * (p3.X - p1.X) > 0;
+		}
+
 		public static Vector3 operator +(Vector3 a, Vector3 b) => new Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
 
 		public static Vector3 operator -(Vector3 a, Vector3 b) => new Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
