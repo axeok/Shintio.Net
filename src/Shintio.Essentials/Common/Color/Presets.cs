@@ -21,6 +21,7 @@ namespace Shintio.Essentials.Common
 
         // TODO: убрать в проект Роксланда
         public static readonly Color Roxland = new Color(49, 24, 148);
+        public static readonly Color Miracle = new Color(220, 2, 120);
 
         public static readonly Color Error = new Color(255, 81, 38);
         public static readonly Color Warning = new Color(255, 213, 63);
