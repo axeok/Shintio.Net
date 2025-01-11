@@ -4,5 +4,6 @@ namespace Shintio.Math.Common.Enums
 	{
 		Cylinder = 0,
 		Cube = 1,
+		Sphere = 2,
 	}
 }

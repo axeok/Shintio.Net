@@ -289,6 +289,7 @@ namespace Shintio.Math.Common
 		{
 			PointShape.Cylinder => IsPointWithinCylinder(point, center, radius, height),
 			PointShape.Cube => IsPointWithinCube(point, center, radius, height, heading),
+			PointShape.Sphere => IsPointWithinSphere(point, center, radius),
 			_ => IsPointWithinCylinder(point, center, radius, height),
 		};
 
@@ -332,6 +333,11 @@ namespace Shintio.Math.Common
 
 			return 0 < AMAB && AMAB < Vector2.Dot(AB, AB) &&
 			       0 < AMAD && AMAD < Vector2.Dot(AD, AD);
+		}
+
+		public static bool IsPointWithinSphere(Vector3 point, Vector3 center, float radius)
+		{
+			return Distance(point, center) <= radius;
 		}
 
 		public static Vector3 Reflection(Vector3 direction, Vector3 normal)
