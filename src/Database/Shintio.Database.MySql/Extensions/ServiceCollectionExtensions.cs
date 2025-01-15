@@ -14,20 +14,39 @@ public static class ServiceCollectionExtensions
 	)
 		where TDbContext : DbContext
 	{
-		connectionStringKey ??= typeof(TDbContext).Name;
-
 		return services
 			.AddPooledDbContextFactory<TDbContext>((serviceProvider, builder) =>
 			{
-				var connection = serviceProvider.GetRequiredService<IConfiguration>()
-					.GetConnectionString(connectionStringKey);
-
-				builder.UseMySql(connection, ServerVersion.AutoDetect(connection))
-					.UseLazyLoadingProxies()
-					.ConfigureWarnings(b => b.Log(
-						(RelationalEventId.CommandExecuted, LogLevel.Debug),
-						(RelationalEventId.ConnectionOpened, LogLevel.Debug),
-						(RelationalEventId.ConnectionClosed, LogLevel.Debug)));
+				builder.AddDatabase<TDbContext>(
+					serviceProvider.GetRequiredService<IConfiguration>(),
+					connectionStringKey
+				);
 			});
+	}
+
+	public static DbContextOptionsBuilder AddDatabase<TDbContext>(
+		this DbContextOptionsBuilder builder,
+		IConfiguration configuration,
+		string? connectionStringKey = null
+	) 
+		where TDbContext : DbContext
+	{
+		connectionStringKey ??= typeof(TDbContext).Name;
+		var connectionString = configuration.GetConnectionString(connectionStringKey)!;
+		return builder.AddDatabase(connectionString);
+	}
+
+	public static DbContextOptionsBuilder AddDatabase(
+		this DbContextOptionsBuilder builder, 
+		string connectionString
+	)
+	{
+		return builder
+			.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+			.UseLazyLoadingProxies()
+			.ConfigureWarnings(b => b.Log(
+				(RelationalEventId.CommandExecuted, LogLevel.Debug),
+				(RelationalEventId.ConnectionOpened, LogLevel.Debug),
+				(RelationalEventId.ConnectionClosed, LogLevel.Debug)));
 	}
 }

@@ -14,8 +14,8 @@ namespace Shintio.Communication.SubProcess
 		public static readonly string EndRequestString = UniquizeString("EndRequest");
 
 		public static readonly string PingString = UniquizeString("Ping");
-		public static readonly TimeSpan PingDelay = TimeSpan.FromSeconds(3);
-		public static readonly TimeSpan PingTimeout = TimeSpan.FromSeconds(10);
+		public static readonly TimeSpan PingDelay = TimeSpan.FromSeconds(2);
+		public static readonly TimeSpan PingTimeout = TimeSpan.FromSeconds(5);
 
 		private static string UniquizeString(string value)
 		{

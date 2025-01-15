@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace Shintio.Communication.SubProcess.Client.Helpers
@@ -7,7 +8,7 @@ namespace Shintio.Communication.SubProcess.Client.Helpers
 	public static class RequestHelper
 	{
 		public static event Action<string>? MessageReceived;
-		public static event Action? Closed;
+		public static event Func<Task>? Closing;
 
 		private static Timer? _timer;
 
@@ -69,9 +70,13 @@ namespace Shintio.Communication.SubProcess.Client.Helpers
 			_timer.Start();
 		}
 
-		private static void TimerOnElapsed(object? sender, ElapsedEventArgs e)
+		private static async void TimerOnElapsed(object? sender, ElapsedEventArgs e)
 		{
-			Closed?.Invoke();
+			if (Closing != null)
+			{
+				await Closing.Invoke();
+			}
+
 			Environment.Exit(0);
 		}
 	}

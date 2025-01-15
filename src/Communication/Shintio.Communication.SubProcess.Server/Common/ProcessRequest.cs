@@ -28,6 +28,8 @@ namespace Shintio.Communication.SubProcess.Server.Common
 
 		public void Dispose()
 		{
+			// TODO: что-то было null
+
 			_builder?.AppendLine(SubProcessConstants.EndRequestString);
 
 			_process?.StandardInput?.Write(_builder?.ToString());

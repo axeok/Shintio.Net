@@ -4,7 +4,7 @@ using Shintio.Essentials.Extensions;
 
 namespace Shintio.Communication.Core.Common
 {
-	public class MessageSerializer
+	public class MessageSerializer : IMessageSerializer
 	{
 		private const int IntSize = sizeof(int);
 
