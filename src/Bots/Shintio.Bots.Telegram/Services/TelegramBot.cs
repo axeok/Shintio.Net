@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Shintio.Bots.Core.Interfaces;
+using Shintio.Bots.Core.Components.Interfaces;
 using Shintio.Bots.Telegram.Common;
 using Shintio.Bots.Telegram.Configuration;
 using Telegram.Bot;
@@ -10,9 +10,9 @@ using Telegram.Bot.Types.Enums;
 
 namespace Shintio.Bots.Telegram.Services;
 
-public class TelegramBot : IBot<TelegramUser, TelegramMessage>
+public class TelegramBot : IBot<TelegramRoom, TelegramUser, TelegramMessage>
 {
-	public event Func<TelegramUser, TelegramMessage, Task>? MessageReceived;
+	public event Func<TelegramRoom, TelegramMessage, Task>? MessageReceived;
 
 	private readonly TelegramSecrets _secrets;
 	private readonly TelegramBotClient _client;
@@ -32,9 +32,14 @@ public class TelegramBot : IBot<TelegramUser, TelegramMessage>
 		);
 	}
 
-	public async Task SendMessageAsync(TelegramUser user, TelegramMessage message)
+	public async Task SendMessageAsync(TelegramRoom room, string text, TelegramMessage? replyTo = null)
 	{
-		await _client.SendTextMessageAsync(user.Id, message.Text);
+		await _client.SendTextMessageAsync(room.Id, text, replyToMessageId: replyTo?.Id);
+	}
+	
+	public async Task SendMessageAsync(IRoom room, string text, IMessage? replyTo)
+	{
+		await SendMessageAsync((TelegramRoom)room, text, replyTo as TelegramMessage);
 	}
 
 	private async Task UpdateHandler(ITelegramBotClient _, Update update, CancellationToken cancellationToken)
@@ -44,9 +49,10 @@ public class TelegramBot : IBot<TelegramUser, TelegramMessage>
 			return;
 		}
 
+		var senderUser = new TelegramUser(update.Message.From.Id, update.Message.From.Username);
 		await MessageReceived?.Invoke(
-			new TelegramUser(update.Message.Chat.Id),
-			new TelegramMessage(update.Message.Text)
+			new TelegramRoom(update.Message.Chat.Id, update.Message.Chat.Username),
+			new TelegramMessage(update.Message.MessageId, update.Message.Text, senderUser)
 		);
 	}
 

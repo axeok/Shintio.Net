@@ -1,12 +1,13 @@
 ﻿using Microsoft.Extensions.Hosting;
-using Shintio.Bots.Core.Interfaces;
+using Shintio.Bots.Core.Components.Interfaces;
 
 namespace Shintio.Bots.Core.Common;
 
-public abstract class BotService<TBot, TUser, TMessage> : BackgroundService
-	where TBot : IBot<TUser, TMessage>
+public abstract class BotService<TBot, TRoom, TUser, TMessage> : BackgroundService
+	where TBot : IBot<TRoom, TUser, TMessage>
+	where TRoom : IRoom
 	where TUser : IUser
-	where TMessage : IMessage
+	where TMessage : IMessage<TUser>
 {
 	protected readonly TBot Bot;
 
@@ -17,15 +18,15 @@ public abstract class BotService<TBot, TUser, TMessage> : BackgroundService
 		Bot.MessageReceived += BotOnMessageReceived;
 	}
 
-	protected abstract Task MessageHandler(TUser user, TMessage message);
+	protected abstract Task MessageHandler(TRoom room, TMessage message);
 
 	protected override Task ExecuteAsync(CancellationToken stoppingToken)
 	{
 		return Task.CompletedTask;
 	}
 
-	private async Task BotOnMessageReceived(TUser user, TMessage message)
+	private async Task BotOnMessageReceived(TRoom room, TMessage message)
 	{
-		await MessageHandler(user, message);
+		await MessageHandler(room, message);
 	}
 }

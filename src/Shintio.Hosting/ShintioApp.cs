@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -61,13 +62,23 @@ public abstract class ShintioApp<THost, TJson>
 	protected virtual IHost BuildHost(Action<HostBuilderContext, IServiceCollection> configureServices)
 	{
 		return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
+			.ConfigureHostConfiguration(ConfigureHostConfiguration)
+			.ConfigureAppConfiguration(ConfigureAppConfiguration)
 			.ConfigureServices(ConfigureBaseServices)
 			.ConfigureServices(ConfigureServices)
 			.ConfigureServices(configureServices)
 			.Build();
 	}
 
-	protected void ConfigureBaseServices(HostBuilderContext context, IServiceCollection services)
+	protected virtual void ConfigureHostConfiguration(IConfigurationBuilder builder)
+	{
+	}
+
+	protected virtual void ConfigureAppConfiguration(HostBuilderContext context, IConfigurationBuilder builder)
+	{
+	}
+
+	protected virtual void ConfigureBaseServices(HostBuilderContext context, IServiceCollection services)
 	{
 		services.AddShintioNet<TJson>();
 	}

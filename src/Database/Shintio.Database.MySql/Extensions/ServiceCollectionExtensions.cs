@@ -15,6 +15,7 @@ public static class ServiceCollectionExtensions
 		where TDbContext : DbContext
 	{
 		return services
+			.AddTransient<TDbContext>()
 			.AddPooledDbContextFactory<TDbContext>((serviceProvider, builder) =>
 			{
 				builder.AddDatabase<TDbContext>(

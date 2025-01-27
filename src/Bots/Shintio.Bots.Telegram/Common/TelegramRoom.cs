@@ -1,10 +1,10 @@
-﻿using Shintio.Bots.Core.Components.Interfaces;
+using Shintio.Bots.Core.Components.Interfaces;
 
 namespace Shintio.Bots.Telegram.Common;
 
-public class TelegramUser : IUser
+public class TelegramRoom : IRoom
 {
-	public TelegramUser(long id, string name)
+	public TelegramRoom(long id, string name)
 	{
 		Id = id;
 		Name = name;
