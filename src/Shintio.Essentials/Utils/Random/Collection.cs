@@ -124,5 +124,26 @@ namespace Shintio.Essentials.Utils.Random
 
 			return items;
 		}
+
+		public T ItemWithWeight<T>(IReadOnlyCollection<(T Item, double Weight)> itemsWithWeights)
+		{
+			T resultItem = default;
+			
+			var totalWeight = itemsWithWeights.Sum(x => x.Weight);
+			var randomValue = new Random().NextDouble() * totalWeight;
+
+			var cumulative = 0.0;
+			foreach (var action in itemsWithWeights)
+			{
+				cumulative += action.Weight;
+				if (randomValue <= cumulative)
+				{
+					resultItem = action.Item;
+					break;
+				}
+			}
+			
+			return resultItem;
+		}
 	}
 }

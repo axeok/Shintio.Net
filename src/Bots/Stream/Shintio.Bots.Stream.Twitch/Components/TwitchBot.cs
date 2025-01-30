@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Shintio.Bots.Stream.Core.Common;
 using Shintio.Bots.Stream.Core.Common.EventArgs;
 using Shintio.Bots.Stream.Core.Interfaces;
+using Shintio.Bots.Stream.Core.Models;
 using Shintio.Bots.Stream.Twitch.Configuration;
 using TwitchLib.Api;
 using TwitchLib.Api.Core;
@@ -57,8 +58,8 @@ public partial class TwitchBot : IStreamBot
 
 		var apiSettings = new ApiSettings
 		{
-			AccessToken = _channelCredentials.AccessToken,
-			ClientId = _channelCredentials.ClientId,
+			AccessToken = _secrets.AccessToken,
+			ClientId = _secrets.ClientId,
 			Secret = "Nortages",
 			Scopes = new List<AuthScopes>(),
 		};
@@ -107,6 +108,12 @@ public partial class TwitchBot : IStreamBot
 		return _api.Helix.Channels.ModifyChannelInformationAsync(_channelId, new ModifyChannelInformationRequest
 		{
 			Title = title,
-		});
+		}, _channelCredentials.AccessToken);
+	}
+
+	public async Task<IReadOnlyCollection<StreamChatter>> GetChatters()
+	{
+		var response = await _api.Helix.Chat.GetChattersAsync(_channelId, _secrets.UserId);
+		return response.Data.Select(x => new StreamChatter(x.UserLogin)).ToArray();
 	}
 }
