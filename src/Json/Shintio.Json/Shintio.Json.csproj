@@ -8,4 +8,18 @@
         <LangVersion Condition="'$(TargetFramework)' == 'netcoreapp2.2.8'">9</LangVersion>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Shintio.Json</PackageId>
+        <Version>1.0.1</Version>
+        <Authors>axeok; nortages</Authors>
+        <Company>Shintio</Company>
+        <Description>Json</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/axeok/Shintio.Net</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/axeok/Shintio.Net.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>Json Shintio</PackageTags>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
 </Project>

@@ -1,15 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Shintio.CodeGenerator</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>axeok; nortages</Authors>
+        <Company>Shintio</Company>
+        <Description>Code Generation</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/axeok/Shintio.Net</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/axeok/Shintio.Net.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>CodeGenerator Shintio</PackageTags>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+    
     <ItemGroup>
         <ProjectReference Include="..\..\Misc\Shintio.Localization\Shintio.Localization.csproj" />
-        <ProjectReference Include="..\Shintio.CodeProcessor\Shintio.CodeProcessor.csproj"/>
-        <ProjectReference Include="..\..\Shintio.Essentials\Shintio.Essentials.csproj"/>
+        <ProjectReference Include="..\Shintio.CodeProcessor\Shintio.CodeProcessor.csproj" />
+        <ProjectReference Include="..\..\Shintio.Essentials\Shintio.Essentials.csproj" />
     </ItemGroup>
 
 </Project>
