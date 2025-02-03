@@ -1,0 +1,11 @@
+<Project>
+    <PropertyGroup>
+        <Version>1.0.1</Version>
+        <Authors>axeok; nortages</Authors>
+        <Company>Shintio</Company>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/axeok/Shintio.Net</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/axeok/Shintio.Net.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+</Project>

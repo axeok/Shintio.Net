@@ -6,6 +6,11 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Shintio.Communication.SystemPipes</PackageId>
+        <Description>Communication SystemPipes</Description>
+    </PropertyGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\Shintio.Communication.Core\Shintio.Communication.Core.csproj" />
     </ItemGroup>

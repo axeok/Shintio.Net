@@ -6,6 +6,11 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<PackageId>Shintio.Git</PackageId>
+		<Description>Git</Description>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="LibGit2Sharp" Version="0.30.0"/>
 	</ItemGroup>

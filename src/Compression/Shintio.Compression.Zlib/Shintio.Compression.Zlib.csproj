@@ -8,6 +8,11 @@
         <LangVersion Condition="'$(TargetFramework)' == 'netcoreapp2.2.8'">8</LangVersion>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Shintio.Compression.Zlib</PackageId>
+        <Description>Compression Zlib</Description>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\Shintio.Compression\Shintio.Compression.csproj"/>
     </ItemGroup>

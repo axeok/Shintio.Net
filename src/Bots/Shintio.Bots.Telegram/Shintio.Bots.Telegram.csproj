@@ -7,6 +7,11 @@
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Shintio.Bots.Telegram</PackageId>
+        <Description>Bots Telegram</Description>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\Shintio.Bots.Core\Shintio.Bots.Core.csproj"/>
     </ItemGroup>

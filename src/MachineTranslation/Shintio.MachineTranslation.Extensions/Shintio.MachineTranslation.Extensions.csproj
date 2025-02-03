@@ -6,6 +6,11 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Shintio.MachineTranslation.Extensions</PackageId>
+        <Description>MachineTranslation Extensions</Description>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\Shintio.MachineTranslation.GoogleApi\Shintio.MachineTranslation.GoogleApi.csproj"/>
     </ItemGroup>

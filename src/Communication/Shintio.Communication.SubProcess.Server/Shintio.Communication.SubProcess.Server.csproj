@@ -8,6 +8,11 @@
         <LangVersion Condition="'$(TargetFramework)' == 'netcoreapp2.2.8'">8</LangVersion>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Shintio.Communication.SubProcess.Server</PackageId>
+        <Description>Communication SubProcess Server</Description>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\Shintio.Communication.SubProcess\Shintio.Communication.SubProcess.csproj" />
         <ProjectReference Include="..\..\Misc\Shintio.ReflectionBomb\Shintio.ReflectionBomb.csproj" />

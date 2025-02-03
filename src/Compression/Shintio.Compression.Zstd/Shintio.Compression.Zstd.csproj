@@ -7,6 +7,11 @@
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Shintio.Compression.Zstd</PackageId>
+        <Description>Compression Zstd</Description>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\Shintio.Compression\Shintio.Compression.csproj"/>
     </ItemGroup>

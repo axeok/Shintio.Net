@@ -7,6 +7,11 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Shintio.Json.System</PackageId>
+        <Description>Json System</Description>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\..\Shintio.Essentials\Shintio.Essentials.csproj"/>
         <ProjectReference Include="..\Shintio.Json\Shintio.Json.csproj"/>

@@ -8,4 +8,9 @@
 		<LangVersion Condition="'$(TargetFramework)' == 'netcoreapp2.2.8'">9</LangVersion>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<PackageId>Shintio.DependencyInjection</PackageId>
+		<Description>DependencyInjection</Description>
+	</PropertyGroup>
+
 </Project>
