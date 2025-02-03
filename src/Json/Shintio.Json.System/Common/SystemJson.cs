@@ -65,6 +65,8 @@ namespace Shintio.Json.System.Common
 			}
 		}
 
+		public Type SerializerType { get; } = typeof(JsonSerializer);
+
 		public string Serialize(object? value, JsonFormatting formatting = JsonFormatting.None)
 		{
 			return JsonSerializer.Serialize(value,

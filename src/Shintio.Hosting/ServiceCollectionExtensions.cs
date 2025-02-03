@@ -10,14 +10,14 @@ namespace Shintio.Hosting;
 
 public static class ServiceCollectionExtensions
 {
-	public static IServiceCollection AddShintioNet(this IServiceCollection services)
+	public static IServiceCollection AddShintioNet<TJson>(this IServiceCollection services) where TJson : IJson
 	{
-		var json = new SystemJson();
+		var json = Activator.CreateInstance<TJson>();
 		
 		JsonConverter.Instance = json;
 		
 		return services
-			.AddSingleton<IJson, SystemJson>(_ => json)
+			.AddSingleton<IJson>(_ => json)
 			.AddCompression()
 			.AddTranslation()
 			.AddWebUtils();

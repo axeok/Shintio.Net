@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Shintio.Essentials.Extensions;
+using System.Linq;
 
 namespace Shintio.Communication.Core.Common
 {
-	public class MessageSerializer : IMessageSerializer
+	public class ListMessageSerializer : IMessageSerializer
 	{
 		private const int IntSize = sizeof(int);
 
@@ -26,22 +26,18 @@ namespace Shintio.Communication.Core.Common
 
 		public virtual object?[] Deserialize(byte[] bytes)
 		{
-			var memory = new Memory<byte>(bytes);
-			return Deserialize(memory);
-		}
-
-		public virtual object?[] Deserialize(Memory<byte> memory)
-		{
 			var result = new List<object?>();
 
-			var count = BitConverter.ToInt32(memory.Span);
-			memory = memory.Slice(IntSize);
+			var pointer = 0;
+			
+			var count = BitConverter.ToInt32(bytes);
+			pointer += IntSize;
 
 			for (var i = 0; i < count; i++)
 			{
-				var size = ReadObject(ref memory, out var obj);
+				var size = ReadObject(bytes, ref pointer, out var obj);
 				result.Add(obj);
-				memory = memory.Slice(size);
+				pointer += size;
 			}
 
 			return result.ToArray();
@@ -113,8 +109,6 @@ namespace Shintio.Communication.Core.Common
 					buffer.AddRange(stringBytes);
 					break;
 				case TypeCode.Object:
-					buffer.AddRange(BitConverter.GetBytes(obj.ToIntPtr().ToInt64()));
-					break;
 				case TypeCode.DBNull:
 				case TypeCode.Empty:
 				default:
@@ -122,75 +116,77 @@ namespace Shintio.Communication.Core.Common
 			}
 		}
 
-		protected virtual int ReadObject(ref Memory<byte> memory, out object? result)
+		protected virtual int ReadObject(byte[] bytes, ref int pointer, out object? result)
 		{
-			var type = (TypeCode)BitConverter.ToInt32(memory.Span);
-			memory = memory.Slice(IntSize);
+			var type = (TypeCode)BitConverter.ToInt32(GetBytes(bytes, pointer, IntSize));
+			pointer += IntSize;
 
 			switch (type)
 			{
 				case TypeCode.Boolean:
-					result = BitConverter.ToBoolean(memory.Span);
+					result = BitConverter.ToBoolean(GetBytes(bytes, pointer, sizeof(bool)));
 					return sizeof(bool);
 				case TypeCode.Byte:
-					result = memory.Span[0];
+					result = bytes[pointer];
 					return sizeof(byte);
 				case TypeCode.SByte:
-					result = (sbyte)memory.Span[0];
+					result = (sbyte)bytes[pointer];
 					return sizeof(sbyte);
 				case TypeCode.Char:
-					result = BitConverter.ToChar(memory.Span);
+					result = BitConverter.ToChar(GetBytes(bytes, pointer, sizeof(char)));
 					return sizeof(char);
 				case TypeCode.Int16:
-					result = BitConverter.ToInt16(memory.Span);
+					result = BitConverter.ToInt16(GetBytes(bytes, pointer, sizeof(short)));
 					return sizeof(short);
 				case TypeCode.UInt16:
-					result = BitConverter.ToUInt16(memory.Span);
+					result = BitConverter.ToUInt16(GetBytes(bytes, pointer, sizeof(ushort)));
 					return sizeof(ushort);
 				case TypeCode.Int32:
-					result = BitConverter.ToInt32(memory.Span);
+					result = BitConverter.ToInt32(GetBytes(bytes, pointer, IntSize));
 					return IntSize;
 				case TypeCode.UInt32:
-					result = BitConverter.ToUInt32(memory.Span);
+					result = BitConverter.ToUInt32(GetBytes(bytes, pointer, sizeof(uint)));
 					return sizeof(uint);
 				case TypeCode.Int64:
-					result = BitConverter.ToInt64(memory.Span);
+					result = BitConverter.ToInt64(GetBytes(bytes, pointer, sizeof(long)));
 					return sizeof(long);
 				case TypeCode.UInt64:
-					result = BitConverter.ToUInt64(memory.Span);
+					result = BitConverter.ToUInt64(GetBytes(bytes, pointer, sizeof(ulong)));
 					return sizeof(ulong);
 				case TypeCode.Single:
-					result = BitConverter.ToSingle(memory.Span);
+					result = BitConverter.ToSingle(GetBytes(bytes, pointer, sizeof(float)));
 					return sizeof(float);
 				case TypeCode.Double:
-					result = BitConverter.ToDouble(memory.Span);
+					result = BitConverter.ToDouble(GetBytes(bytes, pointer, sizeof(double)));
 					return sizeof(double);
 				case TypeCode.Decimal:
 					result = new decimal(new int[]
 					{
-						BitConverter.ToInt32(memory.Span),
-						BitConverter.ToInt32(memory.Span.Slice(IntSize)),
-						BitConverter.ToInt32(memory.Span.Slice(2 * IntSize)),
-						BitConverter.ToInt32(memory.Span.Slice(3 * IntSize))
+						BitConverter.ToInt32(GetBytes(bytes, pointer, IntSize)),
+						BitConverter.ToInt32(GetBytes(bytes, pointer + IntSize, IntSize)),
+						BitConverter.ToInt32(GetBytes(bytes, pointer + IntSize * 2, IntSize)),
+						BitConverter.ToInt32(GetBytes(bytes, pointer + IntSize * 3, IntSize)),
 					});
 					return 4 * IntSize;
 				case TypeCode.DateTime:
-					result = DateTime.FromBinary(BitConverter.ToInt64(memory.Span));
+					result = DateTime.FromBinary(BitConverter.ToInt64(GetBytes(bytes, pointer, sizeof(long))));
 					return sizeof(long);
 				case TypeCode.String:
-					var length = BitConverter.ToInt32(memory.Span);
-					result = System.Text.Encoding.UTF8.GetString(memory.Span.Slice(IntSize, length));
+					var length = BitConverter.ToInt32(GetBytes(bytes, pointer, IntSize));
+					result = System.Text.Encoding.UTF8.GetString(GetBytes(bytes, pointer + IntSize, length));
 					return IntSize + length;
 				case TypeCode.Object:
-					var intPtr = new IntPtr(BitConverter.ToInt64(memory.Span));
-					result = intPtr.ToObject();
-					return sizeof(long);
 				case TypeCode.DBNull:
 				case TypeCode.Empty:
 				default:
 					result = null;
 					return 0;
 			}
+		}
+
+		private byte[] GetBytes(byte[] bytes, int pointer, int count)
+		{
+			return bytes.Skip(pointer).Take(count).ToArray();
 		}
 	}
 }

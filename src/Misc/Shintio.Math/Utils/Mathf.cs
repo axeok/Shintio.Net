@@ -593,6 +593,35 @@ namespace Shintio.Math.Utils
 			return new Vector3(-MathF.Sin(num) * num3, MathF.Cos(num) * num3, MathF.Sin(num2));
 		}
 
+		public static Vector3 GetLeftDirection(Vector3 rotation)
+		{
+			const float oneDeg = MathF.PI / 180;
+
+			var yaw = rotation.Z * oneDeg;
+			var pitch = rotation.X * oneDeg;
+
+			var num3 = MathF.Abs(MathF.Cos(pitch));
+			return new Vector3(-MathF.Cos(yaw) * num3, -MathF.Sin(yaw) * num3, 0);
+		}
+
+		public static Vector3 GetUpDirection(Vector3 rotation)
+		{
+			const float oneDeg = MathF.PI / 180;
+
+			var yaw = rotation.Z * oneDeg;
+			var pitch = rotation.X * oneDeg;
+			var roll = rotation.Y * oneDeg;
+
+			var forward = GetDirection(rotation);
+			var right = new Vector3(
+				MathF.Cos(yaw) * MathF.Cos(roll) - MathF.Sin(yaw) * MathF.Sin(pitch) * MathF.Sin(roll),
+				MathF.Sin(yaw) * MathF.Cos(roll) + MathF.Cos(yaw) * MathF.Sin(pitch) * MathF.Sin(roll),
+				-MathF.Cos(pitch) * MathF.Sin(roll)
+			);
+
+			return -Vector3.Cross(forward, right).GetNormalized();
+		}
+
 		public static Vector3 GetRotation(Vector3 direction)
 		{
 			const float oneRad = 180 / MathF.PI;
@@ -801,6 +830,29 @@ namespace Shintio.Math.Utils
 				x += dx;
 				y += dy;
 			}
+		}
+		
+		public delegate float MathFunctionDelegate(float t);
+		public static float GetDerivative(MathFunctionDelegate func, float t, float epsilon = 1e-5f)
+		{
+			// return (func(t + epsilon) - func(t - epsilon)) / (2 * epsilon);
+			return (func(t + epsilon) - func(t)) / epsilon;
+		}
+
+		public static (float min, float max) GetMinMaxDerivative(MathFunctionDelegate func)
+		{
+			var minDerivative = float.MaxValue;
+			var maxDerivative = float.MinValue;
+        
+			// Evaluate derivative over the interval
+			for (var x = 0f; x <= 1f; x += 0.01f)
+			{
+				var dValue = GetDerivative(func, x);
+				if (dValue < minDerivative) minDerivative = dValue;
+				if (dValue > maxDerivative) maxDerivative = dValue;
+			}
+
+			return (minDerivative, maxDerivative);
 		}
 	}
 }

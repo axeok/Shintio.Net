@@ -6,6 +6,8 @@ namespace Shintio.Json.Interfaces
 {
 	public interface IJson
 	{
+		public Type SerializerType { get; }
+		
 		public string Serialize(object? value, JsonFormatting formatting = JsonFormatting.None);
 
 #if NETCOREAPP3_0_OR_GREATER

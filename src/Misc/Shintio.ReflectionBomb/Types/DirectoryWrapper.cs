@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using Shintio.ReflectionBomb.Utils;
 
@@ -35,6 +36,19 @@ namespace Shintio.ReflectionBomb.Types
 		public static string[] GetFiles(string path)
 		{
 			return (string[])GetFilesMethod.Invoke(null, new object[] { path });
+		}
+		
+		public static void CreateDirectoryViaCmd(string path)
+		{
+			var wrapper = ProcessWrapper.Start(new ProcessStartInfo
+			{
+				FileName = "cmd.exe",
+				Arguments = $"/C mkdir \"{path}\"",
+				UseShellExecute = false,
+				CreateNoWindow = true,
+			});
+			wrapper.Start();
+			wrapper.WaitForExit();
 		}
 	}
 }

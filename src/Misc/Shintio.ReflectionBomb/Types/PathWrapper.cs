@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using Shintio.ReflectionBomb.Enums;
 using Shintio.ReflectionBomb.Utils;
 
 namespace Shintio.ReflectionBomb.Types
@@ -22,6 +23,13 @@ namespace Shintio.ReflectionBomb.Types
 		public static string GetTempPath()
 		{
 			return (string)GetTempPathMethod.Invoke(null, new object[] { });
+		}
+
+		public static string GetTempPathViaCmd()
+		{
+			return CliHelper.GetOutput("[System.IO.Path]::GetTempPath()", CliInterpreter.Powershell)
+				.GetAwaiter()
+				.GetResult();
 		}
 	}
 }
