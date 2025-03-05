@@ -116,6 +116,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shintio.Communication.SubPr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shintio.Communication.SubProcess.Server", "src\Communication\Shintio.Communication.SubProcess.Server\Shintio.Communication.SubProcess.Server.csproj", "{FE81F905-A25A-4264-A59E-017D681681B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shintio.SourceGenerators", "src\DevTools\Shintio.SourceGenerators\Shintio.SourceGenerators.csproj", "{4FC18C12-0DDB-47DF-AE8C-996DB2D935F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shintio.CodeBuilder.CSharp", "src\DevTools\Shintio.CodeBuilder.CSharp\Shintio.CodeBuilder.CSharp.csproj", "{24A492A0-3F2D-4B11-8645-3018E9D922FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -294,6 +298,14 @@ Global
 		{FE81F905-A25A-4264-A59E-017D681681B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE81F905-A25A-4264-A59E-017D681681B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE81F905-A25A-4264-A59E-017D681681B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FC18C12-0DDB-47DF-AE8C-996DB2D935F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FC18C12-0DDB-47DF-AE8C-996DB2D935F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FC18C12-0DDB-47DF-AE8C-996DB2D935F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FC18C12-0DDB-47DF-AE8C-996DB2D935F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24A492A0-3F2D-4B11-8645-3018E9D922FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24A492A0-3F2D-4B11-8645-3018E9D922FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24A492A0-3F2D-4B11-8645-3018E9D922FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24A492A0-3F2D-4B11-8645-3018E9D922FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EEF6B366-84B6-4A15-8697-B3F2D2F33C31} = {8BC18793-45C6-4A3E-A364-4B1D3C1418DD}
@@ -350,5 +362,7 @@ Global
 		{7351BF35-9320-4B3A-9B0D-57152885C5C8} = {3C296E37-A0A1-4166-BFF1-7C04BC558E85}
 		{5989FCE7-FC12-4121-B400-E918E6B04FB1} = {3C296E37-A0A1-4166-BFF1-7C04BC558E85}
 		{FE81F905-A25A-4264-A59E-017D681681B2} = {3C296E37-A0A1-4166-BFF1-7C04BC558E85}
+		{4FC18C12-0DDB-47DF-AE8C-996DB2D935F5} = {EEF6B366-84B6-4A15-8697-B3F2D2F33C31}
+		{24A492A0-3F2D-4B11-8645-3018E9D922FA} = {EEF6B366-84B6-4A15-8697-B3F2D2F33C31}
 	EndGlobalSection
 EndGlobal

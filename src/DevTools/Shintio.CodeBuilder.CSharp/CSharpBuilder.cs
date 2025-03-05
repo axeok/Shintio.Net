@@ -1,0 +1,1 @@
+﻿namespace Shintio.CodeBuilder.CSharp;
