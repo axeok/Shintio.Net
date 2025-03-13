@@ -4,7 +4,7 @@ namespace Shintio.CodeBuilder.CSharp.CodeBlocks;
 
 public class AutoPropertyGetterCodeBlock : CodeBlockBase, IPropertyGetter
 {
-	protected override string BuildInternal()
+	protected override string GetCodeInternal()
 	{
 		return "get;";
 	}

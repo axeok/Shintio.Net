@@ -15,7 +15,7 @@ public class NamespaceCodeBlock : CodeBlockBase
 	public List<string> Usings { get; set; } = new();
 	public List<ClassCodeBlock> Classes { get; set; } = new();
 
-	protected override string BuildInternal()
+	protected override string GetCodeInternal()
 	{
 		var body = GetBody();
 

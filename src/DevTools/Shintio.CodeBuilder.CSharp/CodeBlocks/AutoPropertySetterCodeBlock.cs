@@ -6,7 +6,7 @@ public class AutoPropertySetterCodeBlock : CodeBlockBase, IPropertySetter
 {
 	public string Modifier { get; set; } = "";
 
-	protected override string BuildInternal()
+	protected override string GetCodeInternal()
 	{
 		return string.IsNullOrEmpty(Modifier) ? " set;" : $" {Modifier} set;";
 	}

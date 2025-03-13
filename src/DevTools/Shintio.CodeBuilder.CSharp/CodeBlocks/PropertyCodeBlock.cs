@@ -82,7 +82,7 @@ public class PropertyCodeBlock : CodeBlockBase
 		return this;
 	}
 
-	protected override string BuildInternal()
+	protected override string GetCodeInternal()
 	{
 		var @abstract = IsAbstract ? "abstract " : string.Empty;
 		var @static = IsStatic ? "static " : string.Empty;

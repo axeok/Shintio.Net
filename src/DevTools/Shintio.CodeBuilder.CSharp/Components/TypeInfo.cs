@@ -248,7 +248,7 @@ public class TypeInfo
 		return result;
 	}
 
-	public static string[] SplitGenericArguments(string arguments)
+	private static string[] SplitGenericArguments(string arguments)
 	{
 		var result = new List<string>();
 		var builder = new StringBuilder();

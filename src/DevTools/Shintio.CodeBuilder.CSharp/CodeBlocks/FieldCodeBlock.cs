@@ -50,7 +50,7 @@ public class FieldCodeBlock : CodeBlockBase
 		return this;
 	}
 
-	protected override string BuildInternal()
+	protected override string GetCodeInternal()
 	{
 		var @static = IsStatic ? "static " : string.Empty;
 		var @readonly = IsReadonly ? "readonly " : string.Empty;

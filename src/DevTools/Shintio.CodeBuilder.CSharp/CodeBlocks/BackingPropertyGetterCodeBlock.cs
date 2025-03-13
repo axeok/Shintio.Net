@@ -16,7 +16,7 @@ public class BackingPropertyGetterCodeBlock : CodeBlockBase, IPropertyGetter
 		return new BackingPropertyGetterCodeBlock(fieldName);
 	}
 
-	protected override string BuildInternal()
+	protected override string GetCodeInternal()
 	{
 		return $$"""
 			get

@@ -74,7 +74,7 @@ public class MethodCodeBlock : CodeBlockBase
 		return Class;
 	}
 
-	protected override string BuildInternal()
+	protected override string GetCodeInternal()
 	{
 		var @abstract = IsAbstract ? "abstract " : string.Empty;
 		var @static = IsStatic ? "static " : string.Empty;

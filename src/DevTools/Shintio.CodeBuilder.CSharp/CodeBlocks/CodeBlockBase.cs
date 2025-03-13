@@ -8,7 +8,7 @@ public abstract class CodeBlockBase : ICodeBlock
 {
 	public string GetCode(int indent)
 	{
-		var result = BuildInternal();
+		var result = GetCodeInternal();
 
 		if (PostProcessor != null)
 		{
@@ -22,7 +22,7 @@ public abstract class CodeBlockBase : ICodeBlock
 	public string? Postfix { get; set; }
 	public Func<string, string>? PostProcessor { get; set; }
 
-	protected abstract string BuildInternal();
+	protected abstract string GetCodeInternal();
 
 	private static string AddIndents(string code, int count, bool skipFirstLine = false)
 	{

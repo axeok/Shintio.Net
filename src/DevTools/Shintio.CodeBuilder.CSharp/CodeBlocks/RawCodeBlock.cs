@@ -11,7 +11,7 @@ public class RawCodeBlock : CodeBlockBase, IPropertyGetter, IPropertySetter
 
 	public string Value { get; set; }
 
-	protected override string BuildInternal()
+	protected override string GetCodeInternal()
 	{
 		return Value;
 	}

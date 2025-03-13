@@ -16,7 +16,7 @@ public class CommentCodeBlock : CodeBlockBase
 
 	public string Value { get; set; }
 
-	protected override string BuildInternal()
+	protected override string GetCodeInternal()
 	{
 		return Value;
 	}

@@ -37,7 +37,7 @@ public class ParameterCodeBlock : CodeBlockBase
 	public string Name { get; set; }
 	public ICodeBlock? DefaultValue { get; set; }
 
-	protected override string BuildInternal()
+	protected override string GetCodeInternal()
 	{
 		var defaultValue = DefaultValue == null ? "" : $" = {DefaultValue.GetCode(0)}";
 

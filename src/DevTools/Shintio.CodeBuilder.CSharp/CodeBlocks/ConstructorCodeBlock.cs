@@ -46,7 +46,7 @@ public class ConstructorCodeBlock : CodeBlockBase
 		return this;
 	}
 
-	protected override string BuildInternal()
+	protected override string GetCodeInternal()
 	{
 		var body = Body?.GetCode(1);
 

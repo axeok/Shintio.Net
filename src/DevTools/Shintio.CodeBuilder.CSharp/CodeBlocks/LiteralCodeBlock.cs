@@ -12,7 +12,7 @@ public class LiteralCodeBlock : CodeBlockBase
 
 	public object? Value { get; set; }
 
-	protected override string BuildInternal()
+	protected override string GetCodeInternal()
 	{
 		return FormatPropertyValue(Value);
 	}
