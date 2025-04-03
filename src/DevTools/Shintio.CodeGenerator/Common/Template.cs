@@ -14,6 +14,6 @@ public abstract class Template : ITemplate
 	{
 		typeof(decimal), typeof(byte), typeof(sbyte),
 		typeof(short), typeof(ushort), typeof(int), 
-		typeof(double), typeof(float), typeof(uint), typeof(long)
+		typeof(double), typeof(float), typeof(uint), typeof(long), typeof(ulong)
 	};
 }
