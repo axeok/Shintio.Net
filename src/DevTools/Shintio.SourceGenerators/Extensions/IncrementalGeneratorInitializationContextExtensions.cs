@@ -1,15 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+using Shintio.SourceGenerators.Common;
 using Shintio.SourceGenerators.Utils;
 
 namespace Shintio.SourceGenerators.Extensions;
 
 public static class IncrementalGeneratorInitializationContextExtensions
 {
+	private static readonly string[] ProjectDirectoryKeys =
+	[
+		"build_property.projectdir", "build_property.MSBuildProjectDirectory", "build_property.msbuildprojectdirectory"
+	];
+
+	private static readonly string[] RootNamespaceKeys =
+	[
+		"build_property.rootnamespace", "build_property.RootNamespace"
+	];
+
 	#region ValueProviders
 
 	public static IncrementalValueProvider<IAssemblySymbol?> GetAssemblyValueProvider(
@@ -28,6 +38,58 @@ public static class IncrementalGeneratorInitializationContextExtensions
 	{
 		return context.CompilationProvider.Select((compilation, _) =>
 			GeneratorHelper.GetAssemblies(compilation, assembliesNames).ToArray());
+	}
+
+	public static IncrementalValueProvider<string> GetProjectDirectoryProvider(
+		this IncrementalGeneratorInitializationContext context
+	)
+	{
+		return context.AnalyzerConfigOptionsProvider.Select((options, _) =>
+		{
+			var projectDirectory = string.Empty;
+
+			foreach (var key in ProjectDirectoryKeys)
+			{
+				if (options.GlobalOptions.TryGetValue(key, out var value))
+				{
+					projectDirectory = value;
+					break;
+				}
+			}
+
+			return projectDirectory;
+		});
+	}
+
+	public static IncrementalValueProvider<(string, string)> GetProjectMetadataValueProvider(
+		this IncrementalGeneratorInitializationContext context
+	)
+	{
+		return context.AnalyzerConfigOptionsProvider.Select((options, _) =>
+		{
+			var projectDirectory = string.Empty;
+			var rootNamespace = string.Empty;
+
+			foreach (var key in ProjectDirectoryKeys)
+			{
+				if (options.GlobalOptions.TryGetValue(key, out var value))
+				{
+					projectDirectory = value;
+					break;
+				}
+			}
+
+			foreach (var key in RootNamespaceKeys)
+			{
+				if (options.GlobalOptions.TryGetValue(key, out var value))
+				{
+					rootNamespace = value;
+					break;
+				}
+			}
+
+			return (projectDirectory, rootNamespace);
+		});
 	}
 
 	#endregion
