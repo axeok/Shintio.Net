@@ -85,13 +85,18 @@ public abstract class Generator : IGenerator
 					result = string.Join(
 						"\n",
 						result.Split('\n')
-							.Where(l => !(
-								string.IsNullOrWhiteSpace(l) ||
-								l.Trim().StartsWith("//") ||
-								l.Trim().StartsWith("#nullable enable") ||
-								l.Trim().StartsWith("#pragma warning disable CS8601") ||
-								l.Trim().StartsWith("#pragma warning disable CS8618")
-							))
+							.Where(l =>
+							{
+								var trim = l.Trim();
+								
+								return !(
+									string.IsNullOrWhiteSpace(trim) ||
+									(trim.StartsWith("//") && !trim.StartsWith("///")) ||
+									trim.StartsWith("#nullable enable") ||
+									trim.StartsWith("#pragma warning disable CS8601") ||
+									trim.StartsWith("#pragma warning disable CS8618")
+								);
+							})
 					);
 				}
 				else
