@@ -27,5 +27,7 @@ namespace Shintio.Essentials.Common
         public static readonly Color Warning = new Color(255, 213, 63);
         public static readonly Color Success = new Color(133, 193, 218);
         public static readonly Color Info = new Color(0, 193, 252);
+        
+        public static readonly Color WorldMarker = new Color(121, 182, 227);
     }
 }
