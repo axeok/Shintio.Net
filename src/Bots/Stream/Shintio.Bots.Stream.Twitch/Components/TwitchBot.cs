@@ -72,6 +72,10 @@ public partial class TwitchBot : IStreamBot
 		_pubSub.Disconnect();
 	}
 
+	public Guid Id { get; } = Guid.NewGuid();
+	public string ChannelId => _channelId; 
+	public StreamingPlatformType Platform => StreamingPlatformType.Twitch;
+
 	public Task Initialize(CancellationToken cancellationToken)
 	{
 		var credentials = new ConnectionCredentials(_secrets.Username, _secrets.AccessToken);
@@ -109,6 +113,12 @@ public partial class TwitchBot : IStreamBot
 		{
 			Title = title,
 		}, _channelCredentials.AccessToken);
+	}
+
+	public Task TimeoutUser(string username, TimeSpan duration, string message)
+	{
+		_client.TimeoutUser(_channelName, username, duration, message);
+		return Task.CompletedTask;
 	}
 
 	public async Task<IReadOnlyCollection<StreamChatter>> GetChatters()

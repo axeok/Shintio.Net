@@ -48,6 +48,14 @@ namespace Shintio.Essentials.Utils
 				.GetTypes()
 				.Where(t => type.IsAssignableFrom(t) && t != type) ?? Array.Empty<Type>();
 		}
+		
+		public static IEnumerable<Type> GetInterfaceImplementations(Type interfaceType)
+		{
+			return interfaceType.Assembly
+				.GetTypes()
+				.Where(t => interfaceType.IsAssignableFrom(t) && t != interfaceType && !t.IsAbstract)
+			       ?? Array.Empty<Type>();
+		}
 
 		public static void SetProperty<T>(T obj, string name, object value) where T : notnull
 		{

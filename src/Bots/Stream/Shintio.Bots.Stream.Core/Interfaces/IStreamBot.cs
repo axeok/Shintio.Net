@@ -9,10 +9,15 @@ public interface IStreamBot
 	public event StreamBotEventHandler<MessageReceivedArgs>? MessageReceived;
 	public event StreamBotEventHandler<CommandReceivedArgs>? CommandReceived;
 
+	Guid Id { get; }
+	string ChannelId { get; }
+	StreamingPlatformType Platform { get; }
+
 	Task Initialize(CancellationToken cancellationToken);
 
 	Task SendMessage(string message, string? replyToId = null);
 	Task DeleteMessage(string messageId);
 	Task EditStreamTitle(string title);
+	Task TimeoutUser(string username, TimeSpan duration, string message = "");
 	Task<IReadOnlyCollection<StreamChatter>> GetChatters();
 }

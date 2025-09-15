@@ -19,6 +19,11 @@ public abstract class BaseDbContext : DbContext
 
 	protected readonly IJson Json;
 
+	public BaseDbContext(IJson json)
+	{
+		Json = json;
+	}
+
 	public BaseDbContext(DbContextOptions options, IJson json) : base(options)
 	{
 		Json = json;
@@ -117,7 +122,8 @@ public abstract class BaseDbContext : DbContext
 			{
 				modelBuilder.Entity(entity)
 					.Property(name)
-					.HasConversion(converter);
+					.HasConversion(converter)
+					.HasColumnType(JsonColumnType);
 			}
 		}
 	}
