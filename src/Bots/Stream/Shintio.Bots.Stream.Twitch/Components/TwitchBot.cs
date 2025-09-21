@@ -75,6 +75,7 @@ public partial class TwitchBot : IStreamBot
 	public Guid Id { get; } = Guid.NewGuid();
 	public string ChannelId => _channelId; 
 	public StreamingPlatformType Platform => StreamingPlatformType.Twitch;
+	public string CultureName { get; set; } = "en";
 
 	public Task Initialize(CancellationToken cancellationToken)
 	{

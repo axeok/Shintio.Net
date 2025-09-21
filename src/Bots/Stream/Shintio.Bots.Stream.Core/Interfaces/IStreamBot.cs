@@ -12,6 +12,7 @@ public interface IStreamBot
 	Guid Id { get; }
 	string ChannelId { get; }
 	StreamingPlatformType Platform { get; }
+	string CultureName { get; set; }
 
 	Task Initialize(CancellationToken cancellationToken);
 
