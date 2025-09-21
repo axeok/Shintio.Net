@@ -2,7 +2,7 @@ namespace Shintio.Bots.Stream.Core.Models;
 
 public class StreamCommand
 {
-	public StreamCommand(string name, string argument, IReadOnlyCollection<string> arguments, StreamMessage message)
+	public StreamCommand(string name, string argument, IReadOnlyList<string> arguments, StreamMessage message)
 	{
 		Name = name;
 		Argument = argument;
@@ -12,6 +12,6 @@ public class StreamCommand
 
 	public string Name { get; }
 	public string Argument { get; }
-	public IReadOnlyCollection<string> Arguments { get; }
+	public IReadOnlyList<string> Arguments { get; }
 	public StreamMessage Message { get; }
 }

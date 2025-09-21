@@ -1,5 +1,7 @@
+using Shintio.Bots.Stream.Core.Common;
 using Shintio.Bots.Stream.Core.Common.EventArgs;
 using Shintio.Bots.Stream.Core.Models;
+using TwitchLib.Client.Enums;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
 
@@ -38,8 +40,21 @@ public partial class TwitchBot
 
 	private StreamMessage ConvertMessage(ChatMessage message)
 	{
-		var senderUser = new StreamUser(message.UserId, message.Username, message.DisplayName);
+		var senderUser = new StreamUser(message.UserId, message.Username, message.DisplayName, ConvertUserType(message.UserType));
 		var channel = new StreamChannel(message.Channel);
 		return new StreamMessage(message.Id, message.Message, senderUser, channel);
+	}
+
+	private ChatterType ConvertUserType(UserType userType)
+	{
+		return userType switch
+		{
+			UserType.Viewer => ChatterType.Viewer,
+			UserType.Moderator => ChatterType.Moderator,
+			UserType.GlobalModerator => ChatterType.Moderator,
+			UserType.Broadcaster => ChatterType.Broadcaster,
+			UserType.Admin or UserType.Staff => ChatterType.Moderator,
+			_ => throw new ArgumentOutOfRangeException(nameof(userType), userType, null)
+		};
 	}
 }
