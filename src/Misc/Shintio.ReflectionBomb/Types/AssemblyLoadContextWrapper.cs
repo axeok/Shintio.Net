@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Shintio.ReflectionBomb.Utils;
 
@@ -44,11 +45,33 @@ namespace Shintio.ReflectionBomb.Types
 			return LoadFromStream(stream);
 		}
 
-		public void SubscribeToAssembly(Func<object, AssemblyName, Assembly> handler)
+		public void SubscribeToAssembly(Func<object, AssemblyName, object> handler)
 		{
 			var eventInfo = AssemblyLoadContextType.GetEvent("Resolving", BindingFlags.Instance | BindingFlags.Public)!;
-			
-			eventInfo.AddEventHandler(AssemblyLoadContext, handler);
+
+			var asmNameType = typeof(AssemblyName);
+			var asmType = TypesHelper.GetType(TypesHelper.TypeFromSystem, "System", "Reflection", "Assembly")!;
+
+			var ctxParam = Expression.Parameter(typeof(object), "ctx");
+			var nameParam = Expression.Parameter(asmNameType, "name");
+
+			var handlerConst = Expression.Constant(handler);
+
+			var call = Expression.Call(
+				handlerConst,
+				handler.GetType().GetMethod("Invoke")!,
+				ctxParam,
+				nameParam
+			);
+
+			var cast = Expression.Convert(call, asmType);
+
+			var lambdaType = typeof(Func<,,>).MakeGenericType(typeof(object), asmNameType, asmType);
+			var lambda = Expression.Lambda(lambdaType, cast, ctxParam, nameParam);
+
+			var compiled = lambda.Compile();
+
+			eventInfo.AddEventHandler(AssemblyLoadContext, compiled);
 		}
 	}
 }
