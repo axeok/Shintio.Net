@@ -25,5 +25,9 @@
         <ProjectReference Include="..\Shintio.CodeProcessor\Shintio.CodeProcessor.csproj" />
         <ProjectReference Include="..\..\Shintio.Essentials\Shintio.Essentials.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Essentials\" />
+    </ItemGroup>
 
 </Project>

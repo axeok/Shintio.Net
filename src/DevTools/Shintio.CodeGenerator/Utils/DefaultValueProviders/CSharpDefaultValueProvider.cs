@@ -27,7 +27,7 @@ public class CSharpDefaultValueProvider : BaseDefaultValueProvider
 			return GeneratorHelper.FormatPropertyValue(property, defaultValueAttribute.Value);
 		}
 
-		var defaultValue = Essentials.Utils.ReflectionHelper.GetPropertyValue(property);
+		var defaultValue = ReflectionHelper.GetPropertyValue(property);
 		if (defaultValue != null)
 		{
 			return GeneratorHelper.FormatPropertyValue(property,
