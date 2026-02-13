@@ -70,4 +70,22 @@ public class ReflectionHelper
 
 		return "";
 	}
+	
+	public static IEnumerable<Type> GetChildrenTypes(Type type, bool allowAbstract = false)
+	{
+		return type.Assembly
+			.GetTypes()
+			.Where(child =>
+				child.IsClass &&
+				(allowAbstract || !child.IsAbstract) &&
+				child.IsSubclassOf(type)
+			) ?? Array.Empty<Type>();
+	}
+	
+	public static IEnumerable<Type> GetChildrenInterfaces(Type type)
+	{
+		return type.Assembly
+			.GetTypes()
+			.Where(t => type.IsAssignableFrom(t) && t != type) ?? Array.Empty<Type>();
+	}
 }
