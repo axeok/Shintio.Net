@@ -73,5 +73,27 @@ namespace Shintio.ReflectionBomb.Types
 
 			eventInfo.AddEventHandler(AssemblyLoadContext, compiled);
 		}
+		
+		public void SubscribeToAssemblyUnload(Action<object> handler)
+		{
+			var eventInfo = AssemblyLoadContextType.GetEvent("Unloading", BindingFlags.Instance | BindingFlags.Public)!;
+
+			var ctxParam = Expression.Parameter(typeof(object), "ctx");
+
+			var handlerConst = Expression.Constant(handler);
+
+			var call = Expression.Call(
+				handlerConst,
+				handler.GetType().GetMethod("Invoke")!,
+				ctxParam
+			);
+
+			var lambdaType = typeof(Action<>).MakeGenericType(typeof(object));
+			var lambda = Expression.Lambda(lambdaType, call, ctxParam);
+
+			var compiled = lambda.Compile();
+
+			eventInfo.AddEventHandler(AssemblyLoadContext, compiled);
+		}
 	}
 }
