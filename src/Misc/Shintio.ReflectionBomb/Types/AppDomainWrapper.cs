@@ -79,6 +79,11 @@ namespace Shintio.ReflectionBomb.Types
 			SubscribeToCurrentDomainEvent("AssemblyResolve", handler);
 		}
 		
+		public static void SubscribeToProcessExit(EventHandler handler)
+		{
+			SubscribeToCurrentDomainEvent("ProcessExit", handler);
+		}
+		
 		private static void SubscribeToCurrentDomainEvent(string name, Delegate handler)
 		{
 			var eventInfo = CurrentDomainProperty.PropertyType.GetEvent(name, BindingFlags.Instance | BindingFlags.Public)!;

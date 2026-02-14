@@ -7,5 +7,10 @@
         <LangVersion>latest</LangVersion>
         <LangVersion Condition="'$(TargetFramework)' == 'netcoreapp2.2.8'">8</LangVersion>
     </PropertyGroup>
+    
+    <PropertyGroup>
+        <PackageId>Shintio.MachineTranslation.Abstractions</PackageId>
+        <Description>MachineTranslation Abstractions</Description>
+    </PropertyGroup>
 
 </Project>

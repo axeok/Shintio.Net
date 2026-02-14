@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Shintio.Vision.Abstractions</PackageId>
+        <Description>Vision Abstractions</Description>
+    </PropertyGroup>
+
 </Project>

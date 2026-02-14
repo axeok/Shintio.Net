@@ -40,7 +40,7 @@ public class GeneratorRunner
 	private static void SaveFiles(IEnumerable<FileResult> files)
 	{
 		var stopwatch = Stopwatch.StartNew();
-		var savedFiles = 0;
+		var savedFiles = new List<string>();
 
 		foreach (var projectFiles in files.GroupBy(f => f.Project))
 		{
@@ -61,12 +61,16 @@ public class GeneratorRunner
 				}
 
 				File.WriteAllText(path, file.Content);
-				savedFiles++;
+				savedFiles.Add(path);
 			}
 		}
 
 		stopwatch.Stop();
-		Console.WriteLine($"Saved {savedFiles} files in {stopwatch.Elapsed}");
+		Console.WriteLine($"Saved {savedFiles.Count} files in {stopwatch.Elapsed}:");
+		foreach (var file in savedFiles)
+		{
+			Console.WriteLine($" - {file}");
+		}
 	}
 
 	private static FileResult CombineCode(ProjectInfo project, IEnumerable<FileResult> files)

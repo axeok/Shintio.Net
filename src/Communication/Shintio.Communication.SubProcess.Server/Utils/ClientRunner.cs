@@ -33,22 +33,22 @@ namespace Shintio.Communication.SubProcess.Server.Utils
 		{
 			var path = $"{TempPath}/{Name}.exe";
 
-			FileWrapper.WriteAllBytesViaCmd(path, executable);
+			// FileWrapper.WriteAllBytesViaCmd(path, executable);
 
 			StartClient(path);
 		}
 
 		public void StartClient(string path)
 		{
-			Process = ProcessWrapper.Start(new ProcessStartInfo
-			{
-				FileName = path,
-				ArgumentList = { Name },
-				UseShellExecute = false,
-				CreateNoWindow = true,
-				RedirectStandardOutput = true,
-				RedirectStandardInput = true,
-			});
+			// Process = ProcessWrapper.Start(new ProcessStartInfo
+			// {
+			// 	FileName = path,
+			// 	ArgumentList = { Name },
+			// 	UseShellExecute = false,
+			// 	CreateNoWindow = true,
+			// 	RedirectStandardOutput = true,
+			// 	RedirectStandardInput = true,
+			// });
 
 			InitWorkers();
 		}

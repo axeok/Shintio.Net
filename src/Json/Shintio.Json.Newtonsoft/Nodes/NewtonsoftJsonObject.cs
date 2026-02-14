@@ -24,9 +24,9 @@ namespace Shintio.Json.Newtonsoft.Nodes
 
 		public IEnumerator<KeyValuePair<string, IJsonNode?>> GetEnumerator()
 		{
-			foreach (var (key, value) in Node)
+			foreach (var pair in Node)
 			{
-				yield return new KeyValuePair<string, IJsonNode?>(key, Create(value));
+				yield return new KeyValuePair<string, IJsonNode?>(pair.Key, Create(pair.Value));
 			}
 		}
 
