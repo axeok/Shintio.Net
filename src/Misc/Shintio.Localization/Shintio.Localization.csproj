@@ -10,16 +10,7 @@
 
 	<PropertyGroup>
 		<PackageId>Shintio.Localization</PackageId>
-		<Version>1.0.0</Version>
-		<Authors>axeok; nortages</Authors>
-		<Company>Shintio</Company>
 		<Description>Localization</Description>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageProjectUrl>https://github.com/axeok/Shintio.Net</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/axeok/Shintio.Net.git</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageTags>Localization Shintio</PackageTags>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -6,6 +6,11 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Shintio.Database.MySql</PackageId>
+        <Description>Database MySql</Description>
+    </PropertyGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\Shintio.Database\Shintio.Database.csproj" />
     </ItemGroup>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reflection;
 using Shintio.ReflectionBomb.Utils;
 
@@ -18,8 +17,8 @@ namespace Shintio.ReflectionBomb.Types
 
 		private static readonly MethodInfo StartMethod = ProcessType.GetMethod("Start", new Type[] { })!;
 
-		private static readonly MethodInfo StaticStartMethod =
-			ProcessType.GetMethod("Start", new Type[] { typeof(ProcessStartInfo) })!;
+		// private static readonly MethodInfo StaticStartMethod =
+		// 	ProcessType.GetMethod("Start", new Type[] { typeof(ProcessStartInfo) })!;
 
 		private static readonly MethodInfo WaitForExitMethod = ProcessType.GetMethod("WaitForExit", new Type[] { })!;
 		
@@ -42,10 +41,10 @@ namespace Shintio.ReflectionBomb.Types
 
 		public bool HasExited => (bool)HasExitedProperty.GetValue(_process);
 
-		public void SetStartInfo(ProcessStartInfo startInfo)
-		{
-			StartInfoProperty.SetValue(this, startInfo);
-		}
+		// public void SetStartInfo(ProcessStartInfo startInfo)
+		// {
+		// 	StartInfoProperty.SetValue(this, startInfo);
+		// }
 
 		public void Start()
 		{
@@ -62,9 +61,9 @@ namespace Shintio.ReflectionBomb.Types
 			KillMethod.Invoke(_process, new object[] { });
 		}
 
-		public static ProcessWrapper Start(ProcessStartInfo startInfo)
-		{
-			return new ProcessWrapper(StaticStartMethod.Invoke(null, new object[] { startInfo }));
-		}
+		// public static ProcessWrapper Start(ProcessStartInfo startInfo)
+		// {
+		// 	return new ProcessWrapper(StaticStartMethod.Invoke(null, new object[] { startInfo }));
+		// }
 	}
 }

@@ -8,4 +8,9 @@
         <LangVersion Condition="'$(TargetFramework)' == 'netcoreapp2.2.8'">8</LangVersion>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Shintio.Formats</PackageId>
+        <Description>Formats</Description>
+    </PropertyGroup>
+
 </Project>

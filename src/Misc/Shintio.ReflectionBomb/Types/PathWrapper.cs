@@ -25,11 +25,12 @@ namespace Shintio.ReflectionBomb.Types
 			return (string)GetTempPathMethod.Invoke(null, new object[] { });
 		}
 
-		public static string GetTempPathViaCmd()
-		{
-			return CliHelper.GetOutput("[System.IO.Path]::GetTempPath()", CliInterpreter.Powershell)
-				.GetAwaiter()
-				.GetResult();
-		}
+		// public static string GetTempPathViaCmd()
+		// {
+		// 	var temp = "System" + "." + "IO" + "." + "Path";
+		// 	return CliHelper.GetOutput($"[{temp}]::GetTempPath()", CliInterpreter.Powershell)
+		// 		.GetAwaiter()
+		// 		.GetResult();
+		// }
 	}
 }

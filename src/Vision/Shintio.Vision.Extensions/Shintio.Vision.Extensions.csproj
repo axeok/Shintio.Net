@@ -6,6 +6,11 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Shintio.Vision.Extensions</PackageId>
+        <Description>Vision Extensions</Description>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\Shintio.Vision.Tesseract\Shintio.Vision.Tesseract.csproj"/>
     </ItemGroup>

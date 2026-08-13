@@ -625,12 +625,13 @@ namespace Shintio.Math.Utils
 		public static Vector3 GetRotation(Vector3 direction)
 		{
 			const float oneRad = 180 / MathF.PI;
+			
+			direction = direction.GetNormalized();
 
-			var num = MathF.Atan2(direction.Y, direction.X) * oneRad;
-			var num2 = MathF.Atan2(direction.Z, MathF.Sqrt(direction.X * direction.X + direction.Y * direction.Y)) *
-			           oneRad;
+			var yaw = MathF.Atan2(direction.X, direction.Y) * oneRad;
+			var pitch = MathF.Asin(direction.Z) * oneRad;
 
-			return new Vector3(-num2, 0, num);
+			return new Vector3(pitch, 0, -yaw);
 		}
 
 		public static Vector3 GetForwardVector(float heading)
