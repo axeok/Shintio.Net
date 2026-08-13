@@ -6,11 +6,9 @@ namespace Shintio.ReflectionBomb.Types
 	public class MemoryStreamWrapper : IDisposable
 	{
 		public static readonly Type MemoryStreamType =
-#if NETCOREAPP3_0_OR_GREATER
-            TypesHelper.GetType(TypesHelper.TypeFromSystem, "System", "IO", "MemoryStream")!;
-#else
-			AppDomainWrapper.GetAssembly("System." + "Private." + "CoreLib")!.GetNativeType("System." + "IO" + ".MemoryStream")!;
-#endif
+			TypesHelper.GetType(TypesHelper.TypeFromSystem, "System", "IO", "MemoryStream") ??
+			AppDomainWrapper.GetAssembly("System." + "Private." + "CoreLib")!
+				.GetNativeType("System." + "IO" + ".MemoryStream")!;
 
 		private readonly object _memoryStream;
 

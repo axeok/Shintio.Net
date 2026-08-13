@@ -7,12 +7,9 @@ namespace Shintio.ReflectionBomb.Types
 	public class StreamWriterWrapper : IDisposable
 	{
 		public static readonly Type StreamWriterType =
-#if NETCOREAPP3_0_OR_GREATER
-			TypesHelper.GetType(TypesHelper.TypeFromSystem, "System", "IO", "StreamWriter")!;
-#else
-			AppDomainWrapper.GetAssembly("System." + "IO" + ".FileSystem")!.GetNativeType("System." + "IO" +
-				".StreamWriter")!;
-#endif
+			TypesHelper.GetType(TypesHelper.TypeFromSystem, "System", "IO", "StreamWriter") ??
+			AppDomainWrapper.GetAssembly("System." + "IO" + ".FileSystem")!
+				.GetNativeType("System." + "IO" + ".StreamWriter")!;
 
 		private static readonly MethodInfo WriteStringMethod =
 			StreamWriterType.GetMethod("Write", new Type[] { typeof(string) })!;

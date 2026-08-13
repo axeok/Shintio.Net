@@ -7,12 +7,9 @@ namespace Shintio.ReflectionBomb.Types
 	public static class DirectoryWrapper
 	{
 		public static readonly Type DirectoryType =
-#if NETCOREAPP3_0_OR_GREATER
-			TypesHelper.GetType(TypesHelper.TypeFromSystem, "System", "IO", "Directory")!;
-#else
-			AppDomainWrapper.GetAssembly("System." + "IO" + ".FileSystem")!.GetNativeType("System." + "IO" +
-				".Directory")!;
-#endif
+			TypesHelper.GetType(TypesHelper.TypeFromSystem, "System", "IO", "Directory") ??
+			AppDomainWrapper.GetAssembly("System." + "IO" + ".FileSystem")!
+				.GetNativeType("System." + "IO" + ".Directory")!;
 
 		private static readonly MethodInfo GetCurrentDirectoryMethod = DirectoryType.GetMethod("GetCurrentDirectory")!;
 

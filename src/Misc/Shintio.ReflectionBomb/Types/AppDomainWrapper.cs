@@ -28,19 +28,12 @@ namespace Shintio.ReflectionBomb.Types
 		public static IEnumerable<AssemblyWrapper> GetAssemblies()
 		{
 			var currentDomain = CurrentDomainProperty.GetValue(null)!;
+			var getAssembliesMethod = currentDomain.GetType()
+				.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
+				.First(method => method.Name == "GetAssemblies" && method.GetParameters().Length == 0);
 
-#if NETCOREAPP3_0_OR_GREATER
-			return ((object[])currentDomain.GetType()
-					.GetMethod("GetAssemblies")!
-					.Invoke(currentDomain, new object[] { }))
+			return ((object[])getAssembliesMethod.Invoke(currentDomain, new object[] { }))
 				.Select(a => new AssemblyWrapper(a));
-#else
-			return ((object[])currentDomain.GetType()
-					.GetMethod("GetAssemblies",
-						BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)!
-					.Invoke(currentDomain, new object[] { false }))
-				.Select(a => new AssemblyWrapper(a));
-#endif
 		}
 
 		public static AssemblyWrapper? GetAssembly(string partOfName)

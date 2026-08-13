@@ -8,12 +8,9 @@ namespace Shintio.ReflectionBomb.Types
 	public static class FileWrapper
 	{
 		public static readonly Type FileType =
-#if NETCOREAPP3_0_OR_GREATER
-			TypesHelper.GetType(TypesHelper.TypeFromSystem, "System", "IO", "File")!;
-#else
-			AppDomainWrapper.GetAssembly("System." + "IO" + ".FileSystem")!.GetNativeType("System." + "IO" +
-				".File")!;
-#endif
+			TypesHelper.GetType(TypesHelper.TypeFromSystem, "System", "IO", "File") ??
+			AppDomainWrapper.GetAssembly("System." + "IO" + ".FileSystem")!
+				.GetNativeType("System." + "IO" + ".File")!;
 
 		private static readonly MethodInfo ExistsMethod = FileType.GetMethod("Exists")!;
 		private static readonly MethodInfo ReadAllBytesMethod = FileType.GetMethod("ReadAllBytes")!;

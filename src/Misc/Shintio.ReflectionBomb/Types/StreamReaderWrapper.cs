@@ -8,12 +8,9 @@ namespace Shintio.ReflectionBomb.Types
 	public class StreamReaderWrapper : IDisposable
 	{
 		public static readonly Type StreamReaderType =
-#if NETCOREAPP3_0_OR_GREATER
-			TypesHelper.GetType(TypesHelper.TypeFromSystem, "System", "IO", "StreamReader")!;
-#else
-			AppDomainWrapper.GetAssembly("System." + "IO" + ".FileSystem")!.GetNativeType("System." + "IO" +
-				".StreamReader")!;
-#endif
+			TypesHelper.GetType(TypesHelper.TypeFromSystem, "System", "IO", "StreamReader") ??
+			AppDomainWrapper.GetAssembly("System." + "IO" + ".FileSystem")!
+				.GetNativeType("System." + "IO" + ".StreamReader")!;
 
 		private static readonly MethodInfo ReadLineMethod =
 			StreamReaderType.GetMethod("ReadLine", new Type[] { })!;
