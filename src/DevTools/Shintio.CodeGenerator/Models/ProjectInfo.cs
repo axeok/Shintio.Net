@@ -12,10 +12,12 @@ public class ProjectInfo : ValueObject
 
 	public string Path { get; }
 	public bool CombineCode { get; }
+	public virtual string GeneratedCodeDirectory => "GeneratedCode";
 
 	protected override IEnumerable<object?> GetEqualityComponents()
 	{
 		yield return Path;
 		yield return CombineCode;
+		yield return GeneratedCodeDirectory;
 	}
 }

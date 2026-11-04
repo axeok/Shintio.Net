@@ -52,7 +52,7 @@ public class GeneratorRunner
 
 			foreach (var file in filesToSave)
 			{
-				var path = Path.Combine(project.Path, "GeneratedCode", file.Name);
+				var path = Path.Combine(project.Path, project.GeneratedCodeDirectory, file.Name);
 				Directory.CreateDirectory(Path.GetDirectoryName(path)!);
 
 				if (File.Exists(path) && File.ReadAllText(path) == file.Content)
